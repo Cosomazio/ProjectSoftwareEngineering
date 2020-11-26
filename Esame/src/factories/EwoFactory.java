@@ -5,6 +5,9 @@
  */
 package factories;
 import deposito.EwoFactory;
+import deposito.Procedure;
+import deposito.Sito;
+import java.util.List;
 
 /**
  *
@@ -23,5 +26,14 @@ public class EwoFactory extends ActivityFactory {
     
     public static int getId(){
         return ++id;
+    }
+    
+    
+    public EwoActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
+            List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
+        int id= this.getIstance().getId();
+        
+        EwoActivity ewo = new EwoActivity(id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
+        return ewo;
     }
 }
