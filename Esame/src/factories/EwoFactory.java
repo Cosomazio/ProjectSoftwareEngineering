@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package factories;
-import deposito.EwoFactory;
+import deposito.EwoActivity;
 import deposito.Procedure;
 import deposito.Sito;
 import java.util.List;
