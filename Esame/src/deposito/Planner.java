@@ -38,7 +38,7 @@ public class Planner extends AbstractUtente {
             Procedure procedura){
         
     }
-    public void modifyActivity(InterfaceActivity act,int id, Sito sito,String tipologia, String descrizione, int tempo, 
+    public void modifyActivity(AbstractActivity act,int id, Sito sito,String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
         
         int idAct=act.getId();
