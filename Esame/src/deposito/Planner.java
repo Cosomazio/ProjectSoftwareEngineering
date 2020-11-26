@@ -33,10 +33,32 @@ public class Planner extends AbstractUtente {
     public void gestisciMateriali(InterfaceActivity act,List<String> materiali){
         
     }
-    public void createActivity(int id, Sito sito,String descrizione,int tempo,
+    
+    //sito non esiste
+    public void createActivity(int id, Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
+            String url="kandula.db.elephantsql.com";
+            String user="figslypy";
+            String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
+
+            try{
+                //creo la connessione al DB
+                Connection c= DriverManager.getConnection(url,user,pass);
+                String insert="INSERT INTO Attivita(id,sito,tipologia,descrizione,"
+                        +"tempo,materiali,week,interrompibile,procedura) VALUES";
+                String query=insert+" ("+id+","+sito+","+tipologia+","+descrizione+","+tempo+","+materiali+
+                        ","+week+","+interrompibile+","+procedura+")";
+                PreparedStatement st = c.prepareStatement(query);
+                ResultSet rs=st.executeQuery();
+                st.close();
+                rs.close();
+                c.close();
+
+            }catch(SQLException ex){
+                System.out.println("ERRORE DATABASE MODIFICA");
+            }
     }
     public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
@@ -84,8 +106,32 @@ public class Planner extends AbstractUtente {
             System.out.println("ERRORE DATABASE CANCELLAZIONE");
         }
     }
-    public void viewActivties(){
-        
+    
+    //sito non esiste
+    public void viewActivities(){
+        String url="kandula.db.elephantsql.com";
+        String user="figslypy";
+        String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
+
+        try{
+            //creo la connessione al DB
+            Connection c= DriverManager.getConnection(url,user,pass);
+            String select="SELECT id,sito,tipologia,descrizione,"
+                    +"tempo,materiali,week,interrompibile,procedura FROM attivita";
+            String query=select;
+            PreparedStatement st = c.prepareStatement(query);
+            ResultSet rs=st.executeQuery();
+            while (rs.next()){
+                int id=rs.getInt("id");
+                
+            }
+            st.close();
+            rs.close();
+            c.close();
+
+        }catch(SQLException ex){
+            System.out.println("ERRORE DATABASE MODIFICA");
+        }
     }
     public void viewEWO() {
         
