@@ -5,14 +5,13 @@
  */
 package deposito;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.util.*;
 
 /**
  *
  * @author tomma
  */
-public class AbstractActivity implements InterfaceActivity {
+public abstract class AbstractActivity implements InterfaceActivity {
     private int id;
     private Sito sito;
     private String tipologia;
