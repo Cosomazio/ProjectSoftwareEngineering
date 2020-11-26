@@ -62,8 +62,27 @@ public class Planner extends AbstractUtente {
             System.out.println("ERRORE DATABASE");
         }
     }    
-    public void deleteActivity(InterfaceActivity act){
+    public void deleteActivity(AbstractActivity act){
+        int idAct=act.getId();
+        String url="kandula.db.elephantsql.com";
+        String user="figslypy";
+        String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
         
+        try{
+            //creo la connessione al DB
+            Connection c= DriverManager.getConnection(url,user,pass);
+            
+            String query= "DELETE FROM Attivita WHERE id ="+ idAct;
+            
+            PreparedStatement st = c.prepareStatement(query);
+            ResultSet rs=st.executeQuery();
+            st.close();
+            rs.close();
+            c.close();
+            
+        }catch(SQLException ex){
+            System.out.println("ERRORE DATABASE");
+        }
     }
     public void viewActivties(){
         
