@@ -11,11 +11,10 @@ import java.util.List;
  *
  * @author cosimocorbisiero
  */
-public class PlannedActivity extends AbstractActivity{
+public class UnplannedActivity extends AbstractActivity{
     
-    public PlannedActivity(int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
+    public UnplannedActivity(int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
         super(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
     }
-    
     
 }
