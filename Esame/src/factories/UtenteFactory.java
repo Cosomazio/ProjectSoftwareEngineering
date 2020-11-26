@@ -17,7 +17,7 @@ public abstract class UtenteFactory {
          UtenteFactory factory = null;
          
         if (ut==Category.PLANNER){
-            factory= new PlannerFactory()
+            factory= new SaFactory()
         }
         if (ut == Category.MAINTAINER){
             factory = new MaintainerFactory()

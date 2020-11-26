@@ -5,10 +5,16 @@
  */
 package factories;
 
+import deposito.Planner;
+
 /**
  *
- * @author franc
+ * @author Luigi
  */
 public class PlannerFactory {
-    
+    public Planner build(String nome, String username,String password,String email){
+        IdUtente generator= IdUtente.getInstance();
+        id=generator.getNextId();
+        Planner p=new Planner(nome,username,password,email,id);
+        return p;
 }
