@@ -20,7 +20,7 @@ public class Planner extends AbstractUtente {
     public void planActivity(InterfaceActivity act){
         
     }
-    public void creaEwo(int id, Sito sito,String ,String descrizione,int tempo,
+    public void creaEwo(int id, Sito sito ,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
@@ -32,7 +32,7 @@ public class Planner extends AbstractUtente {
     public void gestisciMateriali(InterfaceActivity act,List<String> materiali){
         
     }
-    public void createActivity(int id, Sito sito,String ,String descrizione,int tempo,
+    public void createActivity(int id, Sito sito,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
