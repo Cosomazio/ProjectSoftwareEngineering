@@ -12,7 +12,7 @@ import deposito.SystemAdministrator;
  * @author franc
  */
 public class SaFactory extends UtenteFactory{
-   public SystemAdministrator build(String nome,String username,String password, String email){
+   protected SystemAdministrator build(String nome,String username,String password, String email){
        IdUtente generator= IdUtente.getInstance();
        int id=generator.getNextId();
        SystemAdministrator s= new SystemAdministrator(username,password,nome,email,id);

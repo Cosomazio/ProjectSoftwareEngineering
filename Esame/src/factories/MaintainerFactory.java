@@ -13,7 +13,7 @@ import deposito.Maintainer;
  */
 public class MaintainerFactory extends UtenteFactory {
     @Override
-    public Maintainer build(String nome,String username, String password,String email){
+    protected Maintainer build(String nome,String username, String password,String email){
         IdUtente generatore=IdUtente.getInstance();
         int id= generatore.getNextId();
         Maintainer m= new Maintainer(username,password,nome,email,id);
