@@ -14,10 +14,10 @@ public class Planner extends AbstractUtente {
     public Planner(String username,String password,String nome,String email,int id){
         super(username,password,nome,email,id);
     }
-    public void assegnaMan(Maintaner man, AbstractActivity act){
+    public void assegnaMan(Maintainer man, InterfaceActivity act){
         
     }
-    public void planActivity(AbstractActivity act){
+    public void planActivity(InterfaceActivity act){
         
     }
     public void creaEwo(int id, Sito sito,String ,String descrizione,int tempo,
@@ -29,7 +29,7 @@ public class Planner extends AbstractUtente {
             List<String> skills, List<String> materiali){
         
     }
-    public void gestisciMateriali(AbstractActivity act,List<String> materiali){
+    public void gestisciMateriali(InterfaceActivity act,List<String> materiali){
         
     }
     public void createActivity(int id, Sito sito,String ,String descrizione,int tempo,
@@ -37,10 +37,10 @@ public class Planner extends AbstractUtente {
             Procedure procedura){
         
     }
-    public void modifyActivity(AbstractActivity act){
+    public void modifyActivity(InterfaceActivity act){
         
     }
-    public void deleteActivity(AbstractActivity act){
+    public void deleteActivity(InterfaceActivity act){
         
     }
     public void viewActivties(){
