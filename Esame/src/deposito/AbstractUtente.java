@@ -16,10 +16,11 @@ public abstract class AbstractUtente implements InterfaceUtente{
     private String email;
     private int id;
 
-    public AbstractUtente(String username, String password, String nome, int id) {
+    public AbstractUtente(String username, String password, String nome, String email, int id) {
         this.username = username;
         this.password = password;
         this.nome = nome;
+        this.email=email;
         this.id = id;
     }
 
