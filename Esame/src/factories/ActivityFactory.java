@@ -17,10 +17,10 @@ public abstract class ActivityFactory {
     public ActivityFactory(){
         
     }
-    public void make(CategoryActivity categoria,int id, Sito sito,String tipologia,
+    public AbstractActivity make(CategoryActivity categoria,int id, Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
-        AbstractActivity factory = null;
+        ActivityFactory factory = null;
         switch (categoria) {
             case EWO:
                 factory = new EwoFactory();
@@ -35,10 +35,10 @@ public abstract class ActivityFactory {
                 factory = new PlannedFactory();
                 break;
         }
-        return factory.build(id,sito,tipologia,descrizione,tempo,materiali,
+        return factory.build(sito,tipologia,descrizione,tempo,materiali,
                 week,interrompibile,procedura);
     }
-    protected abstract AbstractActivity build(int id, Sito sito,String tipologia,
+    protected abstract AbstractActivity build( Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura);
 }
