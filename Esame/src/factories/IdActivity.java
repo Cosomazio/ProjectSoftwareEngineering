@@ -11,17 +11,17 @@ package factories;
  */
 public class IdActivity {
     private static IdActivity istanza=null;
-    private int id;
+    private static int id=0;
     
-    public IdActivity getIstance(){
+    public static IdActivity getIstance(){
         if (istanza == null) {
             istanza = new IdActivity();
         }
         return istanza;
     }
 
-    public int getId() {
-        return id;
+    public static int getId() {
+        return ++id;
     }
     
 }
