@@ -14,7 +14,7 @@ import deposito.Planner;
 public class PlannerFactory extends UtenteFactory{
     public Planner build(String nome, String username,String password,String email){
         IdUtente generator= IdUtente.getInstance();
-        id=generator.getNextId();
+        int id=generator.getNextId();
         Planner p=new Planner(nome,username,password,email,id);
         return p;
     }

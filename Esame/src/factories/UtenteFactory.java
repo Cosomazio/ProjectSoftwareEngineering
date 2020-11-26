@@ -17,16 +17,16 @@ public abstract class UtenteFactory {
          UtenteFactory factory = null;
          
         if (ut==Category.PLANNER){
-            factory= new SaFactory()
+            factory= new SaFactory();
         }
         if (ut == Category.MAINTAINER){
-            factory = new MaintainerFactory()
+            factory = new MaintainerFactory();
         }
         if (ut == Category.SYSTEMADMINISTRATOR)
-            factory = new SaFactory()
+            factory = new SaFactory();
                     
-        return factory.build(ut, nome, username, password, email);
+        return factory.build(nome, username, password, email);
     }
     
-    protected abstract AbstractUtente build();
+    protected abstract AbstractUtente build(String nome, String username, String password, String email);
 }

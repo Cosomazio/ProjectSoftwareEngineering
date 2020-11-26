@@ -21,6 +21,10 @@ public class Maintainer extends AbstractUtente{
         this.skill = skill;
         this.procedure = procedure;
     }
+    
+    public Maintainer(String username, String password, String nome, String email, int id){
+        super(username, password, nome, email, id);
+    }
 
     public Set<String> getSkill() {
         return skill;
