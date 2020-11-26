@@ -38,7 +38,7 @@ public class Planner extends AbstractUtente {
             Procedure procedura){
         
     }
-    public void modifyActivity(AbstractActivity act,int id, Sito sito,String tipologia, String descrizione, int tempo, 
+    public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
         
         int idAct=act.getId();
@@ -50,8 +50,8 @@ public class Planner extends AbstractUtente {
             //creo la connessione al DB
             Connection c= DriverManager.getConnection(url,user,pass);
             
-            String query= "UPDATE Attivita SET id="+id+",sito="+sito+",tipologia="+tipologia+",descrizione="+descrizione+",tempo="+tempo+",materiali="+materiali+
-                    ",week="+week+",interrompibile="+interrompibile+",procedura="+procedura+" WHERE id="+idAct;
+            String query= "UPDATE Attivita SET sito="+sito+",tipologia="+tipologia+",descrizione="+descrizione+",tempo="+tempo+",materiali="+materiali+
+                    ",week="+week+",interrompibile="+interrompibile+",procedura="+procedura+" WHERE aid ="+idAct;
             PreparedStatement st = c.prepareStatement(query);
             ResultSet rs=st.executeQuery();
             st.close();
@@ -72,7 +72,7 @@ public class Planner extends AbstractUtente {
             //creo la connessione al DB
             Connection c= DriverManager.getConnection(url,user,pass);
             
-            String query= "DELETE FROM Attivita WHERE id ="+ idAct;
+            String query= "DELETE FROM Attivita WHERE aid ="+ idAct;
             
             PreparedStatement st = c.prepareStatement(query);
             ResultSet rs=st.executeQuery();
