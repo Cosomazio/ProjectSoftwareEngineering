@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package factories;
-import deposit.ExtraActivity;
+import deposito.ExtraActivity;
 import deposito.Procedure;
 import deposito.Sito;
 import java.util.List;
