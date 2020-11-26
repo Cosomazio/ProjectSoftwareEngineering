@@ -17,7 +17,7 @@ public abstract class ActivityFactory {
     public ActivityFactory(){
         
     }
-    public AbstractActivity make(CategoryActivity categoria,int id, Sito sito,String tipologia,
+    public AbstractActivity make(CategoryActivity categoria, Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
         ActivityFactory factory = null;
