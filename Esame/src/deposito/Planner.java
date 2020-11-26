@@ -61,6 +61,7 @@ public class Planner extends AbstractUtente {
         }catch(SQLException ex){
             System.out.println("ERRORE DATABASE");
         }
+    }    
     public void deleteActivity(InterfaceActivity act){
         
     }
