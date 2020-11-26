@@ -11,7 +11,7 @@ import deposito.SystemAdministrator;
  *
  * @author franc
  */
-public class SaFactory {
+public class SaFactory extends UtenteFactory{
    public SystemAdministrator build(String nome,String username,String password, String email){
        IdUtente generator= IdUtente.getInstance();
        id=generator.getNextId();
