@@ -59,7 +59,7 @@ public class Planner extends AbstractUtente {
             c.close();
             
         }catch(SQLException ex){
-            System.out.println("ERRORE DATABASE");
+            System.out.println("ERRORE DATABASE MODIFICA");
         }
     }    
     public void deleteActivity(AbstractActivity act){
@@ -81,7 +81,7 @@ public class Planner extends AbstractUtente {
             c.close();
             
         }catch(SQLException ex){
-            System.out.println("ERRORE DATABASE");
+            System.out.println("ERRORE DATABASE CANCELLAZIONE");
         }
     }
     public void viewActivties(){
