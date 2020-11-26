@@ -5,6 +5,7 @@
  */
 package deposito;
 import java.time.*;
+import java.util.*;
 /**
  *
  * @author tomma
@@ -19,8 +20,48 @@ public class Planner extends AbstractUtente {
     public void planActivity(AbstractActivity act){
         
     }
-    public void creaEwo(EWO ewo, String descrizione,OffsetTime tempo){
+    public void creaEwo(int id, Sito sito,String ,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura){
         
     }
+    public void modificaEWO(EWO ewo, String descrizione,OffsetTime tempo,
+            List<String> skills, List<String> materiali){
+        
+    }
+    public void gestisciMateriali(AbstractActivity act,List<String> materiali){
+        
+    }
+    public void createActivity(int id, Sito sito,String ,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura){
+        
+    }
+    public void modifyActivity(AbstractActivity act){
+        
+    }
+    public void deleteActivity(AbstractActivity act){
+        
+    }
+    public void viewActivties(){
+        
+    }
+    public void viewEWO() {
+        
+    }
+    public void sortedActivities(){
+        
+    }
+    public void maintainerAval(Maintainer man, int giorno){
+        
+    }
+    
+    public void maintainerAvalPerc(Maintainer man){
+        
+    }
+    
+            
+            
+            
     
 }
