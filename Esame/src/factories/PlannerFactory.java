@@ -17,4 +17,5 @@ public class PlannerFactory {
         id=generator.getNextId();
         Planner p=new Planner(nome,username,password,email,id);
         return p;
+    }
 }
