@@ -13,8 +13,10 @@ import java.util.*;
  * @author cosimocorbisiero
  */
 public class PlannedFactory extends ActivityFactory{
-    public PlannedActivity build(int id, Sito sito, String tipologia, String descrizione, int tempo, 
+    public PlannedActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
+            IdActivity generatore = IdActivity.getIstance();
+            int id= generatore.getId();
             PlannedActivity pa= new PlannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
             return pa;
     }
