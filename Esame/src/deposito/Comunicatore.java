@@ -21,7 +21,7 @@ public class Comunicatore {
         this.c = DriverManager.getConnection("jdbc:postgresql://kandula.db.elephantsql.com:5432/figslypy", "figslypy", "lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio");
     }
     
-    public int insertQuery(String table, HashMap<String, String> params){
+    public int insertQuery(String table, HashMap<String, Object> params){
         int res=-1;
         int i=0, j=0;
         String query="insert INTO"+ " "+table+ " (";
@@ -37,7 +37,11 @@ public class Comunicatore {
         query=query+l.get(i)+")";
         String values=" values (";
         for(j=0; j<k.size()-1; j++){
-            values=values+"'"+params.get(l.get(j))+"'"+",";
+            Object par=params.get(l.get(j));
+            if (par instanceof Integer || par instanceof Boolean){
+                values=values+""+par+""+",";
+            }
+            values=values+"'"+par+"'"+",";
         }
         values=values+"'"+params.get(l.get(j))+"'"+")";
         System.out.println(query+values);
