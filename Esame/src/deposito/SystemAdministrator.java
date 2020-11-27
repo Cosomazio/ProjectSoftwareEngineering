@@ -43,7 +43,23 @@ public class SystemAdministrator extends AbstractUtente {
     public void cancellaMaintainer (Maintainer man){
         
     }
-
+    public Planner createPlanner(String username, String password, String nome, String email){
+        PlannerBuilder builder= new PlannerBuilder();
+        builder.reset(nome, username, password, email);
+        return builder.getResult();
+    }
+    
+    public Planner modificaPlanner(Planner pln,String username, String password, String nome, String email){
+        pln.setNome(nome);
+        pln.setUsername(username);
+        pln.setPassword(password);
+        pln.setEmail(email);
+        return pln;
+    }
+    public Planner cancellaPlanner(Planner pln){
+        return pln;
+    }
+    
     @Override
     public String toString() {
         return super.toString() + "SystemAdministrator{" + '}';

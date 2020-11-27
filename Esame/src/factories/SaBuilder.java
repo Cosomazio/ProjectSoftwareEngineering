@@ -13,11 +13,15 @@ import deposito.SystemAdministrator;
  * @author franc
  */
 public class SaBuilder extends UtenteBuilder{
+    private SystemAdministrator result;
     
-   protected SystemAdministrator selezione(String nome,String username,String password, String email){
-       IdUtente generator= IdUtente.getInstance();
-       int id=generator.getNextId();
-       SystemAdministrator s = new SystemAdministrator(username,password,nome,email,id);
-       return s;
-   } 
+    public void  reset( String nome, String username, String password, String email){
+        IdUtente generatore= IdUtente.getInstance();
+        int id= generatore.getNextId();
+        this.result= new SystemAdministrator( nome,username,password, email,id);
+    }
+    
+    public SystemAdministrator getResult(){
+        return this.result;
+    }
 }

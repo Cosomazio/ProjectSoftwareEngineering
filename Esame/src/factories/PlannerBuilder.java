@@ -12,11 +12,17 @@ import deposito.Planner;
  * @author Luigi
  */
 public class PlannerBuilder extends UtenteBuilder{
+    private Planner result;
     
-    protected Planner selezione(String nome, String username,String password,String email){
-        IdUtente generator= IdUtente.getInstance();
-        int id=generator.getNextId();
-        Planner p=new Planner(nome,username,password,email,id);
-        return p;
+    public void reset(String nome, String username, String password, String email){
+        IdUtente generatore=IdUtente.getInstance();
+        int id= generatore.getNextId();
+        
+        this.result=new Planner(nome,username,password,email,id);
+        
+    }
+    
+    public Planner getResult(){
+        return this.result;
     }
 }
