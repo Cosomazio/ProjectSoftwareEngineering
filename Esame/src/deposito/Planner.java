@@ -158,7 +158,10 @@ public class Planner extends AbstractUtente {
         
     }
     
-            
+    @Override
+    public String toString() {
+        return super.toString()+"Planner";
+    }        
             
             
     

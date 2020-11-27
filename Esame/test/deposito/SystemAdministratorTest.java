@@ -41,7 +41,7 @@ public class SystemAdministratorTest {
     /**
      * Test of createMaintainer method, of class SystemAdministrator.
      */
-    @Test
+ /*   @Test
     public void testCreateMaintainer() {
         System.out.println("createMaintainer");
         String username = "";
@@ -55,11 +55,12 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of modificaMaintainer method, of class SystemAdministrator.
      */
-    @Test
+    
+   /* @Test
     public void testModificaMaintainer() {
         System.out.println("modificaMaintainer");
         Maintainer man = null;
@@ -76,11 +77,11 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of cancellaMaintainer method, of class SystemAdministrator.
      */
-    @Test
+/*    @Test
     public void testCancellaMaintainer() {
         System.out.println("cancellaMaintainer");
         Maintainer man = null;
@@ -89,29 +90,35 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of createPlanner method, of class SystemAdministrator.
      */
-    //@Test
-/*public void testCreatePlanner() {
+    @Test
+    public void testCreatePlanner() {
         System.out.println("createPlanner");
-        String username = "";
-        String password = "";
-        String nome = "";
-        String email = "";
-        SystemAdministrator instance = null;
-        Planner expResult = null;
+        String username = "ciccio";
+        String password = "1234";
+        String nome = "12345";
+        String email = "ciccio@ciccio.com";
+        System.out.println("ciao");
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        
         Planner result = instance.createPlanner(username, password, nome, email);
-        assertEquals(expResult, result);
+        int id=result.getId();
+        System.out.println(id);
+        System.out.println(result.toString());
+        Planner expResult =new Planner(username,password,nome,email,id);
+        System.out.println(expResult.toString());
+        assertEquals(expResult.toString(), result.toString());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-*/
+
     /**
      * Test of modificaPlanner method, of class SystemAdministrator.
      */
-/*    @Test
+    @Test
     public void testModificaPlanner() {
         System.out.println("modificaPlanner");
         Planner pln = null;
@@ -124,22 +131,22 @@ public class SystemAdministratorTest {
         Planner result = instance.modificaPlanner(pln, username, password, nome, email);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-*/
+
     /**
      * Test of cancellaPlanner method, of class SystemAdministrator.
      */
-/*    @Test
+    @Test
     public void testCancellaPlanner() {
         System.out.println("cancellaPlanner");
         Planner pln = null;
         SystemAdministrator instance = null;
         instance.cancellaPlanner(pln);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-*/    
+    
     /**
      * Test of toString method, of class SystemAdministrator.
      */

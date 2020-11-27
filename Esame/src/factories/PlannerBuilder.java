@@ -18,7 +18,7 @@ public class PlannerBuilder extends UtenteBuilder{
         IdUtente generatore=IdUtente.getInstance();
         int id= generatore.getNextId();
         
-        this.result=new Planner(nome,username,password,email,id);
+        this.result=new Planner(username,password,nome,email,id);
         
     }
     
