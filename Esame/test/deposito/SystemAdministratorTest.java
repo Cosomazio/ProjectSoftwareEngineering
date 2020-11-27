@@ -146,12 +146,18 @@ public class SystemAdministratorTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        SystemAdministrator instance = null;
-        String expResult = "";
+        SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        String username="pippo";
+        String password="xxxx";
+        String nome="cosimo";
+        String email="coccocorb1@hot.com";
+        int id=23;
+                
+        String expResult = "AbstractUtente{" + "username=" + username + ", password=" + password + ", nome=" + nome + ", email=" + email + ", id=" + id + '}' + "SystemAdministrator{" + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     
 }

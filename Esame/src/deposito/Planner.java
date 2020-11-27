@@ -26,7 +26,7 @@ public class Planner extends AbstractUtente {
             Procedure procedura){
         
     }
-    public void modificaEWO(EWO ewo, String descrizione,OffsetTime tempo,
+    public void modificaEWO(EwoActivity ewo, String descrizione,OffsetTime tempo,
             List<String> skills, List<String> materiali){
         
     }
