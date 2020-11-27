@@ -6,7 +6,8 @@
 package deposito;
 
 import factories.*;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
 
 /**
  *
@@ -58,6 +59,24 @@ public class SystemAdministrator extends AbstractUtente {
     }
     public void cancellaPlanner(Planner pln){
         
+            String url="kandula.db.elephantsql.com";
+            String user="figslypy";
+            String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
+
+            try{
+                //creo la connessione al DB
+                Connection c= DriverManager.getConnection(url,user,pass);
+                String query="Delete from planner where pid="+ pln.getId();
+                
+                PreparedStatement st = c.prepareStatement(query);
+                ResultSet rs=st.executeQuery();
+                st.close();
+                rs.close();
+                c.close();
+
+            }catch(SQLException ex){
+                System.out.println("ERRORE DATABASE MODIFICA");
+            }
     }
     
     @Override
