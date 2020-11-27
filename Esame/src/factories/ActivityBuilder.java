@@ -12,27 +12,27 @@ import java.util.List;
  *
  * @author tomma
  */
-public abstract class ActivityFactory {
+public abstract class ActivityBuilder {
     public Category categoria;
-    public ActivityFactory(){
+    public ActivityBuilder(){
         
     }
     public static AbstractActivity make(CategoryActivity categoria, Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
-        ActivityFactory factory = null;
+        ActivityBuilder factory = null;
         switch (categoria) {
             case EWO:
-                factory = new EwoFactory();
+                factory = new EwoBuilder();
                 break;
             case EXTRA:
-                factory = new ExtraFactory();
+                factory = new ExtraBuilder();
                 break;
             case UNPLANNED:
-                factory = new UnplannedFactory();
+                factory = new UnplannedBuilder();
                 break;
             default:
-                factory = new PlannedFactory();
+                factory = new PlannedBuilder();
                 break;
         }
         return factory.build(sito,tipologia,descrizione,tempo,materiali,

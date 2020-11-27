@@ -11,9 +11,9 @@ import deposito.Planner;
  *
  * @author Luigi
  */
-public class PlannerFactory extends UtenteFactory{
+public class PlannerBuilder extends UtenteBuilder{
     
-    protected Planner build(String nome, String username,String password,String email){
+    protected Planner selezione(String nome, String username,String password,String email){
         IdUtente generator= IdUtente.getInstance();
         int id=generator.getNextId();
         Planner p=new Planner(nome,username,password,email,id);

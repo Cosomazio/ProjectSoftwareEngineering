@@ -18,10 +18,12 @@ public class SystemAdministrator extends AbstractUtente {
         super(username,password,nome,email,id);
     }
     
-    public Maintainer createMaintainer(String username, String password, String nome, String email, int id){
-        AbstractUtente man = UtenteFactory.make(Category.MAINTAINER, nome, username, password, email);
-        return (Maintainer) man;
+    public Maintainer createMaintainer(String username, String password, String nome, String email){
         
+        MaintainerBuilder builder= new MaintainerBuilder();
+        builder.reset(nome, username, password, email);
+        return builder.getInstance();
+                 
     }
     
     
@@ -41,6 +43,13 @@ public class SystemAdministrator extends AbstractUtente {
     public void cancellaMaintainer (Maintainer man){
         
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "SystemAdministrator{" + '}';
+    }
+    
+    
     
     
 }

@@ -41,6 +41,12 @@ public class Maintainer extends AbstractUtente{
     public void setProcedure(Set<Procedure> procedure) {
         this.procedure = procedure;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Maintainer{" +  "skill=" + skill + ", procedure=" + procedure + '}';
+    }
+    
     
     
     

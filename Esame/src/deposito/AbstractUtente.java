@@ -5,6 +5,8 @@
  */
 package deposito;
 
+import java.util.Set;
+
 /**
  *
  * @author Luigi
@@ -63,6 +65,7 @@ public abstract class AbstractUtente implements InterfaceUtente{
     public void setId(int id) {
         this.id = id;
     }
+    
 
     @Override
     public String toString() {

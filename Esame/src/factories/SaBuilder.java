@@ -5,17 +5,19 @@
  */
 package factories;
 
+import deposito.AbstractUtente;
 import deposito.SystemAdministrator;
 
 /**
  *
  * @author franc
  */
-public class SaFactory extends UtenteFactory{
-   protected SystemAdministrator build(String nome,String username,String password, String email){
+public class SaBuilder extends UtenteBuilder{
+    
+   protected SystemAdministrator selezione(String nome,String username,String password, String email){
        IdUtente generator= IdUtente.getInstance();
        int id=generator.getNextId();
-       SystemAdministrator s= new SystemAdministrator(username,password,nome,email,id);
+       SystemAdministrator s = new SystemAdministrator(username,password,nome,email,id);
        return s;
    } 
 }

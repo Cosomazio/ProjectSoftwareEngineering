@@ -113,4 +113,5 @@ public abstract class AbstractActivity implements InterfaceActivity {
         this.procedura = procedura;
     }
     
+    
 }

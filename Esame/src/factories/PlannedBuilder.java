@@ -12,8 +12,7 @@ import java.util.*;
  *
  * @author cosimocorbisiero
  */
-public class PlannedFactory extends ActivityFactory{
-    
+public class PlannedBuilder extends ActivityBuilder{
     public PlannedActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
             IdActivity generatore = IdActivity.getIstance();

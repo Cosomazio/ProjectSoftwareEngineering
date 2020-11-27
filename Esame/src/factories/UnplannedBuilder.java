@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author cosimocorbisiero
  */
-public class UnplannedFactory extends ActivityFactory {
+public class UnplannedBuilder extends ActivityBuilder {
     public UnplannedActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
             

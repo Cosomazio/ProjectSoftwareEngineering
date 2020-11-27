@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author cosimocorbisiero
  */
-public class ExtraFactory extends ActivityFactory{
+public class ExtraBuilder extends ActivityBuilder{
     public ExtraActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
         IdActivity generatore = IdActivity.getIstance();
