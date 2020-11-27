@@ -83,6 +83,17 @@ public class Planner extends AbstractUtente {
         }catch(SQLException ex){
             System.out.println("ERRORE DATABASE MODIFICA");
         }
+        
+        act.setDescrizione(descrizione);
+        act.setId(idAct);
+        act.setInterrompibile(interrompibile);
+        act.setMateriali(materiali);
+        act.setProcedura(procedura);
+        act.setSito(sito);
+        act.setTempo(tempo);
+        act.setTipologia(tipologia);
+        act.setWeek(week);
+        
     }    
     public void deleteActivity(AbstractActivity act){
         int idAct=act.getId();

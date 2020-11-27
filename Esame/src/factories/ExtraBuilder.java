@@ -13,11 +13,16 @@ import java.util.List;
  * @author cosimocorbisiero
  */
 public class ExtraBuilder extends ActivityBuilder{
-    public ExtraActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
-            List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
+    private ExtraActivity result;
+    
+    public void reset(Sito sito,String tipologia, int tempo,List<String> materiali,int week,
+            Boolean interrompibile, Procedure procedura){
         IdActivity generatore = IdActivity.getIstance();
         int id = generatore.getId();
-        ExtraActivity ea = new ExtraActivity(id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
-        return ea;
+        this.result = new ExtraActivity(id,sito,tipologia,tempo,materiali,week,interrompibile,procedura);
+    }
+    
+    public ExtraActivity getResult(){
+        return this.result;
     }
 }

@@ -13,11 +13,19 @@ import java.util.*;
  * @author cosimocorbisiero
  */
 public class PlannedBuilder extends ActivityBuilder{
-    public PlannedActivity build(Sito sito, String tipologia, String descrizione, int tempo, 
-            List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
-            IdActivity generatore = IdActivity.getIstance();
-            int id= generatore.getId();
-            PlannedActivity pa= new PlannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            return pa;
+    private PlannedActivity result;
+    
+    public void reset(Sito sito,String tipologia,
+             String descrizione,int tempo,List<String> materiali,
+                int week,Boolean interrompibile,Procedure procedura){
+        IdActivity generatore = IdActivity.getIstance();
+        int id=generatore.getId();
+        
+        this.result=new PlannedActivity(id,sito,tipologia,descrizione,tempo,materiali,week, interrompibile, procedura);
+        
+    }
+    
+    public PlannedActivity getResult(){
+        return this.result;
     }
 }

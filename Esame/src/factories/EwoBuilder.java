@@ -29,11 +29,11 @@ public class EwoBuilder extends ActivityBuilder {
         return ++id;
     }
     
-    public void reset(CategoryActivity categoria, Sito sito,String tipologia,
+    public void reset(Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
                 
-        this.result=new EwoActivity (id,categoria,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
+        this.result=new EwoActivity (id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
        
     }
     
