@@ -19,7 +19,7 @@ public class ExtraBuilder extends ActivityBuilder{
             Boolean interrompibile, Procedure procedura){
         IdActivity generatore = IdActivity.getIstance();
         int id = generatore.getId();
-        this.result = new ExtraActivity(id,sito,tipologia,tempo,materiali,week,interrompibile,procedura);
+        this.result = new ExtraActivity(id,sito,tipologia,descrizione, tempo,materiali,week,interrompibile,procedura);
     }
     
     public ExtraActivity getResult(){
