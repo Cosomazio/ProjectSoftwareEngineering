@@ -70,20 +70,20 @@ public class Planner extends AbstractUtente {
         Comunicatore com;    
         try {    
             com= new Comunicatore();
-            HashMap<String,String> mappa= new HashMap<>();
-            mappa.put("aid",""+attivita.getId());
-            mappa.put("office",""+attivita.getSito().getOffice());
-            mappa.put("area",""+attivita.getSito().getArea());
-            mappa.put("tipologia",""+attivita.getTipologia());
-            mappa.put("descrizione",""+attivita.getDescrizione());
-            mappa.put("tempo",""+attivita.getTempo());
-            mappa.put("week",""+attivita.getWeek());
-            mappa.put("interrompibile",""+attivita.getInterrompibile());
+            HashMap<String,Object> mappa= new HashMap<>();
+            mappa.put("aid",attivita.getId());
+            mappa.put("office",attivita.getSito().getOffice());
+            mappa.put("area",attivita.getSito().getArea());
+            mappa.put("tipologia",attivita.getTipologia());
+            mappa.put("descrizione",attivita.getDescrizione());
+            mappa.put("tempo",attivita.getTempo());
+            mappa.put("week",attivita.getWeek());
+            mappa.put("interrompibile",attivita.getInterrompibile());
             mappa.put("pianificazione","Planned");
         
             com.insertQuery("Attivita", mappa);
             
-           
+            com.chiudi();
         } catch (SQLException ex) {
             System.out.println("Non mi sono connesso al DB");
         }

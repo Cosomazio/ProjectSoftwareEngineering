@@ -41,7 +41,9 @@ public class Comunicatore {
             if (par instanceof Integer || par instanceof Boolean){
                 values=values+""+par+""+",";
             }
+            else{
             values=values+"'"+par+"'"+",";
+            }
         }
         values=values+"'"+params.get(l.get(j))+"'"+")";
         System.out.println(query+values);
@@ -57,6 +59,8 @@ public class Comunicatore {
     }
     
 
- 
+    public void chiudi() throws SQLException{
+        this.c.close();
+    }
 
 }
