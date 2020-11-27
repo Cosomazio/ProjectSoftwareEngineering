@@ -15,7 +15,7 @@ import java.util.List;
 public class ExtraBuilder extends ActivityBuilder{
     private ExtraActivity result;
     
-    public void reset(Sito sito,String tipologia, int tempo,List<String> materiali,int week,
+    public void reset(Sito sito,String tipologia,String descrizione, int tempo,List<String> materiali,int week,
             Boolean interrompibile, Procedure procedura){
         IdActivity generatore = IdActivity.getIstance();
         int id = generatore.getId();
@@ -25,4 +25,6 @@ public class ExtraBuilder extends ActivityBuilder{
     public ExtraActivity getResult(){
         return this.result;
     }
+
+   
 }
