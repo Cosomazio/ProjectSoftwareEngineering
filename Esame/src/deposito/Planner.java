@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package deposito;
+import factories.PlannedBuilder;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author tomma
@@ -39,26 +42,52 @@ public class Planner extends AbstractUtente {
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
+            /*
             String url="kandula.db.elephantsql.com";
             String user="figslypy";
             String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
 
             try{
-                //creo la connessione al DB
-                Connection c= DriverManager.getConnection(url,user,pass);
-                String insert="INSERT INTO Attivita(id,sito,tipologia,descrizione,"
-                        +"tempo,materiali,week,interrompibile,procedura) VALUES";
-                String query=insert+" ("+id+","+sito+","+tipologia+","+descrizione+","+tempo+","+materiali+
-                        ","+week+","+interrompibile+","+procedura+")";
-                PreparedStatement st = c.prepareStatement(query);
-                ResultSet rs=st.executeQuery();
-                st.close();
-                rs.close();
-                c.close();
-
+            //creo la connessione al DB
+            Connection c= DriverManager.getConnection(url,user,pass);
+            String insert="INSERT INTO Attivita(id,sito,tipologia,descrizione,"
+            +"tempo,materiali,week,interrompibile,procedura) VALUES";
+            String query=insert+" ("+id+","+sito+","+tipologia+","+descrizione+","+tempo+","+materiali+
+            ","+week+","+interrompibile+","+procedura+")";
+            PreparedStatement st = c.prepareStatement(query);
+            ResultSet rs=st.executeQuery();
+            st.close();
+            rs.close();
+            c.close();
+            
             }catch(SQLException ex){
-                System.out.println("ERRORE DATABASE MODIFICA");
+            System.out.println("ERRORE DATABASE MODIFICA");
             }
+            */
+        PlannedBuilder builder= new PlannedBuilder();
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        PlannedActivity attivita = builder.getResult();
+        Comunicatore com;    
+        try {    
+            com= new Comunicatore();
+            HashMap<String,String> mappa= new HashMap<>();
+            mappa.put("aid",""+attivita.getId());
+            mappa.put("office",""+attivita.getSito().getOffice());
+            mappa.put("area",""+attivita.getSito().getArea());
+            mappa.put("tipologia",""+attivita.getTipologia());
+            mappa.put("descrizione",""+attivita.getDescrizione());
+            mappa.put("tempo",""+attivita.getTempo());
+            mappa.put("week",""+attivita.getWeek());
+            mappa.put("interrompibile",""+attivita.getInterrompibile());
+            mappa.put("pianificazione","Planned");
+        
+            com.insertQuery("Attivita", mappa);
+            
+           
+        } catch (SQLException ex) {
+            System.out.println("Non mi sono connesso al DB");
+        }
+        
     }
     public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
