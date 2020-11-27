@@ -56,8 +56,8 @@ public class SystemAdministrator extends AbstractUtente {
         pln.setEmail(email);
         return pln;
     }
-    public Planner cancellaPlanner(Planner pln){
-        return pln;
+    public void cancellaPlanner(Planner pln){
+        
     }
     
     @Override
