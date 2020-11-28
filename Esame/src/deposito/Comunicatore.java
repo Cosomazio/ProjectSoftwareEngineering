@@ -23,7 +23,7 @@ public class Comunicatore {
     
     public int insertQuery(String table, HashMap<String, Object> params){
         int res=-1;
-        int i=0, j=0;
+        int i, j;
         String query="insert INTO"+ " "+table+ " (";
         Set<String> k=params.keySet();
         ArrayList<String> l= new ArrayList<>();
@@ -52,12 +52,45 @@ public class Comunicatore {
             res=pt.executeUpdate(query+values);
         
         } catch (SQLException ex) {
-            System.out.println("ERRORE QUERY");
+            System.out.println("ERRORE NELLA QUERY");
         }
         
         return res;
     }
     
+    public int deleteQuery(String table, HashMap<String, Object> params){
+        int res=-1;
+        int i=0,j;
+        String query="DELETE FROM "+table;
+        String values= "WHERE";
+        
+        Set<String> k=params.keySet();
+        ArrayList<String> l= new ArrayList<>();
+        for(String chiave: k){
+            l.add(chiave);
+        }
+        
+        if(k.size()>1){
+            for(i=0; i<k.size()-1; i++){
+                values = values+l.get(i)+ "="+ params.get(l.get(i)) + " and ";
+        }
+            values = values+l.get(i)+ "="+ params.get(l.get(i));
+        }
+        else{
+            values= values+ l.get(i)+ "="+ params.get(l.get(i));
+        }
+        
+        System.out.println(query+values);
+        
+        try{
+            Statement pt = c.createStatement();
+            res=pt.executeUpdate(query+values);
+        }catch(SQLException ex){
+            System.out.println("LA QUERY è ANDATA IN ERRORE");
+        }
+        
+        return res;
+    }
 
     public void chiudi() throws SQLException{
         this.c.close();
