@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package deposito;
-import factories.PlannedBuilder;
+import factories.*;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
@@ -40,33 +40,26 @@ public class Planner extends AbstractUtente {
     //sito non esiste
     public void createActivity(int id, Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura){
+            Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
-            /*
-            String url="kandula.db.elephantsql.com";
-            String user="figslypy";
-            String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
-
-            try{
-            //creo la connessione al DB
-            Connection c= DriverManager.getConnection(url,user,pass);
-            String insert="INSERT INTO Attivita(id,sito,tipologia,descrizione,"
-            +"tempo,materiali,week,interrompibile,procedura) VALUES";
-            String query=insert+" ("+id+","+sito+","+tipologia+","+descrizione+","+tempo+","+materiali+
-            ","+week+","+interrompibile+","+procedura+")";
-            PreparedStatement st = c.prepareStatement(query);
-            ResultSet rs=st.executeQuery();
-            st.close();
-            rs.close();
-            c.close();
-            
-            }catch(SQLException ex){
-            System.out.println("ERRORE DATABASE MODIFICA");
-            }
-            */
-        PlannedBuilder builder= new PlannedBuilder();
-        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-        PlannedActivity attivita = builder.getResult();
+        AbstractActivity attivita=null;
+        if(tipoAttivita.equals("Planned")){
+            PlannedBuilder builder= new PlannedBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = builder.getResult();
+        }else if(tipoAttivita.equals("Unplanned")){
+            UnplannedBuilder builder = new UnplannedBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=builder.getResult();
+        }else if(tipoAttivita.equals("Extra")){
+            ExtraBuilder builder = new ExtraBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=builder.getResult();
+        }else{
+            EwoBuilder builder = new EwoBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = builder.getResult();
+        }
         Comunicatore com;    
         try {    
             com= new Comunicatore();
