@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class EwoBuilder extends ActivityBuilder {
     public static EwoBuilder istanza = null;
-    private static int id=0;
+    private static int ewoid=0;
     private EwoActivity result;
     
     public static EwoBuilder getIstance(){
@@ -26,14 +26,16 @@ public class EwoBuilder extends ActivityBuilder {
     }
     
     public static int getId(){
-        return ++id;
+        return ++ewoid;
     }
     
+    @Override
     public void reset(Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
-                
-        this.result=new EwoActivity (id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
+        IdActivity generatore = IdActivity.getIstance();
+        int id = IdActivity.getId();
+        this.result=new EwoActivity (EwoBuilder.getId(),id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
        
     }
     

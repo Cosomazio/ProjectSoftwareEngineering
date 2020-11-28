@@ -149,6 +149,7 @@ public class Planner extends AbstractUtente {
     
     //sito non esiste
     public void viewActivities(){
+        /*
         String url="kandula.db.elephantsql.com";
         String user="figslypy";
         String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
@@ -171,7 +172,8 @@ public class Planner extends AbstractUtente {
 
         }catch(SQLException ex){
             System.out.println("ERRORE DATABASE MODIFICA");
-        }
+        }*/
+        
     }
     public void viewEWO() {
         

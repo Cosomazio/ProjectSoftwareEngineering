@@ -12,9 +12,17 @@ import java.util.List;
  * @author Luigi
  */
 public class EwoActivity extends UnplannedActivity{
-    
-    public EwoActivity(int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
+    private int ewoID;
+    public EwoActivity(int ewoID,int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
         super(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
     }
+    
+    
+    
+    @Override
+    public String toString() {
+        return super.toString()+"EwoActivity{" + "ewoID=" + ewoID + '}';
+    }
+    
     
 }
