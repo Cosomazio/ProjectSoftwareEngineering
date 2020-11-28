@@ -5,6 +5,7 @@
  */
 package deposito;
 
+import java.sql.SQLException;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -93,23 +94,22 @@ public class SystemAdministratorTest {
 */
     /**
      * Test of createPlanner method, of class SystemAdministrator.
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testCreatePlanner() {
+    public void testCreatePlanner() throws SQLException {
         System.out.println("createPlanner");
         String username = "ciccio";
         String password = "1234";
         String nome = "12345";
         String email = "ciccio@ciccio.com";
-        System.out.println("ciao");
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         
         Planner result = instance.createPlanner(username, password, nome, email);
         int id=result.getId();
-        System.out.println(id);
-        System.out.println(result.toString());
+        
         Planner expResult =new Planner(username,password,nome,email,id);
-        System.out.println(expResult.toString());
+        
         assertEquals(expResult.toString(), result.toString());
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -117,31 +117,33 @@ public class SystemAdministratorTest {
 
     /**
      * Test of modificaPlanner method, of class SystemAdministrator.
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testModificaPlanner() {
+    public void testModificaPlanner() throws SQLException {
         System.out.println("modificaPlanner");
-        Planner pln = null;
-        String username = "";
-        String password = "";
-        String nome = "";
-        String email = "";
-        SystemAdministrator instance = null;
-        Planner expResult = null;
+        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
+        String username = "napoli98";
+        String password = "1357";
+        String nome = "francesco";
+        String email = "nicoladinari@gmail.com";
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        Planner expResult = new Planner(username,password,nome,email,1);
         Planner result = instance.modificaPlanner(pln, username, password, nome, email);
-        assertEquals(expResult, result);
+        assertEquals(expResult.toString(), result.toString());
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
     /**
      * Test of cancellaPlanner method, of class SystemAdministrator.
+     * @throws java.sql.SQLException
      */
     @Test
-    public void testCancellaPlanner() {
+    public void testCancellaPlanner() throws SQLException {
         System.out.println("cancellaPlanner");
-        Planner pln = null;
-        SystemAdministrator instance = null;
+        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaPlanner(pln);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");

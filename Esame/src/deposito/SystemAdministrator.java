@@ -44,39 +44,52 @@ public class SystemAdministrator extends AbstractUtente {
     public void cancellaMaintainer (Maintainer man){
         
     }
-    public Planner createPlanner(String username, String password, String nome, String email){
+    public Planner createPlanner(String username, String password, String nome, String email) throws SQLException{
         PlannerBuilder builder= new PlannerBuilder();
         builder.reset(nome, username, password, email);
-        return builder.getResult();
+        Planner p=builder.getResult();
+        Comunicatore com= new Comunicatore();
+        
+        HashMap <String,Object> map= new HashMap<>();
+        map.put("pid", p.getId());
+        map.put("username", p.getUsername());
+        map.put("pass", p.getPassword());//dobbiamo inserire l'hash della password
+        map.put("nome", p.getNome());
+        map.put("email",p.getEmail());
+        com.apri();
+        com.insertQuery("planner" , map);
+        com.chiudi();
+        return p;
+       
     }
     
-    public Planner modificaPlanner(Planner pln,String username, String password, String nome, String email){
+    public Planner modificaPlanner(Planner pln,String username, String password, String nome, String email) throws SQLException{
         pln.setNome(nome);
         pln.setUsername(username);
         pln.setPassword(password);
         pln.setEmail(email);
-        return pln;
-    }
-    public void cancellaPlanner(Planner pln){
+        Comunicatore com=new Comunicatore();
         
-            String url="kandula.db.elephantsql.com";
-            String user="figslypy";
-            String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
-
-            try{
-                //creo la connessione al DB
-                Connection c= DriverManager.getConnection(url,user,pass);
-                String query="Delete from planner where pid="+ pln.getId();
-                
-                PreparedStatement st = c.prepareStatement(query);
-                ResultSet rs=st.executeQuery();
-                st.close();
-                rs.close();
-                c.close();
-
-            }catch(SQLException ex){
-                System.out.println("ERRORE DATABASE MODIFICA");
-            }
+        HashMap <String,Object> value=new HashMap <> ();
+        value.put("username", pln.getUsername());
+        value.put("pass", pln.getPassword());
+        value.put("nome",pln.getNome());
+        value.put("email", pln.getEmail());
+        HashMap <String,Object> chiavi= new HashMap<>();
+        chiavi.put("pid", pln.getId());
+        com.apri();
+        com.updateQuery("planner", value, chiavi);
+        com.chiudi();
+        return pln;
+        
+    }
+    public void cancellaPlanner(Planner pln) throws SQLException{
+        Comunicatore com= new Comunicatore();
+        HashMap <String,Object> map= new HashMap <>();
+        map.put("pid", pln.getId());
+        com.apri();
+        com.deleteQuery("planner", map);
+        com.chiudi();
     }
     
     @Override
