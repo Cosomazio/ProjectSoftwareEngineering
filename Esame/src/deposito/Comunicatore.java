@@ -25,6 +25,7 @@ public class Comunicatore {
 
     public int insertQuery(String table, HashMap<String, Object> params) {
         int i, j;
+        Object par;
         String query = "insert INTO" + " " + table + " (";
 
         ArrayList<String> l = preparazione(params.keySet());
@@ -35,14 +36,17 @@ public class Comunicatore {
         query = query + l.get(i) + ")";
         String values = " values (";
         for (j = 0; j < l.size() - 1; j++) {
-            Object par = params.get(l.get(j));
-            if (par instanceof Integer || par instanceof Boolean) {
-                values = values + "" + par + "" + ",";
-            } else {
-                values = values + "'" + par + "'" + ",";
-            }
+            par = params.get(l.get(j));
+            if (par instanceof String) 
+                par="'"+par+"'";
+            
+            values = values + par + ",";
         }
-        values = values + "'" + params.get(l.get(j)) + "'" + ")";
+        par = params.get(l.get(j));
+        if(par instanceof String)
+            par = "'"+par+"'";
+        values = values + "'" + par + "'" + ")";
+        
         System.out.println(query + values);
 
         return eseguiUpdate(query + values);
