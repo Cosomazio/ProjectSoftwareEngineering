@@ -62,7 +62,7 @@ public class Comunicatore {
         int res=-1;
         int i=0,j;
         String query="DELETE FROM "+table;
-        String values= "WHERE";
+        String values= " WHERE ";
         
         Set<String> k=params.keySet();
         ArrayList<String> l= new ArrayList<>();
@@ -72,12 +72,12 @@ public class Comunicatore {
         
         if(k.size()>1){
             for(i=0; i<k.size()-1; i++){
-                values = values+l.get(i)+ "="+ params.get(l.get(i)) + " and ";
+                values = values+l.get(i)+ " = "+ params.get(l.get(i)) + " and ";
         }
-            values = values+l.get(i)+ "="+ params.get(l.get(i));
+            values = values+l.get(i)+ " = "+ params.get(l.get(i));
         }
         else{
-            values= values+ l.get(i)+ "="+ params.get(l.get(i));
+            values= values+ l.get(i)+ " = "+ params.get(l.get(i));
         }
         
         System.out.println(query+values);
@@ -91,7 +91,12 @@ public class Comunicatore {
         
         return res;
     }
-
+    
+    public int updateQuery(String table, HashMap<String, Object> params){
+        
+    }
+    
+    
     public void chiudi() throws SQLException{
         this.c.close();
     }
