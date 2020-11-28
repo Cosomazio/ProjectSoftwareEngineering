@@ -50,7 +50,7 @@ public class Comunicatore {
         
         System.out.println(query + values);
 
-        return eseguiUpdate(query + values);
+        return this.eseguiUpdate(query + values);
     }
 
     public int deleteQuery(String table, HashMap<String, Object> params) {
@@ -62,23 +62,11 @@ public class Comunicatore {
 
         ArrayList<String> l = preparazione(params.keySet());
         
-        if (l.size()> 1) {
-            for (i = 0; i < l.size() - 1; i++) {
-                p = params.get(l.get(i));
-                if (p instanceof String) {
-                    p = "'" + p + "'";
-                }
-                values = values + l.get(i) + " = " + p + " and ";
-            }
-        }
-            p = params.get(l.get(i));
-            if (p instanceof String)
-                p = "'" + p + "'";
-            values = values + l.get(i) + " = " + p;
+        String s=this.manipolazioneQuery(l, params);
+        values=values+s;
         
-
         System.out.println(query + values);
-        return eseguiUpdate(query + values);
+        return this.eseguiUpdate(query + values);
     }
 
     public int updateQuery(String table, HashMap<String, Object> params, HashMap<String, Object> chiavi) {
@@ -106,27 +94,33 @@ public class Comunicatore {
         values = values + l.get(i) + " = " + p;
 
         values = values + " WHERE ";
-        i=0;
-        if (keys.size() > 1) {
-            for (i = 0; i < keys.size()- 1; i++) {
-                p = chiavi.get(keys.get(i));
+        String s= this.manipolazioneQuery(keys, chiavi);
+        values=values+s;
+        System.out.println(query + values);
+
+        return this.eseguiUpdate(query + values);
+    }
+
+    private String manipolazioneQuery(ArrayList<String> array, HashMap<String, Object> cont){
+        int i=0;
+        Object p;
+        String values="";
+        if (array.size()> 1) {
+            for (i = 0; i < array.size() - 1; i++) {
+                p = cont.get(array.get(i));
                 if (p instanceof String) {
                     p = "'" + p + "'";
                 }
-                values = values + keys.get(i) + " = " + p + " and ";
+                values = values + array.get(i) + " = " + p + " and ";
             }
         }
-        p = chiavi.get(keys.get(i));
-        if (p instanceof String) {
-            p = "'" + p + "'";
-        }
-        values = values + keys.get(i) + " = " + p;
-
-        System.out.println(query + values);
-
-        return eseguiUpdate(query + values);
+            p = cont.get(array.get(i));
+            if (p instanceof String)
+                p = "'" + p + "'";
+            values = values + array.get(i) + " = " + p;
+        return values;
     }
-
+    
     private ArrayList<String> preparazione(Set<String> set) {
         ArrayList<String> l = new ArrayList<>();
         for (String chiave : set) {
