@@ -19,8 +19,9 @@ public class Comunicatore {
 
     private Connection c;
 
-    public Comunicatore() throws SQLException {
+    public synchronized Connection apri() throws SQLException {
         this.c = DriverManager.getConnection("jdbc:postgresql://kandula.db.elephantsql.com:5432/figslypy", "figslypy", "lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio");
+        return this.c;
     }
 
     public int insertQuery(String table, HashMap<String, Object> params) {
@@ -105,7 +106,7 @@ public class Comunicatore {
         values = values + l.get(i) + " = " + p;
 
         values = values + " WHERE ";
-
+        i=0;
         if (keys.size() > 1) {
             for (i = 0; i < keys.size()- 1; i++) {
                 p = chiavi.get(keys.get(i));
