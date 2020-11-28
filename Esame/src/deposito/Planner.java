@@ -42,6 +42,8 @@ public class Planner extends AbstractUtente {
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
+        int res;
+        
         AbstractActivity attivita=null;
         if(tipoAttivita.equals("Planned")){
             PlannedBuilder builder= new PlannedBuilder();
@@ -63,6 +65,7 @@ public class Planner extends AbstractUtente {
         Comunicatore com;    
         try {    
             com= new Comunicatore();
+            com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("aid",attivita.getId());
             mappa.put("office",attivita.getSito().getOffice());
@@ -72,9 +75,9 @@ public class Planner extends AbstractUtente {
             mappa.put("tempo",attivita.getTempo());
             mappa.put("week",attivita.getWeek());
             mappa.put("interrompibile",attivita.getInterrompibile());
-            mappa.put("pianificazione","Planned");
+            mappa.put("pianificazione",tipoAttivita);
         
-            com.insertQuery("Attivita", mappa);
+            res= com.insertQuery("Attivita", mappa);
             
             com.chiudi();
         } catch (SQLException ex) {
@@ -83,60 +86,47 @@ public class Planner extends AbstractUtente {
         
     }
     public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
-            List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
+            List<String> materiali, int week, Boolean interrompibile, Procedure procedura,String tipoAttivita){
         
-        int idAct=act.getId();
-        String url="kandula.db.elephantsql.com";
-        String user="figslypy";
-        String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
+        int res;
+        AbstractActivity expResult = act;
+        Comunicatore com;
         
-        try{
-            //creo la connessione al DB
-            Connection c= DriverManager.getConnection(url,user,pass);
+        try {    
+            com= new Comunicatore();
+            com.apri();
+            HashMap<String,Object> mappa= new HashMap<>();
+            mappa.put("office",sito.getOffice());
+            mappa.put("area",sito.getArea());
+            mappa.put("tipologia",tipologia);
+            mappa.put("descrizione",descrizione);
+            mappa.put("tempo",tempo);
+            mappa.put("week",week);
+            mappa.put("interrompibile",interrompibile);
+            mappa.put("pianificazione",tipoAttivita);
+            HashMap<String,Object> mappa2= new HashMap<>();
+            mappa2.put("aid",act.getId());
             
-            String query= "UPDATE Attivita SET sito="+sito+",tipologia="+tipologia+",descrizione="+descrizione+",tempo="+tempo+",materiali="+materiali+
-                    ",week="+week+",interrompibile="+interrompibile+",procedura="+procedura+" WHERE aid ="+idAct;
-            PreparedStatement st = c.prepareStatement(query);
-            ResultSet rs=st.executeQuery();
-            st.close();
-            rs.close();
-            c.close();
+            res=com.updateQuery("Attivita", mappa,mappa2);
             
-        }catch(SQLException ex){
-            System.out.println("ERRORE DATABASE MODIFICA");
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println("Non mi sono connesso al DB");
         }
         
-        act.setDescrizione(descrizione);
-        act.setId(idAct);
-        act.setInterrompibile(interrompibile);
-        act.setMateriali(materiali);
-        act.setProcedura(procedura);
-        act.setSito(sito);
-        act.setTempo(tempo);
-        act.setTipologia(tipologia);
-        act.setWeek(week);
-        
+        //AbstractActivity result=
     }    
     public void deleteActivity(AbstractActivity act){
-        int idAct=act.getId();
-        String url="kandula.db.elephantsql.com";
-        String user="figslypy";
-        String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
-        
+        Comunicatore com;
         try{
-            //creo la connessione al DB
-            Connection c= DriverManager.getConnection(url,user,pass);
-            
-            String query= "DELETE FROM Attivita WHERE aid ="+ idAct;
-            
-            PreparedStatement st = c.prepareStatement(query);
-            ResultSet rs=st.executeQuery();
-            st.close();
-            rs.close();
-            c.close();
-            
+            com=new Comunicatore();
+            com.apri();
+            HashMap<String,Object> mappa= new HashMap<>();
+            mappa.put("aid",act.getId());
+            com.deleteQuery("Attivita", mappa);
+            com.chiudi();
         }catch(SQLException ex){
-            System.out.println("ERRORE DATABASE CANCELLAZIONE");
+            System.out.println("Non mi sono connesso al DB");
         }
     }
     
