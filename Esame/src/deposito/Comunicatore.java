@@ -45,7 +45,7 @@ public class Comunicatore {
         par = params.get(l.get(j));
         if(par instanceof String)
             par = "'"+par+"'";
-        values = values + "'" + par + "'" + ")";
+        values = values + par+ ")";
         
         System.out.println(query + values);
 
@@ -60,8 +60,8 @@ public class Comunicatore {
         String values = " WHERE ";
 
         ArrayList<String> l = preparazione(params.keySet());
-
-        if (l.size() > 1) {
+        
+        if (l.size()> 1) {
             for (i = 0; i < l.size() - 1; i++) {
                 p = params.get(l.get(i));
                 if (p instanceof String) {
@@ -107,7 +107,7 @@ public class Comunicatore {
         values = values + " WHERE ";
 
         if (keys.size() > 1) {
-            for (i = 0; i < keys.size() - 1; i++) {
+            for (i = 0; i < keys.size()- 1; i++) {
                 p = chiavi.get(keys.get(i));
                 if (p instanceof String) {
                     p = "'" + p + "'";
