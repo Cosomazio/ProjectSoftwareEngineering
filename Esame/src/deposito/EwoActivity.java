@@ -13,8 +13,9 @@ import java.util.List;
  */
 public class EwoActivity extends UnplannedActivity{
     private int ewoID;
-    public EwoActivity(int ewoID,int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
+    public EwoActivity(int ewoId,int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
         super(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        this.ewoID=ewoId;
     }
     
     
