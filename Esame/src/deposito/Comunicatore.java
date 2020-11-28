@@ -61,6 +61,8 @@ public class Comunicatore {
     public int deleteQuery(String table, HashMap<String, Object> params){
         int res=-1;
         int i=0,j;
+        Object p;
+        
         String query="DELETE FROM "+table;
         String values= " WHERE ";
         
@@ -72,12 +74,21 @@ public class Comunicatore {
         
         if(k.size()>1){
             for(i=0; i<k.size()-1; i++){
-                values = values+l.get(i)+ " = "+ params.get(l.get(i)) + " and ";
+                p = params.get(l.get(i));
+                if(p instanceof String)
+                    p="'"+p+"'";
+                values = values+l.get(i)+ " = "+ p + " and ";
         }
-            values = values+l.get(i)+ " = "+ params.get(l.get(i));
+            p=params.get(l.get(i));
+            if(p instanceof String)
+                p="'"+p+"'";
+            values = values+l.get(i)+ " = "+ p;
         }
         else{
-            values= values+ l.get(i)+ " = "+ params.get(l.get(i));
+            p=params.get(l.get(i));
+            if(p instanceof String)
+                p="'"+p+"'";
+            values= values+ l.get(i)+ " = "+ p;
         }
         
         System.out.println(query+values);
@@ -93,7 +104,7 @@ public class Comunicatore {
     }
     
     public int updateQuery(String table, HashMap<String, Object> params){
-        
+        return 2;
     }
     
     
