@@ -126,15 +126,19 @@ public class Comunicatore {
             return this.eseguiSelezione(query+values+luogo);
         }
         else if(dove == null){
-            for(String s:colonne){
-                query=query+s+", ";
+            int i=0;
+            for(i=0; i<colonne.size()-1; i++){
+                query=query+colonne.get(i)+", ";
             }
+            query=query+colonne.get(i);
             values=values+table;
             return this.eseguiSelezione(query+values);
         }
-        for(String s: colonne){
-            query=query+s+", ";
-        }
+        int i=0;
+        for(i=0; i<colonne.size()-1; i++){
+            query=query+colonne.get(i)+", ";
+            }
+        
         values=values+table;
         chiavi=this.preparazione(dove.keySet());
         fine=this.manipolazioneQuery(chiavi, dove);
@@ -177,7 +181,7 @@ public class Comunicatore {
             Statement pt = c.createStatement();
             res = pt.executeUpdate(query);
         } catch (SQLException ex) {
-            System.out.println("ERRORE NELLA QUERY: "+ ex.getSQLState());
+            System.out.println("ERRORE NELLA QUERY: "+ ex.getMessage());
         }
         return res;
     }
@@ -189,7 +193,7 @@ public class Comunicatore {
             st = c.createStatement();
             rs=st.executeQuery(query);
         } catch (SQLException ex) {
-            System.out.println("ERRORE NELLA SELECTION QUERY: "+ ex.getSQLState());
+            System.out.println("ERRORE NELLA SELECTION QUERY: "+ ex.getMessage());
         }
         return rs;
     }
