@@ -111,12 +111,12 @@ public class Comunicatore {
         String values= " FROM ";
         String luogo= " WHERE ";
         
-        if(dove.isEmpty() && colonne.isEmpty()){
+        if(dove==null && colonne==null){
             query=query+"*";
             values=values+table;
             return this.eseguiSelezione(query+values);
         }
-        else if(colonne.isEmpty()){
+        else if(colonne == null){
             query=query+"*";
             values=values+table;
             chiavi = this.preparazione(dove.keySet());
@@ -125,7 +125,7 @@ public class Comunicatore {
             
             return this.eseguiSelezione(query+values+luogo);
         }
-        else if(dove.isEmpty()){
+        else if(dove == null){
             for(String s:colonne){
                 query=query+s+", ";
             }
