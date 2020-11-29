@@ -137,7 +137,7 @@ public class Planner extends AbstractUtente {
         }
     }
     
-            /*
+    /*
         smp deve essere binary ma è una stringa
         getCompetenze non implementato
     */
@@ -159,7 +159,7 @@ public class Planner extends AbstractUtente {
                 String smp=set.getString("smp");
                 proc=new Procedure(null, null, nomefile);
             }
-            
+            com.chiudi();
         } catch (SQLException ex) {
             System.out.println("Non mi sono connesso al DB");
         }
@@ -188,6 +188,7 @@ public class Planner extends AbstractUtente {
                 String materiale=set.getString("materiale");
                 res.add(materiale);
             }
+            com.chiudi();
             
         } catch (SQLException ex) {
             System.out.println("Non mi sono connesso al DB");
@@ -220,7 +221,7 @@ public class Planner extends AbstractUtente {
             com.apri();
             ResultSet set=com.selectionQuery(tableAtt, colonneAtt, doveAtt);
             while(set.next()){
-                int id=set.getInt("id");
+                int id=set.getInt("aid");
                 String office=set.getString("office");
                 String area=set.getString("area");
                 Sito s=new Sito(office, area);
@@ -232,23 +233,27 @@ public class Planner extends AbstractUtente {
                 boolean interrompibile=set.getBoolean("interrompibile");
                 int ewoid=set.getInt("ewoid");
                 String pianificazione=set.getString("pianificazione");
+                com.chiudi();
+                
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
-                
                 AbstractActivity attivita=null;
                 AbstractActivity act=tipoAttivita(attivita, id, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione);
+                //System.out.println("sdg"+act);
                 res.add(act);
+                com=new Comunicatore();
+                com.apri();
             }
-            
+            com.chiudi();
         } catch (SQLException ex) {
             System.out.println("Non mi sono connesso al DB");
         }
         
-        ArrayList<AbstractActivity> a= new ArrayList<>();
         
-        return a;
+        
+        return res;
     }
     
     public void viewEWO() {
