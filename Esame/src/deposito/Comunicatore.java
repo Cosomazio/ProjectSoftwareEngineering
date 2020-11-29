@@ -114,6 +114,8 @@ public class Comunicatore {
         if(dove==null && colonne==null){
             query=query+"*";
             values=values+table;
+            
+            System.out.println(query+values);
             return this.eseguiSelezione(query+values);
         }
         else if(colonne == null){
@@ -123,27 +125,30 @@ public class Comunicatore {
             fine= this.manipolazioneQuery(chiavi, dove);
             luogo = luogo+fine;
             
+            System.out.println(query+values+luogo);
             return this.eseguiSelezione(query+values+luogo);
         }
         else if(dove == null){
-            int i=0;
+            int i;
             for(i=0; i<colonne.size()-1; i++){
                 query=query+colonne.get(i)+", ";
             }
             query=query+colonne.get(i);
             values=values+table;
+            System.out.println(query+values);
             return this.eseguiSelezione(query+values);
         }
-        int i=0;
+        int i;
         for(i=0; i<colonne.size()-1; i++){
             query=query+colonne.get(i)+", ";
             }
-        
+        query=query+colonne.get(i);
         values=values+table;
         chiavi=this.preparazione(dove.keySet());
         fine=this.manipolazioneQuery(chiavi, dove);
         luogo=luogo+fine;
         
+        System.out.println(query+values+luogo)
         return this.eseguiSelezione(query+values+luogo);
     }
 
