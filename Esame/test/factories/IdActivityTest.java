@@ -17,54 +17,7 @@ import static org.junit.Assert.*;
  * @author tomma
  */
 public class IdActivityTest {
-    class IdActivityGetIstanceRunner implements Runnable { 
-        private int i=0;
-        private int n=100;
-        public IdActivityGetIstanceRunner(int n){
-            this.n=n;
-        }
-        public IdActivityGetIstanceRunner(){
-            
-        }
-        @Override
-        public void run() { 
-            i = 0;
-            IdActivity res=null;
-            while (i<n) { 
-                if (res!=null){
-                    if (res!=IdActivity.getInstance() ){
-                        fail("collisione");
-                    }
-                }else{
-                    res=IdActivity.getInstance();
-                }
-            } 
-        } 
-    }
-    class IdActivityGetIdRunner implements Runnable { 
-        private int i=0;
-        private int n=100;
-        public IdActivityGetIdRunner(int n){
-            this.n=n;
-        }
-        public IdActivityGetIdRunner(){
-            
-        }
-        @Override
-        public void run() { 
-            i = 0;
-            IdActivity res=null;
-            while (i<n) { 
-                if (res!=null){
-                    if (res!=IdActivity.getInstance() ){
-                        fail("collisione");
-                    }
-                }else{
-                    res=IdActivity.getInstance();
-                }
-            } 
-        } 
-    }
+    
     public IdActivityTest() {
     }
     
@@ -93,14 +46,48 @@ public class IdActivityTest {
         IdActivity expResult = IdActivity.getInstance();
         IdActivity result = IdActivity.getInstance();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        IdActivityGetIstanceRunner r= new IdActivityGetIstanceRunner(100000);
-        Thread t1 = new Thread (r); 
-        Thread t2 = new Thread (r);
-        Thread t3 = new Thread (r);
-        t1.start();
-        t2.start();
-        t3.start();
+        
+        int n=1000,parallelThreads=3;
+        final IdActivity[] value = new IdActivity[n];
+        
+        Runnable[] run=new Runnable[parallelThreads];
+        Thread[] t=new Thread[parallelThreads];
+        
+        for (int i=0;i<parallelThreads;i++){
+            run[i] = new Runnable() {
+                @Override
+                public void run(){
+                    int k=0;
+                    while(k<n){
+                        value[k] = IdActivity.getInstance();
+                        k++;
+                    }
+                }
+            };
+            t[i]=new Thread(run[i]);
+            t[i].start();  
+        }
+        for (int i=0;i<parallelThreads;i++){
+            try {
+                if(t[i].isAlive()==true){
+                    t[i].join();
+                }
+                
+            } catch (InterruptedException ex) {
+                fail("errore");
+            }
+        }
+        int i=0;
+        while (i<n) { 
+            if (value[i]!=null){
+                if (value[i]!=IdActivity.getInstance() ){
+                    fail("errore");
+                }
+            }else{
+                fail("errore");
+            }
+            i++;
+        } 
         
     }
 
@@ -114,7 +101,46 @@ public class IdActivityTest {
         int expResult = instance.getId();
         int result = instance.getId();
         assertEquals(expResult+1, result);
-        // TODO review the generated test code and remove the default call to fail.
+        
+        int n=1000,parallelThreads=3;
+        final Integer[][] value = new Integer[parallelThreads][n];
+        
+        Runnable[] run=new Runnable[parallelThreads];
+        Thread[] t=new Thread[parallelThreads];
+        
+        for (int i=0;i<parallelThreads;i++){
+            final int val=i;
+            run[i] = new Runnable() {
+                @Override
+                public void run(){
+                    int k=0;
+                    while(k<n){
+                        value[val][k] = instance.getId();
+                        k++;
+                    }
+                }
+            };
+            t[i]=new Thread(run[i]);
+            t[i].start();  
+        }
+        for (int i=0;i<parallelThreads;i++){
+            try {
+                if(t[i].isAlive()==true){
+                    t[i].join();
+                }
+                
+            } catch (InterruptedException ex) {
+                fail("errore");
+            }
+        }
+        
+        for(int i=0;i<parallelThreads;i++) {
+            for (int k=0;k<n-1;k++){
+                if(value[i][k]>value[i][k+1]){
+                    fail("errore");
+                }
+            }
+        } 
         
     }
     

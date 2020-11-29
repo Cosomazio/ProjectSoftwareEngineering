@@ -7,6 +7,9 @@ package factories;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,52 +24,7 @@ import static org.junit.Assert.*;
 
 
 public class IdUtenteTest {
-    class IdUtenteGetIstanceRunner implements Runnable { 
-        private int i=0;
-        private int n=100;
-        public IdUtenteGetIstanceRunner(int n){
-            this.n=n;
-        }
-        public IdUtenteGetIstanceRunner(){
-            
-        }
-        @Override
-        public void run() { 
-            i = 0;
-            IdUtente res=null;
-            while (i<n) { 
-                IdUtente.getInstance();
-                /*
-                if (res!=null){
-                    if (res!=IdUtente.getInstance() ){
-                        fail("collisione");
-                    }
-                }else{
-                    res=IdUtente.getInstance();
-                }*/
-            } 
-        } 
-    }
-    class IdUtenteGetIdRunner implements Runnable { 
-        private int i=0;
-        private int n=100;
-        private IdUtente instance;
-        public IdUtenteGetIdRunner(int n,IdUtente instance){
-            this.n=n;
-            this.instance=instance;
-        }
-        public IdUtenteGetIdRunner(IdUtente instance){
-            this.instance=instance;
-        }
-        @Override
-        public void run() { 
-            i = 0;
-            IdUtente res=null;
-            while (i<n) { 
-                int val=instance.getId();
-            } 
-        } 
-    }
+    
     public IdUtenteTest() {
     }
     
@@ -95,14 +53,49 @@ public class IdUtenteTest {
         IdUtente expResult = IdUtente.getInstance();
         IdUtente result = IdUtente.getInstance();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        IdUtenteGetIstanceRunner r= new IdUtenteGetIstanceRunner(100000);
-        Thread t1 = new Thread (r); 
-        Thread t2 = new Thread (r);
-        Thread t3 = new Thread (r);
-        t1.start();
-        t2.start();
-        t3.start();
+        
+        int n=1000,parallelThreads=3;
+        final IdUtente[] value = new IdUtente[n];
+        
+        Runnable[] run=new Runnable[parallelThreads];
+        Thread[] t=new Thread[parallelThreads];
+        
+        for (int i=0;i<parallelThreads;i++){
+            run[i] = new Runnable() {
+                @Override
+                public void run(){
+                    int k=0;
+                    while(k<n){
+                        value[k] = IdUtente.getInstance();
+                        k++;
+                    }
+                }
+            };
+            t[i]=new Thread(run[i]);
+            t[i].start();  
+        }
+        for (int i=0;i<parallelThreads;i++){
+            try {
+                if(t[i].isAlive()==true){
+                    t[i].join();
+                }
+                
+            } catch (InterruptedException ex) {
+                fail("errore");
+            }
+        }
+        int i=0;
+        while (i<n) { 
+            if (value[i]!=null){
+                if (value[i]!=IdUtente.getInstance() ){
+                    fail("errore");
+                }
+            }else{
+                fail("errore");
+            }
+            i++;
+        } 
+        
     }
 
     /**
@@ -116,7 +109,45 @@ public class IdUtenteTest {
         int result = instance.getId();
         assertEquals(expResult+1, result);
         
-        // TODO review the generated test code and remove the default call to fail.
+        int n=1000,parallelThreads=3;
+        final Integer[][] value = new Integer[parallelThreads][n];
+        
+        Runnable[] run=new Runnable[parallelThreads];
+        Thread[] t=new Thread[parallelThreads];
+        
+        for (int i=0;i<parallelThreads;i++){
+            final int val=i;
+            run[i] = new Runnable() {
+                @Override
+                public void run(){
+                    int k=0;
+                    while(k<n){
+                        value[val][k] = instance.getId();
+                        k++;
+                    }
+                }
+            };
+            t[i]=new Thread(run[i]);
+            t[i].start();  
+        }
+        for (int i=0;i<parallelThreads;i++){
+            try {
+                if(t[i].isAlive()==true){
+                    t[i].join();
+                }
+                
+            } catch (InterruptedException ex) {
+                fail("errore");
+            }
+        }
+        
+        for(int i=0;i<parallelThreads;i++) {
+            for (int k=0;k<n-1;k++){
+                if(value[i][k]>value[i][k+1]){
+                    fail("errore");
+                }
+            }
+        } 
         
     }
     
