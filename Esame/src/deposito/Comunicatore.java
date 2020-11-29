@@ -148,7 +148,7 @@ public class Comunicatore {
         fine=this.manipolazioneQuery(chiavi, dove);
         luogo=luogo+fine;
         
-        System.out.println(query+values+luogo)
+        System.out.println(query+values+luogo);
         return this.eseguiSelezione(query+values+luogo);
     }
 
