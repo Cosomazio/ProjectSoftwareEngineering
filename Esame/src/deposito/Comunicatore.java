@@ -31,12 +31,9 @@ public class Comunicatore {
         Object par;
         String query = "insert INTO" + " " + table + " (";
 
-        ArrayList<String> l = preparazione(params.keySet());
+        ArrayList<String> l = setToArray(params.keySet());
 
-        for (i = 0; i < l.size() - 1; i++) {
-            query = query + l.get(i) + ",";
-        }
-        query = query + l.get(i) + ")";
+        query=this.virgole(l, query) + ")";
         String values = " values (";
         for (j = 0; j < l.size() - 1; j++) {
             par = params.get(l.get(j));
@@ -62,9 +59,9 @@ public class Comunicatore {
         String query = "DELETE FROM " + table;
         String values = " WHERE ";
 
-        ArrayList<String> l = preparazione(params.keySet());
+        ArrayList<String> l = setToArray(params.keySet());
         
-        String s=this.manipolazioneQuery(l, params);
+        String s=this.clausolaWhere(l, params);
         values=values+s;
         
         System.out.println(query + values);
@@ -77,26 +74,26 @@ public class Comunicatore {
 
         String query = "UPDATE " + table;
         String values = " SET ";
-        ArrayList<String> l = preparazione(params.keySet());
-        ArrayList<String> keys = preparazione(chiavi.keySet());
+        ArrayList<String> chiaviParams = setToArray(params.keySet());
+        ArrayList<String> keys = setToArray(chiavi.keySet());
 
-        if (l.size() > 1) {
-            for (i = 0; i < l.size() - 1; i++) {
-                p = params.get(l.get(i));
+        if (chiaviParams.size() > 1) {
+            for (i = 0; i < chiaviParams.size() - 1; i++) {
+                p = params.get(chiaviParams.get(i));
                 if (p instanceof String) {
                     p = "'" + p + "'";
                 }
-                values = values + l.get(i) + " = " + p + ", ";
+                values = values + chiaviParams.get(i) + " = " + p + ", ";
             }
         }
-        p = params.get(l.get(i));
+        p = params.get(chiaviParams.get(i));
         if (p instanceof String) {
             p = "'" + p + "'";
         }
-        values = values + l.get(i) + " = " + p;
+        values = values + chiaviParams.get(i) + " = " + p;
 
         values = values + " WHERE ";
-        String s= this.manipolazioneQuery(keys, chiavi);
+        String s= this.clausolaWhere(keys, chiavi);
         values=values+s;
         System.out.println(query + values);
 
@@ -121,38 +118,42 @@ public class Comunicatore {
         else if(colonne == null){
             query=query+"*";
             values=values+table;
-            chiavi = this.preparazione(dove.keySet());
-            fine= this.manipolazioneQuery(chiavi, dove);
+            chiavi = this.setToArray(dove.keySet());
+            fine= this.clausolaWhere(chiavi, dove);
             luogo = luogo+fine;
             
             System.out.println(query+values+luogo);
             return this.eseguiSelezione(query+values+luogo);
         }
         else if(dove == null){
-            int i;
-            for(i=0; i<colonne.size()-1; i++){
-                query=query+colonne.get(i)+", ";
-            }
-            query=query+colonne.get(i);
+            query=this.virgole(colonne, query);
             values=values+table;
             System.out.println(query+values);
             return this.eseguiSelezione(query+values);
         }
-        int i;
-        for(i=0; i<colonne.size()-1; i++){
-            query=query+colonne.get(i)+", ";
-            }
-        query=query+colonne.get(i);
+        
+        query=this.virgole(colonne, query);
         values=values+table;
-        chiavi=this.preparazione(dove.keySet());
-        fine=this.manipolazioneQuery(chiavi, dove);
+        chiavi=this.setToArray(dove.keySet());
+        fine=this.clausolaWhere(chiavi, dove);
         luogo=luogo+fine;
         
         System.out.println(query+values+luogo);
         return this.eseguiSelezione(query+values+luogo);
     }
 
-    private String manipolazioneQuery(ArrayList<String> array, HashMap<String, Object> cont){
+    
+    private String virgole(ArrayList<String> strings, String query){
+        int i;
+        for(i=0; i<strings.size()-1;i++){
+            query = query + strings.get(i)+", ";
+        }
+        query=query+strings.get(i);
+        return query;
+    }
+    
+    
+    private String clausolaWhere(ArrayList<String> array, HashMap<String, Object> cont){
         int i=0;
         Object p;
         String values="";
@@ -172,7 +173,7 @@ public class Comunicatore {
         return values;
     }
     
-    private ArrayList<String> preparazione(Set<String> set) {
+    private ArrayList<String> setToArray(Set<String> set) {
         ArrayList<String> l = new ArrayList<>();
         for (String chiave : set) {
             l.add(chiave);
