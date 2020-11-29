@@ -34,7 +34,7 @@ public class EwoBuilder extends ActivityBuilder {
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
         IdActivity generatore = IdActivity.getIstance();
-        int id = IdActivity.getId();
+        int id = generatore.getId();
         this.result=new EwoActivity (EwoBuilder.getId(),id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
        
     }

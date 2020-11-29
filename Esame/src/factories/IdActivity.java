@@ -13,14 +13,16 @@ public class IdActivity {
     private static IdActivity istanza=null;
     private static int id=0;
     
-    public static IdActivity getIstance(){
+    public synchronized static IdActivity getIstance(){
         if (istanza == null) {
             istanza = new IdActivity();
         }
         return istanza;
     }
 
-    public static int getId() {
+    
+    private IdActivity(){}
+    public synchronized int getId() {
         return ++id;
     }
     

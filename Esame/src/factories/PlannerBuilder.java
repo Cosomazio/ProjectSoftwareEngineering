@@ -16,7 +16,7 @@ public class PlannerBuilder extends UtenteBuilder{
     
     public void reset(String nome, String username, String password, String email){
         IdUtente generatore=IdUtente.getInstance();
-        int id= generatore.getNextId();
+        int id= generatore.getId();
         
         this.result=new Planner(username,password,nome,email,id);
         

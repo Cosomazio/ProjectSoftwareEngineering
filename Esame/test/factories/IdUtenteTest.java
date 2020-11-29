@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author tomma
  */
-public class IdActivityTest {
+public class IdUtenteTest {
     
-    public IdActivityTest() {
+    public IdUtenteTest() {
     }
     
     @BeforeClass
@@ -38,28 +38,29 @@ public class IdActivityTest {
     }
 
     /**
-     * Test of getIstance method, of class IdActivity.
+     * Test of getInstance method, of class IdUtente.
      */
     @Test
-    public void testGetIstance() {
-        System.out.println("getIstance");
-        IdActivity expResult = IdActivity.getIstance();
-        IdActivity result = IdActivity.getIstance();
+    public void testGetInstance() {
+        System.out.println("getInstance");
+        IdUtente expResult = IdUtente.getInstance();
+        IdUtente result = IdUtente.getInstance();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-       
+        
     }
 
     /**
-     * Test of getId method, of class IdActivity.
+     * Test of getNextId method, of class IdUtente.
      */
     @Test
     public void testGetId() {
         System.out.println("getId");
-        IdActivity instance=IdActivity.getIstance();
+        IdUtente instance = IdUtente.getInstance();
         int expResult = instance.getId();
         int result = instance.getId();
         assertEquals(expResult+1, result);
+        
         // TODO review the generated test code and remove the default call to fail.
         
     }
