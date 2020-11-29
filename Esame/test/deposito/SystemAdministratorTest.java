@@ -5,7 +5,9 @@
  */
 package deposito;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -41,62 +43,71 @@ public class SystemAdministratorTest {
 
     /**
      * Test of createMaintainer method, of class SystemAdministrator.
+     * @throws java.sql.SQLException
      */
- /*   @Test
-    public void testCreateMaintainer() {
+    @Test
+    public void testCreateMaintainer() throws SQLException {
         System.out.println("createMaintainer");
-        String username = "";
-        String password = "";
-        String nome = "";
-        String email = "";
-        SystemAdministrator instance = null;
-        Maintainer expResult = null;
+        String username = "paperino";
+        String password = "1234";
+        String nome = "papera";
+        String email = "ciccio@ciccio.com";
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         Maintainer result = instance.createMaintainer(username, password, nome, email);
-        assertEquals(expResult, result);
+        int id=result.getId();
+        Maintainer expResult = new Maintainer(username,password, nome, email,id);
+        assertEquals(expResult.toString(), result.toString());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-*/
+
     /**
      * Test of modificaMaintainer method, of class SystemAdministrator.
      */
     
-   /* @Test
-    public void testModificaMaintainer() {
+    @Test
+    public void testModificaMaintainer() throws SQLException {
         System.out.println("modificaMaintainer");
-        Maintainer man = null;
-        String username = "";
-        String password = "";
-        String nome = "";
-        String email = "";
-        Set<String> skill = null;
-        Set<Procedure> procedure = null;
-        SystemAdministrator instance = null;
-        Maintainer expResult = null;
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+        String username = "nicola";
+        String password = "5678";
+        String nome = "luigi";
+        String email = "luigi@luigi.com";
+        Set<String> skill = new HashSet <> ();
+        skill.add("pippo");
+        skill.add("paperino");
+        skill.add("cornuto");
+        Set<Procedure> procedure = new HashSet<> ();
+        File p=null;
+        procedure.add(new Procedure(p,null,"pippo"));
+        procedure.add(new Procedure(p,null,"paperino"));
+        procedure.add(new Procedure(p,null,"cornuto"));
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        Maintainer expResult = new Maintainer(username, password, nome,email, 1,skill,procedure);
         Maintainer result = instance.modificaMaintainer(man, username, password, nome, email, skill, procedure);
-        assertEquals(expResult, result);
+        assertEquals(expResult.toString(), result.toString());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-*/
+
     /**
      * Test of cancellaMaintainer method, of class SystemAdministrator.
      */
-/*    @Test
-    public void testCancellaMaintainer() {
+    @Test
+    public void testCancellaMaintainer() throws SQLException {
         System.out.println("cancellaMaintainer");
-        Maintainer man = null;
-        SystemAdministrator instance = null;
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaMaintainer(man);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
-*/
+    
     /**
      * Test of createPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    @Test
+    /*@Test
     public void testCreatePlanner() throws SQLException {
         System.out.println("createPlanner");
         String username = "ciccio";
@@ -119,7 +130,7 @@ public class SystemAdministratorTest {
      * Test of modificaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    @Test
+    /*@Test
     public void testModificaPlanner() throws SQLException {
         System.out.println("modificaPlanner");
         Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
@@ -139,7 +150,7 @@ public class SystemAdministratorTest {
      * Test of cancellaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    @Test
+    /*@Test
     public void testCancellaPlanner() throws SQLException {
         System.out.println("cancellaPlanner");
         Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);

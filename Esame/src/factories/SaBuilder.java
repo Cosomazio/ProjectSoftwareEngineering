@@ -18,7 +18,7 @@ public class SaBuilder extends UtenteBuilder{
     public void  reset( String nome, String username, String password, String email){
         IdUtente generatore= IdUtente.getInstance();
         int id= generatore.getId();
-        this.result= new SystemAdministrator( nome,username,password, email,id);
+        this.result= new SystemAdministrator( username,password, nome, email,id);
     }
     
     public SystemAdministrator getResult(){
