@@ -169,6 +169,17 @@ public class Planner extends AbstractUtente {
         
     }
     public void sortedActivities(){
+        Calendar c=Calendar.getInstance();
+        java.util.Date d= new java.util.Date();
+        c.setTime(d);
+        System.out.println(Calendar.WEEK_OF_YEAR);
+        ArrayList<AbstractActivity> activities = this.viewActivities();
+        
+        activities.stream()
+                .filter(b->b.getWeek() == c.get(Calendar.WEEK_OF_YEAR));
+        activities.stream()
+                .sorted();
+        return activities;
         
     }
     

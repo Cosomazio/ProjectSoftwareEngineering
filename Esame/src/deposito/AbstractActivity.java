@@ -11,7 +11,7 @@ import java.util.*;
  *
  * @author tomma
  */
-public abstract class AbstractActivity implements InterfaceActivity {
+public abstract class AbstractActivity implements InterfaceActivity , Comparable {
     private int id;
     private Sito sito;
     private String tipologia;
@@ -111,6 +111,22 @@ public abstract class AbstractActivity implements InterfaceActivity {
 
     public void setProcedura(Procedure procedura) {
         this.procedura = procedura;
+    }
+
+    @Override
+    public int compareTo(Object other) {
+        AbstractActivity altro;
+        if(other instanceof AbstractActivity){
+            altro=(AbstractActivity) other;
+        if(this.getId()<altro.getId())
+            return -1;
+        else if(this.getId()== altro.getId())
+            return 0;
+        else
+            return 1;
+        }
+        else
+            throw new ClassCastException();
     }
     
     
