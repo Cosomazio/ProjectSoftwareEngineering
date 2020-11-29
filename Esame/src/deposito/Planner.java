@@ -137,38 +137,124 @@ public class Planner extends AbstractUtente {
         }
     }
     
-    //sito non esiste
-    public void viewActivities(){
-        /*
-        String url="kandula.db.elephantsql.com";
-        String user="figslypy";
-        String pass="lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio";
-
-        try{
-            //creo la connessione al DB
-            Connection c= DriverManager.getConnection(url,user,pass);
-            String select="SELECT id,sito,tipologia,descrizione,"
-                    +"tempo,materiali,week,interrompibile,procedura FROM attivita";
-            String query=select;
-            PreparedStatement st = c.prepareStatement(query);
-            ResultSet rs=st.executeQuery();
-            while (rs.next()){
-                int id=rs.getInt("id");
-                
+            /*
+        smp deve essere binary ma è una stringa
+        getCompetenze non implementato
+    */
+    private Procedure getProcedure(String nome){
+        String tableProc="procedura";
+        ArrayList<String> colonneProc=new ArrayList<>();
+        HashMap<String,Object> doveProc=new HashMap<>();
+        colonneProc.add("nomefile");
+        colonneProc.add("smp");
+        doveProc.put("nomefile",nome);
+        Comunicatore com=null;
+        Procedure proc=null;
+        try {
+            com=new Comunicatore();
+            com.apri();
+            ResultSet set= com.selectionQuery(tableProc, colonneProc, doveProc);
+            while(set.next()){
+                String nomefile=set.getString("nomefile");
+                String smp=set.getString("smp");
+                proc=new Procedure(null, null, nomefile);
             }
-            st.close();
-            rs.close();
-            c.close();
-
-        }catch(SQLException ex){
-            System.out.println("ERRORE DATABASE MODIFICA");
-        }*/
+            
+        } catch (SQLException ex) {
+            System.out.println("Non mi sono connesso al DB");
+        }
         
+        return proc;
     }
+    
+    private List<String> getMateriali(int id){
+        List<String> res=new ArrayList<>();
+        String tableAttMat="attivita_materiale";
+        ArrayList<String> colonneAttMat=new ArrayList<>();
+        HashMap<String,Object> doveAttMat=new HashMap<>();
+        
+        colonneAttMat.add("maid");
+        colonneAttMat.add("materiale");
+        doveAttMat.put("maid", id);
+        
+        Comunicatore com=null;
+        
+        try {
+            com=new Comunicatore();
+            com.apri();
+            ResultSet set= com.selectionQuery(tableAttMat, colonneAttMat, doveAttMat);
+            while(set.next()){
+                int maid=set.getInt("maid");
+                String materiale=set.getString("materiale");
+                res.add(materiale);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Non mi sono connesso al DB");
+        }
+        
+        return res;
+    }
+    
+    public ArrayList<AbstractActivity> viewActivities(){
+        ArrayList<AbstractActivity> res=new ArrayList<>();
+        String tableAtt="Attivita";
+        ArrayList<String> colonneAtt= new ArrayList<>();
+        HashMap<String,Object> doveAtt= null;
+        
+        colonneAtt.add("aid");
+        colonneAtt.add("office");
+        colonneAtt.add("area");
+        colonneAtt.add("nomefile");
+        colonneAtt.add("tipologia");
+        colonneAtt.add("descrizione");
+        colonneAtt.add("tempo");
+        colonneAtt.add("week");
+        colonneAtt.add("interrompibile");
+        colonneAtt.add("ewoid");
+        colonneAtt.add("pianificazione");
+        
+        Comunicatore com;
+        try {
+            com=new Comunicatore();
+            com.apri();
+            ResultSet set=com.selectionQuery(tableAtt, colonneAtt, doveAtt);
+            while(set.next()){
+                int id=set.getInt("id");
+                String office=set.getString("office");
+                String area=set.getString("area");
+                Sito s=new Sito(office, area);
+                String nomefile=set.getString("nomefile");
+                String tipologia=set.getString("tipologia");
+                String descrizione=set.getString("descrizione");
+                int tempo=set.getInt("tempo");
+                int week=set.getInt("week");
+                boolean interrompibile=set.getBoolean("interrompibile");
+                int ewoid=set.getInt("ewoid");
+                String pianificazione=set.getString("pianificazione");
+                List<String> materiali=getMateriali(id);
+                Procedure procedura=getProcedure(nomefile);
+                
+                AbstractActivity attivita=null;
+                AbstractActivity act=tipoAttivita(attivita, id, s, tipologia, 
+                        descrizione, tempo, materiali, week, interrompibile, 
+                        procedura, pianificazione);
+                res.add(act);
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Non mi sono connesso al DB");
+        }
+        
+        ArrayList<AbstractActivity> a= new ArrayList<>();
+        
+        return a;
+    }
+    
     public void viewEWO() {
         
     }
-    public void sortedActivities(){
+    public ArrayList<AbstractActivity> sortedActivities(){
         Calendar c=Calendar.getInstance();
         java.util.Date d= new java.util.Date();
         c.setTime(d);
