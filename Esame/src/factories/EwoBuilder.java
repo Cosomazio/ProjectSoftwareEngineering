@@ -18,7 +18,7 @@ public class EwoBuilder extends ActivityBuilder {
     private static int ewoid=0;
     private EwoActivity result;
     
-    public static EwoBuilder getIstance(){
+    public static EwoBuilder getInstance(){
         if(istanza==null){
             istanza= new EwoBuilder();
         }
@@ -33,7 +33,7 @@ public class EwoBuilder extends ActivityBuilder {
     public void reset(Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
                 int week,Boolean interrompibile,Procedure procedura){
-        IdActivity generatore = IdActivity.getIstance();
+        IdActivity generatore = IdActivity.getInstance();
         int id = generatore.getId();
         this.result=new EwoActivity (EwoBuilder.getId(),id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura);
        

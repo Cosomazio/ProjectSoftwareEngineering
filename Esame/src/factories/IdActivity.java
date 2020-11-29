@@ -13,7 +13,7 @@ public class IdActivity {
     private static IdActivity istanza=null;
     private static int id=0;
     
-    public synchronized static IdActivity getIstance(){
+    public synchronized static IdActivity getInstance(){
         if (istanza == null) {
             istanza = new IdActivity();
         }

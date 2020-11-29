@@ -21,7 +21,7 @@ public class UnplannedBuilder extends ActivityBuilder {
             int tempo, List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura) {
             
-        IdActivity generatore= IdActivity.getIstance();
+        IdActivity generatore= IdActivity.getInstance();
         int id= generatore.getId();
         
         this.result = new UnplannedActivity(id,sito,tipologia,

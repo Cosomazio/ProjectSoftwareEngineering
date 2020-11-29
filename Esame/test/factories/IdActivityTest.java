@@ -17,7 +17,54 @@ import static org.junit.Assert.*;
  * @author tomma
  */
 public class IdActivityTest {
-    
+    class IdActivityGetIstanceRunner implements Runnable { 
+        private int i=0;
+        private int n=100;
+        public IdActivityGetIstanceRunner(int n){
+            this.n=n;
+        }
+        public IdActivityGetIstanceRunner(){
+            
+        }
+        @Override
+        public void run() { 
+            i = 0;
+            IdActivity res=null;
+            while (i<n) { 
+                if (res!=null){
+                    if (res!=IdActivity.getInstance() ){
+                        fail("collisione");
+                    }
+                }else{
+                    res=IdActivity.getInstance();
+                }
+            } 
+        } 
+    }
+    class IdActivityGetIdRunner implements Runnable { 
+        private int i=0;
+        private int n=100;
+        public IdActivityGetIdRunner(int n){
+            this.n=n;
+        }
+        public IdActivityGetIdRunner(){
+            
+        }
+        @Override
+        public void run() { 
+            i = 0;
+            IdActivity res=null;
+            while (i<n) { 
+                if (res!=null){
+                    if (res!=IdActivity.getInstance() ){
+                        fail("collisione");
+                    }
+                }else{
+                    res=IdActivity.getInstance();
+                }
+            } 
+        } 
+    }
     public IdActivityTest() {
     }
     
@@ -43,11 +90,18 @@ public class IdActivityTest {
     @Test
     public void testGetIstance() {
         System.out.println("getIstance");
-        IdActivity expResult = IdActivity.getIstance();
-        IdActivity result = IdActivity.getIstance();
+        IdActivity expResult = IdActivity.getInstance();
+        IdActivity result = IdActivity.getInstance();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-       
+        IdActivityGetIstanceRunner r= new IdActivityGetIstanceRunner(100000);
+        Thread t1 = new Thread (r); 
+        Thread t2 = new Thread (r);
+        Thread t3 = new Thread (r);
+        t1.start();
+        t2.start();
+        t3.start();
+        
     }
 
     /**
@@ -56,7 +110,7 @@ public class IdActivityTest {
     @Test
     public void testGetId() {
         System.out.println("getId");
-        IdActivity instance=IdActivity.getIstance();
+        IdActivity instance=IdActivity.getInstance();
         int expResult = instance.getId();
         int result = instance.getId();
         assertEquals(expResult+1, result);
