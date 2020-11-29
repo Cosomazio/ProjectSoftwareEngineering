@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -100,6 +102,46 @@ public class Comunicatore {
 
         return this.eseguiUpdate(query + values);
     }
+    
+    public ResultSet selectionQuery(String table, ArrayList<String> colonne, HashMap<String, Object> dove){
+        ArrayList<String> chiavi;
+        String fine;
+        
+        String query="SELECT ";
+        String values= " FROM ";
+        String luogo= " WHERE ";
+        
+        if(dove.isEmpty() && colonne.isEmpty()){
+            query=query+"*";
+            values=values+table;
+            return this.eseguiSelezione(query+values);
+        }
+        else if(colonne.isEmpty()){
+            query=query+"*";
+            values=values+table;
+            chiavi = this.preparazione(dove.keySet());
+            fine= this.manipolazioneQuery(chiavi, dove);
+            luogo = luogo+fine;
+            
+            return this.eseguiSelezione(query+values+luogo);
+        }
+        else if(dove.isEmpty()){
+            for(String s:colonne){
+                query=query+s+", ";
+            }
+            values=values+table;
+            return this.eseguiSelezione(query+values);
+        }
+        for(String s: colonne){
+            query=query+s+", ";
+        }
+        values=values+table;
+        chiavi=this.preparazione(dove.keySet());
+        fine=this.manipolazioneQuery(chiavi, dove);
+        luogo=luogo+fine;
+        
+        return this.eseguiSelezione(query+values+luogo);
+    }
 
     private String manipolazioneQuery(ArrayList<String> array, HashMap<String, Object> cont){
         int i=0;
@@ -135,9 +177,21 @@ public class Comunicatore {
             Statement pt = c.createStatement();
             res = pt.executeUpdate(query);
         } catch (SQLException ex) {
-            System.out.println("ERRORE NELLA QUERY");
+            System.out.println("ERRORE NELLA QUERY: "+ ex.getSQLState());
         }
         return res;
+    }
+    
+    private ResultSet eseguiSelezione(String query){
+        ResultSet rs=null;
+        Statement st;
+        try {
+            st = c.createStatement();
+            rs=st.executeQuery(query);
+        } catch (SQLException ex) {
+            System.out.println("ERRORE NELLA SELECTION QUERY: "+ ex.getSQLState());
+        }
+        return rs;
     }
 
     public void chiudi() throws SQLException {
