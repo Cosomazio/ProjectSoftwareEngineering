@@ -164,8 +164,40 @@ public class Planner extends AbstractUtente {
     public void sortedActivities(){
         
     }
-    public void maintainerAval(Maintainer man, int giorno){
+    
+    public HashMap maintainerAval(Maintainer man, int giorno){
         
+        Comunicatore com;
+        HashMap<Integer,Integer> map =new HashMap<>();
+        HashMap<String,Object> mappadove =new HashMap<>();
+        mappadove.put("mid",man.getId());
+        mappadove.put("giorno", giorno);
+
+        try {    
+            com= new Comunicatore();
+            com.apri();
+            int index;
+            ResultSet rs= com.selectionQuery("orario", null, mappadove);
+            while(rs.next()){
+                
+                map.put(index=rs.findColumn("o8_9"), rs.getInt(index));
+                map.put(index=rs.findColumn("o9_10"), rs.getInt(index));
+                map.put(index=rs.findColumn("o10_11"), rs.getInt(index));
+                map.put(index=rs.findColumn("o11_12"), rs.getInt(index));
+                map.put(index=rs.findColumn("o14_15"), rs.getInt(index));
+                map.put(index=rs.findColumn("o15_16"), rs.getInt(index));
+                map.put(index=rs.findColumn("o16_17"), rs.getInt(index));
+            }
+            
+           
+            
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println("Non mi sono connesso al DB");
+        }
+        
+        
+        return map;
     }
     
     public void maintainerAvalPerc(Maintainer man){
