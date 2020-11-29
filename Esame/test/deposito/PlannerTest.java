@@ -7,6 +7,7 @@ package deposito;
 
 //import java.time.OffsetTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -152,7 +153,7 @@ public class PlannerTest {
     /**
      * Test of modifyActivity method, of class Planner.
      */
-    
+    /*
     @Test
     public void testModifyActivity() {
         
@@ -238,18 +239,18 @@ public class PlannerTest {
     /**
      * Test of maintainerAval method, of class Planner.
      */
-    /*
+    
     @Test
     public void testMaintainerAval() {
-        System.out.println("maintainerAval");
-        Maintainer man = null;
-        int giorno = 0;
-        Planner instance = null;
-        instance.maintainerAval(man, giorno);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("Verifica disponibilità");
+        Maintainer man=new Maintainer("peppe","pippo","mario","maiopeppe@hotmail.it",2);
+        HashMap mappa = new HashMap();
+        mappa = instance.maintainerAval(man, 2);
+        System.out.println(mappa.toString());
+        
+        
     }
-*/
+
     /**
      * Test of maintainerAvalPerc method, of class Planner.
      */

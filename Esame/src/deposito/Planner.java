@@ -170,14 +170,13 @@ public class Planner extends AbstractUtente {
         Comunicatore com;
         HashMap<Integer,Integer> map =new HashMap<>();
         HashMap<String,Object> mappadove =new HashMap<>();
-        mappadove.put("mid",man.getId());
+        mappadove.put("maintainer",man.getId());
         mappadove.put("giorno", giorno);
-
         try {    
             com= new Comunicatore();
             com.apri();
             int index;
-            ResultSet rs= com.selectionQuery("orario", null, mappadove);
+            ResultSet rs= com.selectionQuery("orari", null, mappadove);
             while(rs.next()){
                 
                 map.put(index=rs.findColumn("o8_9"), rs.getInt(index));
