@@ -130,7 +130,7 @@ public class PlannerTest {
     
     
     Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
-    /*
+   /*
     @Test
     public void testCreateActivity() {
         System.out.println("createActivity");

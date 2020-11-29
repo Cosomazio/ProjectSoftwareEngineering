@@ -45,23 +45,7 @@ public class Planner extends AbstractUtente {
         int res;
         
         AbstractActivity attivita=null;
-        if(tipoAttivita.equals("Planned")){
-            PlannedBuilder builder= new PlannedBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita = builder.getResult();
-        }else if(tipoAttivita.equals("Unplanned")){
-            UnplannedBuilder builder = new UnplannedBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita=builder.getResult();
-        }else if(tipoAttivita.equals("Extra")){
-            ExtraBuilder builder = new ExtraBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita=builder.getResult();
-        }else{
-            EwoBuilder builder = new EwoBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita = builder.getResult();
-        }
+        attivita=this.tipoAttivita(attivita, id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
         Comunicatore com;    
         try {    
             com= new Comunicatore();
@@ -84,6 +68,29 @@ public class Planner extends AbstractUtente {
             System.out.println("Non mi sono connesso al DB");
         }
         
+    }
+    private AbstractActivity tipoAttivita(AbstractActivity attivita,int id, Sito sito,String tipologia,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura,String tipoAttivita){
+        
+        if(tipoAttivita.equals("Planned")){
+            PlannedBuilder builder= new PlannedBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = builder.getResult();
+        }else if(tipoAttivita.equals("Unplanned")){
+            UnplannedBuilder builder = new UnplannedBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=builder.getResult();
+        }else if(tipoAttivita.equals("Extra")){
+            ExtraBuilder builder = new ExtraBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=builder.getResult();
+        }else{
+            EwoBuilder builder = new EwoBuilder();
+            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = builder.getResult();
+        }
+        return attivita;
     }
     public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura,String tipoAttivita){
@@ -172,6 +179,7 @@ public class Planner extends AbstractUtente {
         HashMap<String,Object> mappadove =new HashMap<>();
         mappadove.put("maintainer",man.getId());
         mappadove.put("giorno", giorno);
+        ArrayList<String> array =new ArrayList<>();
         try {    
             com= new Comunicatore();
             com.apri();
