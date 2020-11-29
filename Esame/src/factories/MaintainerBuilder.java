@@ -19,7 +19,7 @@ public class MaintainerBuilder extends UtenteBuilder {
         IdUtente generatore=IdUtente.getInstance();
         int id= generatore.getId();
         
-        this.result = new Maintainer(nome, username, password, email, id);
+        this.result = new Maintainer(username, password, nome, email, id);
     }
     
     public Maintainer getInstance(){
