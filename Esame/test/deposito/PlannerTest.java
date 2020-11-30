@@ -175,7 +175,7 @@ public class PlannerTest {
     
     @Test
     public void testModifyActivity() {
-        
+         
         System.out.println("modifyActivity");
         Sito sito1 = new Sito("ufficio","area");
         List<String> materiali = new ArrayList();
@@ -190,10 +190,27 @@ public class PlannerTest {
         int week = 52;
         Boolean interrompibile = false;
         
-        
+        Comunicatore com = new Comunicatore();
+        HashMap<String,Object> mappa = new HashMap<>();
+        mappa.put("aid", act.getId());
         instance.modifyActivity(act, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,"Ewo");
         
-        //ASSERT
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("attivita", null, mappa);
+            while(rs.next()){
+                Sito st=new Sito(rs.getString("office"),rs.getString("area"));
+                AbstractActivity act2 = new PlannedActivity(rs.getInt("aid"),st,rs.getString("tipologia"),rs.getString("descrizione"),rs.getInt("tempo"),materiali,rs.getInt("week"),rs.getBoolean("interrompibile"),procedura);
+                assertEquals(act.toString(),act2.toString());
+            }
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        
+        
+
     }
 
     /**
@@ -202,15 +219,29 @@ public class PlannerTest {
     
     @Test
     public void testDeleteActivity() {
-        System.out.println("deleteActivity");
+       System.out.println("deleteActivity");
         Sito sito1 = new Sito("ufficio","area");
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
         AbstractActivity act = new PlannedActivity(1,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
-        //Planner instance = null;
+        ArrayList<String> array=new ArrayList<>();
+        array.add("aid");
+        HashMap<String,Object> mappa = new HashMap<>();
+        mappa.put("aid", act.getId());
         instance.deleteActivity(act);
-        //ASSERT
+        
+        Comunicatore com = new Comunicatore();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            if(rs.next()!=false){
+                throw new SQLException("Cancellazione non effettuata");
+            }
+            com.chiudi();
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
     }
 
     /**
