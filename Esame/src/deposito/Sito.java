@@ -48,6 +48,11 @@ public class Sito {
     public void setWorkspaceNote(String workspaceNote) {
         this.workspaceNote = workspaceNote;
     }
+
+    @Override
+    public String toString() {
+        return "Sito{" + "office=" + office + ", area=" + area + ", workspaceNote=" + workspaceNote + '}';
+    }
     
     
     
