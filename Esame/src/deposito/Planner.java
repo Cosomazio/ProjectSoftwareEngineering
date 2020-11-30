@@ -319,8 +319,11 @@ public class Planner extends AbstractUtente {
         return map;
     }
     
-    public void maintainerAvalPerc(Maintainer man){
+    public HashMap maintainerAvalPerc(Maintainer man){
+        HashMap <String,Object> map=new HashMap<>();
+        Comunicatore com= new Comunicatore();
         
+        return map;
     }
     
     @Override

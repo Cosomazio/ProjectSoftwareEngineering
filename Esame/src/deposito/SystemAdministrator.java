@@ -87,6 +87,21 @@ public class SystemAdministrator extends AbstractUtente {
             System.out.println(ex3.getMessage());
         }
         
+        int i=inserisciCompetenze(man,skill);
+        if (i==-1){
+            return null;
+        }
+        
+        int f=inserisciProcedura(man,procedure);
+        
+        if (f==-1){
+            return null;
+        }
+        
+        return man;
+    }
+    private int inserisciCompetenze(Maintainer man, Set<String> skill){
+        Comunicatore com=new Comunicatore();
         Iterator iter= skill.iterator();
         HashMap <String, Object> skills=new HashMap<>();
         String sk;
@@ -96,22 +111,26 @@ public class SystemAdministrator extends AbstractUtente {
             skills.put("competenza", sk);
             try{
             com.apri();
-            }catch(SQLException ex4){
-                System.out.println(ex4.getMessage());
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
             }
             try{
                 com.insertQuery("maintainer_competenze", skills);
-            }catch(SQLException ex5){
-                System.out.println(ex5.getMessage());  
-                return null;
+            }catch(SQLException ex2){
+                System.out.println(ex2.getMessage());  
+                return -1;
             }
             try{
                 com.chiudi();
-            }catch(SQLException ex6){
-                System.out.println(ex6.getMessage());
+            }catch(SQLException ex3){
+                System.out.println(ex3.getMessage());
             }
             skills.clear();
         }
+        return 1;
+    }
+    public int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
+        Comunicatore com=new Comunicatore();
         Iterator iterpro= procedure.iterator();
         HashMap <String, Object> procedures=new HashMap<>();
         Procedure pr;
@@ -128,17 +147,16 @@ public class SystemAdministrator extends AbstractUtente {
                 com.insertQuery("maintainer_procedura", procedures);
             }catch(SQLException ex8){
                 System.out.println(ex8.getMessage());  
-                return null;
+                return -1;
             }   
             try{
                 com.chiudi();
             }catch(SQLException ex9){
                 System.out.println(ex9.getMessage());
             }
-            
-            skills.clear();
+            procedures.clear();
         }
-        return man;
+        return 1;
     }
     
     public void cancellaMaintainer (Maintainer man) throws SQLException{
