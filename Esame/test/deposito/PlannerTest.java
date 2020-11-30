@@ -216,16 +216,31 @@ public class PlannerTest {
     /**
      * Test of viewActivities method, of class Planner.
      */
-    /*
     @Test
     public void testViewActivities() {
+        List<AbstractActivity> res1=instance.viewActivities();
+        res1.forEach((act) -> {
+            instance.deleteActivity(act);
+        });
+        
         System.out.println("viewActivities");
-        Planner instance = null;
-        instance.viewActivities();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Sito sito = new Sito("ufficio","area");
+        String tipologia = "elettrico";
+        String descrizione = "prova di descizione";
+        int tempo = 70;
+        List<String> materiali = new ArrayList();
+        int week = 2;
+        Boolean interrompibile = true;
+        Procedure procedura=null;
+        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+        
+        List<AbstractActivity> res=instance.viewActivities();
+        
+        Boolean found=false;
+        assertNotEquals(plact, null);
+        assertEquals(res.size(), 1);
+        assertEquals(res.get(0).compareTo(plact), 0);
     }
-*/
     /**
      * Test of viewEWO method, of class Planner.
      */
