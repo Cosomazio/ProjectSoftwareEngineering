@@ -6,9 +6,13 @@
 package deposito;
 
 //import java.time.OffsetTime;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -144,9 +148,24 @@ public class PlannerTest {
         int week = 2;
         Boolean interrompibile = true;
         Procedure procedura = new Procedure();
+        ArrayList<String> array=new ArrayList<>();
+        array.add("aid");
+        HashMap<String,Object> mappa = new HashMap<>();
+        mappa.put("aid", id);
+        Comunicatore com = new Comunicatore();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            if(rs.next()!=false){
+                throw new SQLException("Impossibile eseguire inserimento, elemento già presente");
+            }
+            instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+            com.chiudi();
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
         
-        instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
-        //ASSERT
+        
         
     }
 
@@ -197,16 +216,31 @@ public class PlannerTest {
     /**
      * Test of viewActivities method, of class Planner.
      */
-    /*
     @Test
     public void testViewActivities() {
+        List<AbstractActivity> res1=instance.viewActivities();
+        res1.forEach((act) -> {
+            instance.deleteActivity(act);
+        });
+        
         System.out.println("viewActivities");
-        Planner instance = null;
-        instance.viewActivities();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Sito sito = new Sito("ufficio","area");
+        String tipologia = "elettrico";
+        String descrizione = "prova di descizione";
+        int tempo = 70;
+        List<String> materiali = new ArrayList();
+        int week = 2;
+        Boolean interrompibile = true;
+        Procedure procedura=null;
+        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+        
+        List<AbstractActivity> res=instance.viewActivities();
+        
+        Boolean found=false;
+        assertNotEquals(plact, null);
+        assertEquals(res.size(), 1);
+        assertEquals(res.get(0).compareTo(plact), 0);
     }
-*/
     /**
      * Test of viewEWO method, of class Planner.
      */
@@ -277,5 +311,33 @@ public class PlannerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testSortedActivities(){
+        System.out.println("sortedActivities");
+        Planner instance= new Planner ("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        
+        Calendar cal= Calendar.getInstance();
+        java.util.Date date= new java.util.Date();
+        cal.setTime(date);
+        
+        int cont=0;
+        
+        ArrayList<AbstractActivity> att=instance.sortedActivities();
+        ArrayList<AbstractActivity> verify=instance.viewActivities();
+        
+        for(AbstractActivity a: verify){
+            if(a.getWeek() == cal.get(Calendar.WEEK_OF_YEAR))
+                cont++;
+        }
+        if(cont==0){
+            if(!att.isEmpty())
+                fail("NON PRENDO LA SETTIMANA CORRETTAMENTE");
+        }
+        for(AbstractActivity ac: att){
+            if(ac.getWeek()!=cal.get(Calendar.WEEK_OF_YEAR))
+                fail("LA SETTIMANA NON è CORRETTA");
+        }
     }
 }

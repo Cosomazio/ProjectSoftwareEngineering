@@ -10,6 +10,7 @@ import java.time.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 /**
  *
  * @author tomma
@@ -38,7 +39,7 @@ public class Planner extends AbstractUtente {
     }
     
     //sito non esiste
-    public void createActivity(Sito sito,String tipologia,String descrizione,int tempo,
+    public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
@@ -67,7 +68,7 @@ public class Planner extends AbstractUtente {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+        return attivita;
     }
     private AbstractActivity tipoAttivita(AbstractActivity attivita,Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
@@ -241,6 +242,7 @@ public class Planner extends AbstractUtente {
                 AbstractActivity act=tipoAttivita(attivita, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione);
+                act.setId(id);
                 //System.out.println("sdg"+act);
                 res.add(act);
                 com=new Comunicatore();
@@ -263,14 +265,18 @@ public class Planner extends AbstractUtente {
         Calendar c=Calendar.getInstance();
         java.util.Date d= new java.util.Date();
         c.setTime(d);
-        System.out.println(Calendar.WEEK_OF_YEAR);
         ArrayList<AbstractActivity> activities = this.viewActivities();
+        ArrayList<AbstractActivity> result=new ArrayList<>();
         
-        activities.stream()
-                .filter(b->b.getWeek() == c.get(Calendar.WEEK_OF_YEAR));
-        activities.stream()
+        Stream a=activities.stream()
+                .filter(b->b.getWeek() == c.get(Calendar.WEEK_OF_YEAR))
                 .sorted();
-        return activities;
+        Iterator<AbstractActivity> i=a.iterator();
+        while (i.hasNext()){
+            result.add(i.next());
+        }
+            
+        return result;
         
     }
     
