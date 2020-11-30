@@ -6,10 +6,13 @@
 package deposito;
 
 //import java.time.OffsetTime;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -145,9 +148,24 @@ public class PlannerTest {
         int week = 2;
         Boolean interrompibile = true;
         Procedure procedura = new Procedure();
+        ArrayList<String> array=new ArrayList<>();
+        array.add("aid");
+        HashMap<String,Object> mappa = new HashMap<>();
+        mappa.put("aid", id);
+        Comunicatore com = new Comunicatore();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            if(rs.next()!=false){
+                throw new SQLException("Impossibile eseguire inserimento, elemento già presente");
+            }
+            instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+            com.chiudi();
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
         
-        instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
-        //ASSERT
+        
         
     }
 

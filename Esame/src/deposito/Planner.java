@@ -39,7 +39,7 @@ public class Planner extends AbstractUtente {
     }
     
     //sito non esiste
-    public void createActivity(Sito sito,String tipologia,String descrizione,int tempo,
+    public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
@@ -68,7 +68,7 @@ public class Planner extends AbstractUtente {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+        return attivita;
     }
     private AbstractActivity tipoAttivita(AbstractActivity attivita,Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
