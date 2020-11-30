@@ -7,6 +7,7 @@ package deposito;
 
 //import java.time.OffsetTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import org.junit.After;
@@ -277,5 +278,33 @@ public class PlannerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testSortedActivities(){
+        System.out.println("sortedActivities");
+        Planner instance= new Planner ("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        
+        Calendar cal= Calendar.getInstance();
+        java.util.Date date= new java.util.Date();
+        cal.setTime(date);
+        
+        int cont=0;
+        
+        ArrayList<AbstractActivity> att=instance.sortedActivities();
+        ArrayList<AbstractActivity> verify=instance.viewActivities();
+        
+        for(AbstractActivity a: verify){
+            if(a.getWeek() == cal.get(Calendar.WEEK_OF_YEAR))
+                cont++;
+        }
+        if(cont==0){
+            if(!att.isEmpty())
+                fail("NON PRENDO LA SETTIMANA CORRETTAMENTE");
+        }
+        for(AbstractActivity ac: att){
+            if(ac.getWeek()!=cal.get(Calendar.WEEK_OF_YEAR))
+                fail("LA SETTIMANA NON è CORRETTA");
+        }
     }
 }

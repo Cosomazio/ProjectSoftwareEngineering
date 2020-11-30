@@ -45,7 +45,7 @@ public class Comunicatore {
             par = "'"+par+"'";
         values = values + par+ ")";
         
-        System.out.println(query + values);
+        //System.out.println(query + values);
 
         return this.eseguiUpdate(query + values);
     }
@@ -62,7 +62,7 @@ public class Comunicatore {
         String s=this.clausolaWhere(l, params);
         values=values+s;
         
-        System.out.println(query + values);
+        //System.out.println(query + values);
         return this.eseguiUpdate(query + values);
     }
 
@@ -93,7 +93,7 @@ public class Comunicatore {
         values = values + " WHERE ";
         String s= this.clausolaWhere(keys, chiavi);
         values=values+s;
-        System.out.println(query + values);
+        //System.out.println(query + values);
 
         return this.eseguiUpdate(query + values);
     }
@@ -110,7 +110,7 @@ public class Comunicatore {
             query=query+"*";
             values=values+table;
             
-            System.out.println(query+values);
+            //System.out.println(query+values);
             return this.eseguiSelezione(query+values);
         }
         else if(colonne == null){
@@ -120,13 +120,13 @@ public class Comunicatore {
             fine= this.clausolaWhere(chiavi, dove);
             luogo = luogo+fine;
             
-            System.out.println(query+values+luogo);
+            //System.out.println(query+values+luogo);
             return this.eseguiSelezione(query+values+luogo);
         }
         else if(dove == null){
             query=this.virgole(colonne, query);
             values=values+table;
-            System.out.println(query+values);
+            //System.out.println(query+values);
             return this.eseguiSelezione(query+values);
         }
         
@@ -136,7 +136,7 @@ public class Comunicatore {
         fine=this.clausolaWhere(chiavi, dove);
         luogo=luogo+fine;
         
-        System.out.println(query+values+luogo);
+        //System.out.println(query+values+luogo);
         return this.eseguiSelezione(query+values+luogo);
     }
 
