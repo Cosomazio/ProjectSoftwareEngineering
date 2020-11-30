@@ -62,6 +62,26 @@ public class SystemAdministrator extends AbstractUtente {
         man.setProcedure(procedure);
         man.setSkill(skill);
         man.setUsername(username);
+        
+        int l=modificaTabellaMaintainer(man);
+        if (l==-1){
+            return null;
+        }
+        
+        int i=inserisciCompetenze(man,skill);
+        if (i==-1){
+            return null;
+        }
+        
+        int f=inserisciProcedura(man,procedure);
+        
+        if (f==-1){
+            return null;
+        }
+        
+        return man;
+    }
+    private int modificaTabellaMaintainer (Maintainer man){
         Comunicatore com= new Comunicatore(); 
         HashMap <String, Object> value= new HashMap<> ();
         value.put("username", man.getUsername());
@@ -79,26 +99,14 @@ public class SystemAdministrator extends AbstractUtente {
           com.updateQuery("maintainer", value, chiavi);  
         }catch(SQLException ex2){
             System.out.println(ex2.getMessage());  
-            return null;
+            return -1;
         }
         try{
            com.chiudi(); 
         }catch(SQLException ex3){
             System.out.println(ex3.getMessage());
         }
-        
-        int i=inserisciCompetenze(man,skill);
-        if (i==-1){
-            return null;
-        }
-        
-        int f=inserisciProcedura(man,procedure);
-        
-        if (f==-1){
-            return null;
-        }
-        
-        return man;
+        return 1;
     }
     private int inserisciCompetenze(Maintainer man, Set<String> skill){
         Comunicatore com=new Comunicatore();
