@@ -65,7 +65,7 @@ public class Planner extends AbstractUtente {
             
             com.chiudi();
         } catch (SQLException ex) {
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
         
     }
@@ -118,7 +118,7 @@ public class Planner extends AbstractUtente {
             
             com.chiudi();
         } catch (SQLException ex) {
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
         
         //AbstractActivity result=
@@ -133,7 +133,7 @@ public class Planner extends AbstractUtente {
             com.deleteQuery("Attivita", mappa);
             com.chiudi();
         }catch(SQLException ex){
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
     }
     
@@ -161,7 +161,7 @@ public class Planner extends AbstractUtente {
             }
             com.chiudi();
         } catch (SQLException ex) {
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
         
         return proc;
@@ -191,7 +191,7 @@ public class Planner extends AbstractUtente {
             com.chiudi();
             
         } catch (SQLException ex) {
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
         
         return res;
@@ -238,7 +238,7 @@ public class Planner extends AbstractUtente {
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
                 AbstractActivity attivita=null;
-                AbstractActivity act=tipoAttivita(attivita, id, s, tipologia, 
+                AbstractActivity act=tipoAttivita(attivita, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione);
                 //System.out.println("sdg"+act);
@@ -248,7 +248,7 @@ public class Planner extends AbstractUtente {
             }
             com.chiudi();
         } catch (SQLException ex) {
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
         
         
@@ -302,7 +302,7 @@ public class Planner extends AbstractUtente {
             
             com.chiudi();
         } catch (SQLException ex) {
-            System.out.println("Non mi sono connesso al DB");
+            System.out.println(ex.getMessage());
         }
         
         

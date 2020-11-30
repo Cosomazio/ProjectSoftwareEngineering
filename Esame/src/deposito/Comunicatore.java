@@ -10,8 +10,6 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +24,7 @@ public class Comunicatore {
         return this.c;
     }
 
-    public int insertQuery(String table, HashMap<String, Object> params) {
+    public int insertQuery(String table, HashMap<String, Object> params) throws SQLException {
         int i, j;
         Object par;
         String query = "insert INTO" + " " + table + " (";
@@ -52,7 +50,7 @@ public class Comunicatore {
         return this.eseguiUpdate(query + values);
     }
 
-    public int deleteQuery(String table, HashMap<String, Object> params) {
+    public int deleteQuery(String table, HashMap<String, Object> params) throws SQLException {
         int i = 0;
         Object p;
 
@@ -68,7 +66,7 @@ public class Comunicatore {
         return this.eseguiUpdate(query + values);
     }
 
-    public int updateQuery(String table, HashMap<String, Object> params, HashMap<String, Object> chiavi) {
+    public int updateQuery(String table, HashMap<String, Object> params, HashMap<String, Object> chiavi) throws SQLException {
         int i = 0;
         Object p;
 
@@ -100,7 +98,7 @@ public class Comunicatore {
         return this.eseguiUpdate(query + values);
     }
     
-    public ResultSet selectionQuery(String table, ArrayList<String> colonne, HashMap<String, Object> dove){
+    public ResultSet selectionQuery(String table, ArrayList<String> colonne, HashMap<String, Object> dove) throws SQLException{
         ArrayList<String> chiavi;
         String fine;
         
@@ -181,27 +179,15 @@ public class Comunicatore {
         return l;
     }
 
-    private int eseguiUpdate(String query) {
-        int res = -1;
-        try {
+    private int eseguiUpdate(String query) throws SQLException{
             Statement pt = c.createStatement();
-            res = pt.executeUpdate(query);
-        } catch (SQLException ex) {
-            System.out.println("ERRORE NELLA QUERY: "+ ex.getMessage());
-        }
-        return res;
+            return pt.executeUpdate(query);
     }
     
-    private ResultSet eseguiSelezione(String query){
-        ResultSet rs=null;
+    private ResultSet eseguiSelezione(String query) throws SQLException{
         Statement st;
-        try {
-            st = c.createStatement();
-            rs=st.executeQuery(query);
-        } catch (SQLException ex) {
-            System.out.println("ERRORE NELLA SELECTION QUERY: "+ ex.getMessage());
-        }
-        return rs;
+        st = c.createStatement();
+        return st.executeQuery(query);
     }
 
     public void chiudi() throws SQLException {
