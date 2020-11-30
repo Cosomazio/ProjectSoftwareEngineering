@@ -31,9 +31,23 @@ public class SystemAdministrator extends AbstractUtente {
         map.put("pass", m.getPassword());
         map.put("nome", m.getNome());
         map.put("email", m.getEmail());
-        com.apri();
-        com.insertQuery("maintainer", map);
-        com.chiudi();
+        try{
+           com.apri(); 
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        try{
+          com.insertQuery("maintainer", map);  
+        }catch(SQLException ex2){
+          System.out.println(ex2.getMessage());
+          return null;  
+        }
+        try{
+           com.chiudi(); 
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        
         return m;
                  
     }
@@ -56,9 +70,23 @@ public class SystemAdministrator extends AbstractUtente {
         value.put("email", man.getEmail());
         HashMap <String,Object> chiavi= new HashMap <>();
         chiavi.put("mid", man.getId());
+        try{
         com.apri();
-        com.updateQuery("maintainer", value, chiavi);
-        com.chiudi();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        try{
+          com.updateQuery("maintainer", value, chiavi);  
+        }catch(SQLException ex2){
+            System.out.println(ex2.getMessage());  
+            return null;
+        }
+        try{
+           com.chiudi(); 
+        }catch(SQLException ex3){
+            System.out.println(ex3.getMessage());
+        }
+        
         Iterator iter= skill.iterator();
         HashMap <String, Object> skills=new HashMap<>();
         String sk;
@@ -66,9 +94,22 @@ public class SystemAdministrator extends AbstractUtente {
             sk = (String) iter.next();
             skills.put("mid",man.getId());
             skills.put("competenza", sk);
+            try{
             com.apri();
-            com.insertQuery("maintainer_competenze", skills);
-            com.chiudi();
+            }catch(SQLException ex4){
+                System.out.println(ex4.getMessage());
+            }
+            try{
+                com.insertQuery("maintainer_competenze", skills);
+            }catch(SQLException ex5){
+                System.out.println(ex5.getMessage());  
+                return null;
+            }
+            try{
+                com.chiudi();
+            }catch(SQLException ex6){
+                System.out.println(ex6.getMessage());
+            }
             skills.clear();
         }
         Iterator iterpro= procedure.iterator();
@@ -78,9 +119,23 @@ public class SystemAdministrator extends AbstractUtente {
             pr = (Procedure) iterpro.next();
             procedures.put("mid",man.getId());
             procedures.put("nomefile", pr.getNomefile());
-            com.apri();
-            com.insertQuery("maintainer_procedura", procedures);
-            com.chiudi();
+            try{
+                com.apri();
+            }catch(SQLException ex7){
+                System.out.println(ex7.getMessage());
+            }
+            try{
+                com.insertQuery("maintainer_procedura", procedures);
+            }catch(SQLException ex8){
+                System.out.println(ex8.getMessage());  
+                return null;
+            }   
+            try{
+                com.chiudi();
+            }catch(SQLException ex9){
+                System.out.println(ex9.getMessage());
+            }
+            
             skills.clear();
         }
         return man;
@@ -91,6 +146,7 @@ public class SystemAdministrator extends AbstractUtente {
         ResultSet s;
         HashMap <String,Object> chiavi=new HashMap<>();
         chiavi.put("mid",man.getId());
+        try{
         com.apri();
         com.deleteQuery("maintainer_procedura", chiavi);
         com.chiudi();
@@ -100,6 +156,9 @@ public class SystemAdministrator extends AbstractUtente {
         com.apri();
         com.deleteQuery("maintainer", chiavi);
         com.chiudi();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
         
     }
     public Planner createPlanner(String username, String password, String nome, String email) throws SQLException{
@@ -114,9 +173,22 @@ public class SystemAdministrator extends AbstractUtente {
         map.put("pass", p.getPassword());//dobbiamo inserire l'hash della password
         map.put("nome", p.getNome());
         map.put("email",p.getEmail());
-        com.apri();
-        com.insertQuery("planner" , map);
-        com.chiudi();
+        try{
+          com.apri();  
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());  
+        }
+        try{
+            com.insertQuery("planner" , map);
+        }catch(SQLException ex2){
+            System.out.println(ex2.getMessage());  
+            return null;
+        }
+        try{
+            com.chiudi();   
+        }catch(SQLException ex3){
+            System.out.println(ex3.getMessage());
+        }
         return p;
        
     }
@@ -135,9 +207,22 @@ public class SystemAdministrator extends AbstractUtente {
         value.put("email", pln.getEmail());
         HashMap <String,Object> chiavi= new HashMap<>();
         chiavi.put("pid", pln.getId());
-        com.apri();
-        com.updateQuery("planner", value, chiavi);
-        com.chiudi();
+        try{
+            com.apri();   
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        try{
+          com.updateQuery("planner", value, chiavi);     
+        }catch(SQLException ex2){
+            System.out.println(ex2.getMessage());
+            return null;
+        }
+        try{
+            com.chiudi();   
+        }catch(SQLException ex3){
+            System.out.println(ex3.getMessage());
+        }
         return pln;
         
     }
@@ -145,9 +230,14 @@ public class SystemAdministrator extends AbstractUtente {
         Comunicatore com= new Comunicatore();
         HashMap <String,Object> map= new HashMap <>();
         map.put("pid", pln.getId());
-        com.apri();
-        com.deleteQuery("planner", map);
-        com.chiudi();
+        try{
+            com.apri();
+            com.deleteQuery("planner", map);
+            com.chiudi();     
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        
     }
     
     @Override

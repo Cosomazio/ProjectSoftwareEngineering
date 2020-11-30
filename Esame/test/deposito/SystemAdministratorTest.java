@@ -6,7 +6,10 @@
 package deposito;
 
 import java.io.File;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.After;
@@ -54,15 +57,22 @@ public class SystemAdministratorTest {
         String email = "ciccio@ciccio.com";
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         Maintainer result = instance.createMaintainer(username, password, nome, email);
+         if(result==null){
+            fail("Errore nell'inserimeto del maintainer");
+        }else{
         int id=result.getId();
         Maintainer expResult = new Maintainer(username,password, nome, email,id);
         assertEquals(expResult.toString(), result.toString());
+        }
+        
+       
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
     /**
      * Test of modificaMaintainer method, of class SystemAdministrator.
+     * @throws java.sql.SQLException
      */
     
     @Test
@@ -85,13 +95,18 @@ public class SystemAdministratorTest {
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         Maintainer expResult = new Maintainer(username, password, nome,email, 1,skill,procedure);
         Maintainer result = instance.modificaMaintainer(man, username, password, nome, email, skill, procedure);
+        if (result==null){
+            fail("Errore nella modifica del maintainer");
+        }else{
         assertEquals(expResult.toString(), result.toString());
+        }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
     /**
      * Test of cancellaMaintainer method, of class SystemAdministrator.
+     * @throws java.sql.SQLException
      */
     @Test
     public void testCancellaMaintainer() throws SQLException {
@@ -99,6 +114,19 @@ public class SystemAdministratorTest {
         Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaMaintainer(man);
+        Comunicatore com=new Comunicatore();
+        com.apri();
+        HashMap < String, Object> map= new HashMap <> ();
+        map.put("mid", 1);
+        ArrayList <String> a=new ArrayList<>();
+        a.add("mid");
+        
+        ResultSet rs=com.selectionQuery("maintainer", a, map);
+        if (rs.next()!=false){
+            fail("Erroe nella cancellazione del maintaimer");
+        }
+        com.chiudi();
+       
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -107,7 +135,7 @@ public class SystemAdministratorTest {
      * Test of createPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*@Test
+    @Test
     public void testCreatePlanner() throws SQLException {
         System.out.println("createPlanner");
         String username = "ciccio";
@@ -117,11 +145,13 @@ public class SystemAdministratorTest {
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         
         Planner result = instance.createPlanner(username, password, nome, email);
+        if(result==null){
+            fail("Errore nell'inserimento del Planner");
+        }else{
         int id=result.getId();
-        
         Planner expResult =new Planner(username,password,nome,email,id);
-        
         assertEquals(expResult.toString(), result.toString());
+    }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -130,7 +160,7 @@ public class SystemAdministratorTest {
      * Test of modificaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*@Test
+    @Test
     public void testModificaPlanner() throws SQLException {
         System.out.println("modificaPlanner");
         Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
@@ -141,7 +171,11 @@ public class SystemAdministratorTest {
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         Planner expResult = new Planner(username,password,nome,email,1);
         Planner result = instance.modificaPlanner(pln, username, password, nome, email);
-        assertEquals(expResult.toString(), result.toString());
+        if(result==null){
+            fail("Errore nella modifica del planner");
+        }else{
+            assertEquals(expResult.toString(), result.toString());
+        }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -150,12 +184,24 @@ public class SystemAdministratorTest {
      * Test of cancellaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*@Test
+    @Test
     public void testCancellaPlanner() throws SQLException {
         System.out.println("cancellaPlanner");
         Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaPlanner(pln);
+        Comunicatore com=new Comunicatore();
+        com.apri();
+        HashMap < String, Object> map= new HashMap <> ();
+        map.put("pid", 1);
+        ArrayList <String> a=new ArrayList<>();
+        a.add("pid");
+        
+        ResultSet rs=com.selectionQuery("planner", a, map);
+        if (rs.next()!=false){
+            fail("Erroe nella cancellazione del planner");
+        }
+        com.chiudi();
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
