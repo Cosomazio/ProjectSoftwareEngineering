@@ -126,12 +126,16 @@ public class Planner extends AbstractUtente {
     }    
     public void deleteActivity(AbstractActivity act){
         Comunicatore com;
+        int id = act.getId();
         try{
             com=new Comunicatore();
             com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
-            mappa.put("aid",act.getId());
+            mappa.put("aid",id);
             com.deleteQuery("Attivita", mappa);
+            mappa.clear();
+            mappa.put("maid",id);
+            com.deleteQuery("attivita_materiale", mappa);
             com.chiudi();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
