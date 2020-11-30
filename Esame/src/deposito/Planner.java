@@ -38,27 +38,29 @@ public class Planner extends AbstractUtente {
     }
     
     //sito non esiste
-    public void createActivity(int id, Sito sito,String tipologia,String descrizione,int tempo,
+    public void createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
         int res;
+        int id=0;
         
         AbstractActivity attivita=null;
-        attivita=this.tipoAttivita(attivita, id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+        attivita=this.tipoAttivita(attivita, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
         Comunicatore com;    
         try {    
             com= new Comunicatore();
             com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
-            mappa.put("aid",attivita.getId());
-            mappa.put("office",attivita.getSito().getOffice());
-            mappa.put("area",attivita.getSito().getArea());
-            mappa.put("tipologia",attivita.getTipologia());
-            mappa.put("descrizione",attivita.getDescrizione());
-            mappa.put("tempo",attivita.getTempo());
-            mappa.put("week",attivita.getWeek());
-            mappa.put("interrompibile",attivita.getInterrompibile());
+            id = IdUtente.getInstance().getId();
+            mappa.put("aid",id);
+            mappa.put("office",sito.getOffice());
+            mappa.put("area",sito.getArea());
+            mappa.put("tipologia",tipologia);
+            mappa.put("descrizione",descrizione);
+            mappa.put("tempo",tempo);
+            mappa.put("week",week);
+            mappa.put("interrompibile",interrompibile);
             mappa.put("pianificazione",tipoAttivita);
         
             res= com.insertQuery("Attivita", mappa);
@@ -69,7 +71,7 @@ public class Planner extends AbstractUtente {
         }
         
     }
-    private AbstractActivity tipoAttivita(AbstractActivity attivita,int id, Sito sito,String tipologia,String descrizione,int tempo,
+    private AbstractActivity tipoAttivita(AbstractActivity attivita,Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){
         

@@ -130,7 +130,7 @@ public class PlannerTest {
     
     
     Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
-   /*
+   
     @Test
     public void testCreateActivity() {
         System.out.println("createActivity");
@@ -145,15 +145,15 @@ public class PlannerTest {
         Boolean interrompibile = true;
         Procedure procedura = new Procedure();
         
-        instance.createActivity(id,sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+        //ASSERT
+        
     }
 
     /**
      * Test of modifyActivity method, of class Planner.
      */
-    /*
+    
     @Test
     public void testModifyActivity() {
         
@@ -174,15 +174,13 @@ public class PlannerTest {
         
         instance.modifyActivity(act, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,"Ewo");
         
-        
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        //ASSERT
     }
 
     /**
      * Test of deleteActivity method, of class Planner.
      */
-    /*
+    
     @Test
     public void testDeleteActivity() {
         System.out.println("deleteActivity");
@@ -193,8 +191,7 @@ public class PlannerTest {
         AbstractActivity act = new PlannedActivity(1,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
         //Planner instance = null;
         instance.deleteActivity(act);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        //ASSERT
     }
 
     /**
