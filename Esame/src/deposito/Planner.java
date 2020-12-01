@@ -19,9 +19,108 @@ public class Planner extends AbstractUtente {
     public Planner(String username,String password,String nome,String email,int id){
         super(username,password,nome,email,id);
     }
-    public void assegnaMan(Maintainer man, InterfaceActivity act){
-        
+    
+    public void assegnaMan(Maintainer man, AbstractActivity act,int giorno,String orario){
+       //Se non c'è abbastanza tempo nell'orario scelto allora si va a prendere automaticamente il tempo restante nella casella dopo
+       Comunicatore com = new Comunicatore();
+       HashMap<String,Object> mappaWhere = new HashMap<>();
+       mappaWhere.put("maintainer", man.getId());
+       mappaWhere.put("giorno", giorno);
+       HashMap<String,Object> tempMap = new HashMap<>();
+       tempMap.put("pid", act.getId());
+       tempMap.put("giorno", giorno);
+       tempMap.put("maintainer",man.getId());
+       
+       ArrayList<Integer> array = new ArrayList<>();
+       
+       int temp,i;
+       int tempoIntervento = act.getTempo();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("orari" ,null, mappaWhere);
+            while(rs.next()){
+                
+                array.add(rs.getInt("o8_9"));
+                array.add(rs.getInt("o9_10"));
+                array.add(rs.getInt("o10_11"));
+                array.add(rs.getInt("o11_12"));
+                array.add(rs.getInt("o14_15"));
+                array.add(rs.getInt("o15_16"));
+                array.add(rs.getInt("o16_17"));
+             
+            }
+        int j=0;    
+            switch(orario){
+                case "o8_9" :
+                    i=0;
+                    j=1;
+                    break;
+                case "o9_10" :
+                    i=1;
+                    j=2;
+                    break;
+                case "o10_11" :
+                    i=2;
+                    j=3;
+                    break;
+                case "o11_12" :
+                    i=3;
+                    j=4;
+                    break;
+                case "o14_15" :
+                    i=4;
+                    j=5;
+                    break;
+                case "o15_16" :
+                    i=5;
+                    j=6;
+                    break;
+                case "o16_17" :
+                    i=6;
+                    break;
+                default:
+                    i=0;
+                    j=1;
+            }
+            //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINI
+            System.out.println("Questa è la i= "+i);
+            System.out.println(array.toString());
+            if(array.get(i) >= tempoIntervento){
+                
+                temp=array.get(i)-tempoIntervento;
+                array.set(i, temp);
+            }
+            else if(array.get(i) >= tempoIntervento && i == 6){
+                throw new Exception("Impossibile assegnare attivita, scegli un altro giorno(NON C'È ABBASTANZA TEMPO)");
+            }
+            else if(array.get(i)<tempoIntervento && (array.get(i)+array.get(j)>=tempoIntervento)){
+                tempoIntervento= tempoIntervento - array.get(i);
+                array.set(i, 0);               
+                temp=array.get(j)-tempoIntervento;
+                array.set(j, temp);
+            }
+            else{
+                throw new Exception("Impossibile assegnare attivita, scegli un altro giorno(NON C'È ABBASTANZA TEMPO)");
+            }
+            
+            HashMap<String,Object> mappaModifica = new HashMap<>();
+            mappaModifica.put("o8_9", array.get(0));
+            mappaModifica.put("o9_10", array.get(1));
+            mappaModifica.put("o10_11", array.get(2));
+            mappaModifica.put("o11_12", array.get(3));
+            mappaModifica.put("o14_15", array.get(4));
+            mappaModifica.put("o15_16", array.get(5));
+            mappaModifica.put("o16_17", array.get(6));
+            
+            com.insertQuery("pianificazione", tempMap);
+            com.updateQuery("orari", mappaModifica, mappaWhere);
+            
+            com.chiudi();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
+    
     public void planActivity(InterfaceActivity act){
         
     }

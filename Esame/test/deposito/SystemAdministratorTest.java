@@ -74,7 +74,7 @@ public class SystemAdministratorTest {
      * Test of modificaMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    
+    /*
     @Test
     public void testModificaMaintainer() throws SQLException {
         System.out.println("modificaMaintainer");
@@ -108,6 +108,7 @@ public class SystemAdministratorTest {
      * Test of cancellaMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
+    /*
     @Test
     public void testCancellaMaintainer() throws SQLException {
         System.out.println("cancellaMaintainer");
@@ -135,6 +136,7 @@ public class SystemAdministratorTest {
      * Test of createPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
+    /*
     @Test
     public void testCreatePlanner() throws SQLException {
         System.out.println("createPlanner");
@@ -160,6 +162,7 @@ public class SystemAdministratorTest {
      * Test of modificaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
+    /*
     @Test
     public void testModificaPlanner() throws SQLException {
         System.out.println("modificaPlanner");
@@ -184,6 +187,7 @@ public class SystemAdministratorTest {
      * Test of cancellaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
+    /*
     @Test
     public void testCancellaPlanner() throws SQLException {
         System.out.println("cancellaPlanner");
