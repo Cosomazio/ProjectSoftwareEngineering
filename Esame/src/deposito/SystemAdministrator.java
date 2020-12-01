@@ -306,6 +306,27 @@ public class SystemAdministrator extends AbstractUtente {
         
     }
     
+    public ArrayList<Maintainer> viewMaintainer(){
+        Comunicatore com = new Comunicatore();
+        ArrayList<Maintainer> archivio= new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("Maintainer",null, null);
+            while(rs.next()){
+                String nome = rs.getString("nome");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                int id = rs.getInt("mid");
+                archivio.add(new Maintainer(username, password, nome, email, id));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return archivio;
+        
+    }
+    
     public ArrayList<Planner> viewPlanner(){
         ArrayList<Planner> res=new ArrayList<>();
         String tablePlan="planner";

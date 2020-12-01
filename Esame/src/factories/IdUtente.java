@@ -24,6 +24,6 @@ public class IdUtente {
     private IdUtente(){}
     
     public synchronized int getId(){
-        return ++id;
+        return id++;
     }
 }
