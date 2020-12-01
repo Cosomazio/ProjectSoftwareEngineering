@@ -456,12 +456,71 @@ public class Planner extends AbstractUtente {
         return map;
     }
     
-    public HashMap maintainerAvalPerc(Maintainer man){
-        HashMap <String,Object> map=new HashMap<>();
-        Comunicatore com= new Comunicatore();
+    public ArrayList maintainerAvalPerc(Maintainer man){
+        int j=0;
+        ArrayList <HashMap> array=new ArrayList<>();
+        ArrayList <String> colonne=new ArrayList<>();
+        HashMap <String,Object> dove= new HashMap<>();
         
-        return map;
+        colonne.add("o8_9");
+        colonne.add("o9_10");
+        colonne.add("o10_11");
+        colonne.add("o11_12");
+        colonne.add("o14_15");
+        colonne.add("o15_16");
+        colonne.add("o16_17");
+        ResultSet result;
+        Comunicatore com= new Comunicatore();
+        for (int i=0; i<5;i++){
+            HashMap <String,String> map=new HashMap<>();
+            dove.put("giorno", i);
+            dove.put("maintainer", man.getId());
+            try{
+                com.apri();
+                
+                result=com.selectionQuery("orari", colonne, dove);
+                while(result.next()){
+                    j=(100*(result.getInt("o8_9")))/60;
+                    map.put("o8_9", j+"%");
+                    j=(100*(result.getInt("o9_10")))/60;
+                    map.put("o9_10", j+"%" );
+                    j=(100*(result.getInt("o10_11")))/60;
+                    map.put("o10_11", j+"%" );
+                    j=(100*(result.getInt("o11_12")))/60;
+                    map.put("o11_12", j+"%" );
+                    j=(100*(result.getInt("o14_15")))/60;
+                    map.put("o14_15", j+"%" );
+                    j=(100*(result.getInt("o15_16")))/60;
+                    map.put("o15_16", j+"%" );
+                    j=(100*(result.getInt("o16_17")))/60;
+                    map.put("o16_17", j+"%" );
+                }
+                array.add(map);
+                com.chiudi();
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+                return null;
+            }
+            dove.clear();
+            
+        }
+        colonne.clear();
+        //this.stampaPercentuali(array);
+        if(array.isEmpty()){
+            return null;
+        }
+        return array;
     }
+    
+    /*private void stampaPercentuali(ArrayList<HashMap> a){
+        int j=1;
+        HashMap <String,Object> map=new HashMap<>();
+        for (int i=0; i<a.size(); i++){
+            map=a.get(i);
+            System.out.println("Giorno"+j+"="+map.toString());
+            j++;
+        }
+    */
     
     @Override
     public String toString() {

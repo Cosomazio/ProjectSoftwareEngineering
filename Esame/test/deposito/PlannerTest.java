@@ -324,17 +324,21 @@ public class PlannerTest {
     /**
      * Test of maintainerAvalPerc method, of class Planner.
      */
-    /*
+    
     @Test
     public void testMaintainerAvalPerc() {
-        System.out.println("maintainerAvalPerc");
-        Maintainer man = null;
-        Planner instance = null;
-        instance.maintainerAvalPerc(man);
+       System.out.println("maintainerAvalPerc");
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+        
+        ArrayList<HashMap> l=instance.maintainerAvalPerc(man);
+        if(l==null){
+            fail("Errore nella realizzazione delle percentuali");
+        }
+        
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
-    */
+    
     @Test
     public void testToString() {
         System.out.println("toString");
