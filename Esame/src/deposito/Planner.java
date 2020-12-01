@@ -119,50 +119,43 @@ public class Planner extends AbstractUtente {
                 case "o8_9" :
                     i=0;
                     j=1;
-                    array.add(i);
-                    array.add(j);
                     break;
                 case "o9_10" :
                     i=1;
                     j=2;
-                    array.add(i);
-                    array.add(j);
+                  
                     break;
                 case "o10_11" :
                     i=2;
                     j=3;
-                    array.add(i);
-                    array.add(j);
+                    
                     break;
                 case "o11_12" :
                     i=3;
                     j=4;
-                    array.add(i);
-                    array.add(j);
+                   
                     break;
                 case "o14_15" :
                     i=4;
                     j=5;
-                    array.add(i);
-                    array.add(j);
+                 
                     break;
                 case "o15_16" :
                     i=5;
                     j=6;
-                    array.add(i);
-                    array.add(j);
+                   
                     break;
                 case "o16_17" :
                     i=6;
-                    array.add(i);
-                    array.add(j);
+                 
                     break;
                 default:
                     i=0;
                     j=1;
-                    array.add(i);
-                    array.add(j);
+               
             }
+        array.add(i);
+        array.add(j);
         return array;
     }
     
