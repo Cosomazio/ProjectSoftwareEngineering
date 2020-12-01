@@ -306,7 +306,39 @@ public class SystemAdministrator extends AbstractUtente {
         
     }
     
-    
+    public ArrayList<Planner> viewPlanner(){
+        ArrayList<Planner> res=new ArrayList<>();
+        String tablePlan="planner";
+        HashMap <String,Object> dovePlan=null;
+        ArrayList<String> colonnePlan= new ArrayList<>();
+        colonnePlan.add("pid");
+        colonnePlan.add("username");
+        colonnePlan.add("password");
+        colonnePlan.add("nome");
+        colonnePlan.add("email");
+        
+        Comunicatore com= new Comunicatore();
+        try {
+            com.apri();
+            ResultSet set= com.selectionQuery(tablePlan, colonnePlan, dovePlan);
+            while(set.next()){
+                int pid=set.getInt("pid");
+                String username=set.getString("username");
+                String password=set.getString("password");
+                String nome=set.getString("nome");
+                String email=set.getString("email");
+                Planner newPlan= new Planner(username, password, nome, email, pid);
+                res.add(newPlan);
+            }
+            
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        
+        return res;
+    }
     
     
 }
