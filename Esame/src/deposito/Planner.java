@@ -38,12 +38,24 @@ public class Planner extends AbstractUtente {
         try {
             com.apri();
             array=this.selezione(mappaWhere);
-            arr=this.ora(orario);
-            i=arr.get(0);
-            j=arr.get(1);
-            //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINI
+            array=this.tempo(array, tempoIntervento, orario);
+            //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINO
             
-            if(array.get(i) >= tempoIntervento){
+            com.insertQuery("pianificazione", tempMap);
+            this.aggiorna(array, mappaWhere);
+            com.chiudi();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    private ArrayList tempo(ArrayList<Integer> array,int tempoIntervento,String orario){
+        int temp,i,j=0;
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr=this.ora(orario);
+        i=arr.get(0);
+        j=arr.get(1);
+        try{
+        if(array.get(i) >= tempoIntervento){
                 
                 temp=array.get(i)-tempoIntervento;
                 array.set(i, temp);
@@ -60,15 +72,11 @@ public class Planner extends AbstractUtente {
             else{
                 throw new Exception("Impossibile assegnare attivita, scegli un altro giorno(NON C'È ABBASTANZA TEMPO)");
             }
-            
-            com.insertQuery("pianificazione", tempMap);
-            this.aggiorna(array, mappaWhere);
-            com.chiudi();
-        } catch (Exception ex) {
+        }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
+        return array;
     }
-    
     private ArrayList selezione(HashMap<String,Object> mappa){
             Comunicatore com = new Comunicatore();
             ArrayList<Integer> array = new ArrayList<>();
@@ -114,46 +122,28 @@ public class Planner extends AbstractUtente {
     
     private ArrayList ora(String orario){
         ArrayList<Integer> array = new ArrayList<>();
-        int i,j = 0;
-        switch(orario){
-                case "o8_9" :
-                    i=0;
-                    j=1;
-                    break;
-                case "o9_10" :
-                    i=1;
-                    j=2;
-                  
-                    break;
-                case "o10_11" :
-                    i=2;
-                    j=3;
-                    
-                    break;
-                case "o11_12" :
-                    i=3;
-                    j=4;
-                   
-                    break;
-                case "o14_15" :
-                    i=4;
-                    j=5;
-                 
-                    break;
-                case "o15_16" :
-                    i=5;
-                    j=6;
-                   
-                    break;
-                case "o16_17" :
-                    i=6;
-                 
-                    break;
-                default:
-                    i=0;
-                    j=1;
-               
-            }
+        int i=0,j = 0;
+        if(orario.equals("o8_9")){
+            i=0;
+            j=1;
+        }else if(orario.equals("o9_10")){
+            i=1;
+            j=2;
+        }else if(orario.equals("o10_11")){
+            i=2;
+            j=3;
+        }else if(orario.equals("o11_12")){
+            i=3;
+            j=4;
+        }else if(orario.equals("o14_15")){
+            i=4;
+            j=5;
+        }else if(orario.equals("o15_16")){
+            i=5;
+            j=6;
+        }else if(orario.equals("o16_17")){
+            i=6;
+        }
         array.add(i);
         array.add(j);
         return array;
