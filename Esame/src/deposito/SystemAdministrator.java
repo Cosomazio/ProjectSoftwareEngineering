@@ -143,6 +143,9 @@ public class SystemAdministrator extends AbstractUtente {
         return 1;
     }
     private int inserisciCompetenze(Maintainer man, Set<String> skill){
+        if(skill==null){
+            skill=new HashSet<>();
+        }
         Comunicatore com=new Comunicatore();
         Iterator iter= skill.iterator();
         HashMap <String, Object> skills=new HashMap<>();
@@ -172,6 +175,8 @@ public class SystemAdministrator extends AbstractUtente {
         return 1;
     }
     public int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
+        if(procedure==null)
+            procedure=new HashSet<Procedure>();
         Comunicatore com=new Comunicatore();
         Iterator iterpro= procedure.iterator();
         HashMap <String, Object> procedures=new HashMap<>();
@@ -315,11 +320,12 @@ public class SystemAdministrator extends AbstractUtente {
             while(rs.next()){
                 String nome = rs.getString("nome");
                 String username = rs.getString("username");
-                String password = rs.getString("password");
+                String password = rs.getString("pass");
                 String email = rs.getString("email");
                 int id = rs.getInt("mid");
                 archivio.add(new Maintainer(username, password, nome, email, id));
             }
+            com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -334,7 +340,7 @@ public class SystemAdministrator extends AbstractUtente {
         ArrayList<String> colonnePlan= new ArrayList<>();
         colonnePlan.add("pid");
         colonnePlan.add("username");
-        colonnePlan.add("password");
+        colonnePlan.add("pass");
         colonnePlan.add("nome");
         colonnePlan.add("email");
         
@@ -345,7 +351,7 @@ public class SystemAdministrator extends AbstractUtente {
             while(set.next()){
                 int pid=set.getInt("pid");
                 String username=set.getString("username");
-                String password=set.getString("password");
+                String password=set.getString("pass");
                 String nome=set.getString("nome");
                 String email=set.getString("email");
                 Planner newPlan= new Planner(username, password, nome, email, pid);
