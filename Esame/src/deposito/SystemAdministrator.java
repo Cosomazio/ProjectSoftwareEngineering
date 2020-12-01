@@ -8,6 +8,8 @@ package deposito;
 import factories.*;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,18 +28,24 @@ public class SystemAdministrator extends AbstractUtente {
         Maintainer m=builder.getInstance();
         Comunicatore com=new Comunicatore();
         HashMap <String, Object> map= new HashMap<>();
+        
         map.put("mid", m.getId());
         map.put("username", m.getUsername());
         map.put("pass", m.getPassword());
         map.put("nome", m.getNome());
         map.put("email", m.getEmail());
+        
         try{
            com.apri(); 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
         try{
-          com.insertQuery("maintainer", map);  
+          com.insertQuery("maintainer", map); 
+          int i = this.inserisciOrari(m.getId());
+          if(i==-1){
+              throw new SQLException("Errore");
+          }
         }catch(SQLException ex2){
           System.out.println(ex2.getMessage());
           return null;  
@@ -51,7 +59,33 @@ public class SystemAdministrator extends AbstractUtente {
         return m;
                  
     }
-    
+    private int inserisciOrari(int id){
+        HashMap<String,Object> mappa = new HashMap<>();
+        Comunicatore com = new Comunicatore();
+        
+        try {
+            com.apri();
+        
+        for(int i = 1 ;i<=5;i++){
+            mappa.put("o8_9", 60);
+            mappa.put("o9_10", 60);
+            mappa.put("o10_11", 60);
+            mappa.put("o11_12", 60);
+            mappa.put("o14_15", 60);
+            mappa.put("o15_16", 60);
+            mappa.put("o16_17", 60);
+            mappa.put("maintainer", id);
+            mappa.put("giorno", i);
+            com.insertQuery("orari", mappa);
+            mappa.clear();
+            }
+            com.chiudi();
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return -1;
+            }   
+        return 1;
+    }
     
     public Maintainer modificaMaintainer(Maintainer man, String username, String password, String nome,
             String email, Set<String> skill, Set<Procedure> procedure) throws SQLException{
