@@ -32,59 +32,17 @@ public class Planner extends AbstractUtente {
        tempMap.put("maintainer",man.getId());
        
        ArrayList<Integer> array = new ArrayList<>();
-       
-       int temp,i;
+       ArrayList<Integer> arr = new ArrayList<>();
+       int temp,i,j;
        int tempoIntervento = act.getTempo();
         try {
             com.apri();
-            ResultSet rs = com.selectionQuery("orari" ,null, mappaWhere);
-            while(rs.next()){
-                
-                array.add(rs.getInt("o8_9"));
-                array.add(rs.getInt("o9_10"));
-                array.add(rs.getInt("o10_11"));
-                array.add(rs.getInt("o11_12"));
-                array.add(rs.getInt("o14_15"));
-                array.add(rs.getInt("o15_16"));
-                array.add(rs.getInt("o16_17"));
-             
-            }
-        int j=0;    
-            switch(orario){
-                case "o8_9" :
-                    i=0;
-                    j=1;
-                    break;
-                case "o9_10" :
-                    i=1;
-                    j=2;
-                    break;
-                case "o10_11" :
-                    i=2;
-                    j=3;
-                    break;
-                case "o11_12" :
-                    i=3;
-                    j=4;
-                    break;
-                case "o14_15" :
-                    i=4;
-                    j=5;
-                    break;
-                case "o15_16" :
-                    i=5;
-                    j=6;
-                    break;
-                case "o16_17" :
-                    i=6;
-                    break;
-                default:
-                    i=0;
-                    j=1;
-            }
+            array=this.selezione(mappaWhere);
+            arr=this.ora(orario);
+            i=arr.get(0);
+            j=arr.get(1);
             //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINI
-            System.out.println("Questa è la i= "+i);
-            System.out.println(array.toString());
+            
             if(array.get(i) >= tempoIntervento){
                 
                 temp=array.get(i)-tempoIntervento;
@@ -103,6 +61,40 @@ public class Planner extends AbstractUtente {
                 throw new Exception("Impossibile assegnare attivita, scegli un altro giorno(NON C'È ABBASTANZA TEMPO)");
             }
             
+            com.insertQuery("pianificazione", tempMap);
+            this.aggiorna(array, mappaWhere);
+            com.chiudi();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private ArrayList selezione(HashMap<String,Object> mappa){
+            Comunicatore com = new Comunicatore();
+            ArrayList<Integer> array = new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("orari" ,null, mappa);
+            while(rs.next()){
+                
+                array.add(rs.getInt("o8_9"));
+                array.add(rs.getInt("o9_10"));
+                array.add(rs.getInt("o10_11"));
+                array.add(rs.getInt("o11_12"));
+                array.add(rs.getInt("o14_15"));
+                array.add(rs.getInt("o15_16"));
+
+            }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+    }
+        return array;
+    }
+    
+    private void aggiorna(ArrayList<Integer> array,HashMap<String,Object> mappa){
+        try {
+            Comunicatore com = new Comunicatore();
+            com.apri();
             HashMap<String,Object> mappaModifica = new HashMap<>();
             mappaModifica.put("o8_9", array.get(0));
             mappaModifica.put("o9_10", array.get(1));
@@ -112,13 +104,66 @@ public class Planner extends AbstractUtente {
             mappaModifica.put("o15_16", array.get(5));
             mappaModifica.put("o16_17", array.get(6));
             
-            com.insertQuery("pianificazione", tempMap);
-            com.updateQuery("orari", mappaModifica, mappaWhere);
+            com.updateQuery("orari", mappaModifica, mappa);
             
             com.chiudi();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    
+    private ArrayList ora(String orario){
+        ArrayList<Integer> array = new ArrayList<>();
+        int i,j = 0;
+        switch(orario){
+                case "o8_9" :
+                    i=0;
+                    j=1;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                case "o9_10" :
+                    i=1;
+                    j=2;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                case "o10_11" :
+                    i=2;
+                    j=3;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                case "o11_12" :
+                    i=3;
+                    j=4;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                case "o14_15" :
+                    i=4;
+                    j=5;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                case "o15_16" :
+                    i=5;
+                    j=6;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                case "o16_17" :
+                    i=6;
+                    array.add(i);
+                    array.add(j);
+                    break;
+                default:
+                    i=0;
+                    j=1;
+                    array.add(i);
+                    array.add(j);
+            }
+        return array;
     }
     
     public void planActivity(InterfaceActivity act){
