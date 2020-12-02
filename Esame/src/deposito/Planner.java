@@ -44,7 +44,7 @@ public class Planner extends AbstractUtente {
             com.insertQuery("pianificazione", tempMap);
             this.aggiorna(array, mappaWhere);
             com.chiudi();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -60,7 +60,7 @@ public class Planner extends AbstractUtente {
                 temp=array.get(i)-tempoIntervento;
                 array.set(i, temp);
             }
-            else if(array.get(i) >= tempoIntervento && i == 6){
+            else if(array.get(i) < tempoIntervento && i == 6){
                 throw new Exception("Impossibile assegnare attivita, scegli un altro giorno(NON C'È ABBASTANZA TEMPO)");
             }
             else if(array.get(i)<tempoIntervento && (array.get(i)+array.get(j)>=tempoIntervento)){
@@ -91,6 +91,7 @@ public class Planner extends AbstractUtente {
                 array.add(rs.getInt("o11_12"));
                 array.add(rs.getInt("o14_15"));
                 array.add(rs.getInt("o15_16"));
+                array.add(rs.getInt("o16_17"));
 
             }
             } catch (SQLException ex) {

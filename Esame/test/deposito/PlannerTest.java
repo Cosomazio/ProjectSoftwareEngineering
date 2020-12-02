@@ -55,14 +55,14 @@ public class PlannerTest {
     @Test
     public void testAssegnaMan() {
         System.out.println("assegnaMan");
-        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+        Maintainer man = new Maintainer("nicola","5678","luigi","luigi@luigi.com",0);
         Sito sito1 = new Sito("ufficio","area");
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
         AbstractActivity act = new PlannedActivity(4,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
         int giorno=1;
-        String orario="o16_17";
+        String orario="o8_9";
         instance.assegnaMan(man, act,giorno,orario);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
