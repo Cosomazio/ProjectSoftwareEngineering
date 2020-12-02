@@ -224,6 +224,11 @@ public class SystemAdministratorTest {
         System.out.println("viewMaintainer");
         SystemAdministrator instance = new SystemAdministrator("test", "xxxx", "tentativo", "prova.test@gmail.com", 0);
         Maintainer man;
+        ArrayList<Maintainer> archivio1 = instance.viewMaintainer();
+        if(archivio1.isEmpty()){
+            flag=true;
+            //System.out.println("è andata bene");
+        }
         try {
             man = instance.createMaintainer("tentativo", "12345", "di prova", "tenta.Prova@gmail.com");
             ArrayList<Maintainer> archivio = instance.viewMaintainer();
