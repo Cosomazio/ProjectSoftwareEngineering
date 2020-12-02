@@ -55,7 +55,7 @@ public class PlannerTest {
     @Test
     public void testAssegnaMan() {
         System.out.println("assegnaMan");
-        Maintainer man = new Maintainer("nicola","5678","luigi","luigi@luigi.com",0);
+        Maintainer man = new Maintainer("nicola","5678","luigi","ciccio.pasticcio@hot.com",1);
         Sito sito1 = new Sito("ufficio","area");
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
@@ -63,7 +63,10 @@ public class PlannerTest {
         AbstractActivity act = new PlannedActivity(4,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
         int giorno=1;
         String orario="o8_9";
-        instance.assegnaMan(man, act,giorno,orario);
+        int i=instance.assegnaMan(man, act,giorno,orario);
+        if(i==-1){
+            fail("Assegnazione non effettuata");
+        }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -355,6 +358,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
+    
     
     @Test
     public void testSortedActivities(){

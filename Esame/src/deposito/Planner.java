@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import utile.Ora;
 /**
  *
  * @author tomma
@@ -20,7 +21,8 @@ public class Planner extends AbstractUtente {
         super(username,password,nome,email,id);
     }
     
-    public void assegnaMan(Maintainer man, AbstractActivity act,int giorno,String orario){
+    //il metodo è int solo per farmi restituire qualcosa per il test
+    public int assegnaMan(Maintainer man, AbstractActivity act,int giorno,String orario){
        //Se non c'è abbastanza tempo nell'orario scelto allora si va a prendere automaticamente il tempo restante nella casella dopo
        Comunicatore com = new Comunicatore();
        HashMap<String,Object> mappaWhere = new HashMap<>();
@@ -40,13 +42,14 @@ public class Planner extends AbstractUtente {
             array=this.selezione(mappaWhere);
             array=this.tempo(array, tempoIntervento, orario);
             //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINO
-            
             com.insertQuery("pianificazione", tempMap);
             this.aggiorna(array, mappaWhere);
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return -1;
         }
+        return 1;
     }
     private ArrayList tempo(ArrayList<Integer> array,int tempoIntervento,String orario){
         int temp,i,j=0;
@@ -54,8 +57,9 @@ public class Planner extends AbstractUtente {
         arr=this.ora(orario);
         i=arr.get(0);
         j=arr.get(1);
+        
         try{
-        if(array.get(i) >= tempoIntervento){
+            if(array.get(i) >= tempoIntervento){
                 
                 temp=array.get(i)-tempoIntervento;
                 array.set(i, temp);
@@ -75,8 +79,10 @@ public class Planner extends AbstractUtente {
         }catch(Exception ex){
             System.out.println(ex.getMessage());
         }
+        
         return array;
     }
+    
     private ArrayList selezione(HashMap<String,Object> mappa){
             Comunicatore com = new Comunicatore();
             ArrayList<Integer> array = new ArrayList<>();
@@ -122,31 +128,20 @@ public class Planner extends AbstractUtente {
     }
     
     private ArrayList ora(String orario){
+        int i=0,j=0;
         ArrayList<Integer> array = new ArrayList<>();
-        int i=0,j = 0;
-        if(orario.equals("o8_9")){
-            i=0;
-            j=1;
-        }else if(orario.equals("o9_10")){
-            i=1;
-            j=2;
-        }else if(orario.equals("o10_11")){
-            i=2;
-            j=3;
-        }else if(orario.equals("o11_12")){
-            i=3;
-            j=4;
-        }else if(orario.equals("o14_15")){
-            i=4;
-            j=5;
-        }else if(orario.equals("o15_16")){
-            i=5;
-            j=6;
-        }else if(orario.equals("o16_17")){
-            i=6;
-        }
-        array.add(i);
-        array.add(j);
+        
+        
+        HashMap<String,Ora> mappa  = new HashMap<>();
+        mappa.put("o8_9",new Ora(0,1));
+        mappa.put("o9_10",new Ora(1,2));
+        mappa.put("o10_11",new Ora(2,3));
+        mappa.put("o11_12",new Ora(3,4));
+        mappa.put("o14_15",new Ora(4,5));
+        mappa.put("o15_16",new Ora(5,6));
+        mappa.put("o16_17",new Ora(6,0));
+        array.add(mappa.get(orario).getI());
+        array.add(mappa.get(orario).getJ());
         return array;
     }
     
@@ -393,6 +388,7 @@ public class Planner extends AbstractUtente {
     public void viewEWO() {
         
     }
+    
     public ArrayList<AbstractActivity> sortedActivities(){
         Calendar c=Calendar.getInstance();
         java.util.Date d= new java.util.Date();
