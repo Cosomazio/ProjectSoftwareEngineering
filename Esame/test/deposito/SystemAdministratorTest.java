@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,6 +50,7 @@ public class SystemAdministratorTest {
      * Test of createMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
+    /*
     @Test
     public void testCreateMaintainer() throws SQLException {
         System.out.println("createMaintainer");
@@ -63,13 +66,14 @@ public class SystemAdministratorTest {
         int id=result.getId();
         Maintainer expResult = new Maintainer(username,password, nome, email,id);
         assertEquals(expResult.toString(), result.toString());
+        
         }
         
        
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-
+*/
     /**
      * Test of modificaMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
@@ -213,6 +217,27 @@ public class SystemAdministratorTest {
     /**
      * Test of toString method, of class SystemAdministrator.
      */
+    
+    @Test
+    public void testViewMaintainer() {
+        Boolean flag= false;
+        System.out.println("viewMaintainer");
+        SystemAdministrator instance = new SystemAdministrator("test", "xxxx", "tentativo", "prova.test@gmail.com", 0);
+        Maintainer man;
+        try {
+            man = instance.createMaintainer("tentativo", "12345", "di prova", "tenta.Prova@gmail.com");
+            ArrayList<Maintainer> archivio = instance.viewMaintainer();
+            for(Maintainer m: archivio)
+                if(m.equals(man))
+                    flag=true;
+            instance.cancellaMaintainer(man);
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        assertEquals(flag, true);
+    }
+    
+    
     @Test
     public void testToString() {
         System.out.println("toString");
