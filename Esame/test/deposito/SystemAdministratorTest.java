@@ -259,5 +259,37 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    
+    @Test
+    public void testViewPlanner(){
+        System.out.println("viewPlanner");
+        SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        String username="giova";
+        String password="nni";
+        String nome="giovanni";
+        String email="gio@vanni.it";
+        Planner plan=null;
+        boolean flag=false;
+        ArrayList<Maintainer> archivio1 = instance.viewMaintainer();
+        if(archivio1.isEmpty()){
+            flag=true;
+        }
+        try {
+            plan=instance.createPlanner(username, password, nome, email);
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        
+        ArrayList<Planner> planners=instance.viewPlanner();
+        for(Planner p: planners){
+            if(p.equals(plan) ){
+                flag=true;
+            }
+        }
+        assertEquals(flag, true);
+        try {
+            instance.cancellaPlanner(plan);
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+    }
 }
