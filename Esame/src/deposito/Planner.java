@@ -217,7 +217,7 @@ public class Planner extends AbstractUtente {
         return attivita;
     }
     public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
-            List<String> materiali, int week, Boolean interrompibile, Procedure procedura,String tipoAttivita){
+            List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
         
         int res;
         AbstractActivity expResult = act;
@@ -234,7 +234,6 @@ public class Planner extends AbstractUtente {
             mappa.put("tempo",tempo);
             mappa.put("week",week);
             mappa.put("interrompibile",interrompibile);
-            mappa.put("pianificazione",tipoAttivita);
             HashMap<String,Object> mappa2= new HashMap<>();
             mappa2.put("aid",act.getId());
             
