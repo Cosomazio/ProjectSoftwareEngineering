@@ -457,7 +457,7 @@ public class Planner extends AbstractUtente {
         colonne.add("o16_17");
         ResultSet result;
         Comunicatore com= new Comunicatore();
-        for (int i=0; i<5;i++){
+        for (int i=1; i<=5;i++){
             HashMap <String,String> map=new HashMap<>();
             dove.put("giorno", i);
             dove.put("maintainer", man.getId());
@@ -497,8 +497,8 @@ public class Planner extends AbstractUtente {
         }
         return array;
     }
-    
-    /*private void stampaPercentuali(ArrayList<HashMap> a){
+    /*
+    private void stampaPercentuali(ArrayList<HashMap> a){
         int j=1;
         HashMap <String,Object> map=new HashMap<>();
         for (int i=0; i<a.size(); i++){
@@ -506,8 +506,8 @@ public class Planner extends AbstractUtente {
             System.out.println("Giorno"+j+"="+map.toString());
             j++;
         }
+    }
     */
-    
     @Override
     public String toString() {
         return super.toString()+"Planner";

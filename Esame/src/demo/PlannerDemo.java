@@ -51,6 +51,9 @@ public class PlannerDemo {
             System.out.println("2- Modifica Attività \n");
             System.out.println("3- Cancella Attività \n");
             System.out.println("4- Assegna Manutentore \n");
+            System.out.println("5- Visualizza ore manutentore\n");
+            System.out.println("6- Tabella percentuali ore del manutentore \n");
+            System.out.println("7- Arresta sistema \n");
             try{
             
             BufferedReader scanf= new BufferedReader(new InputStreamReader(System.in));
@@ -305,7 +308,7 @@ public class PlannerDemo {
             num= scanf.readLine();
             kk=Integer.parseInt(num);
                 
-            }while(!(kk>=0 && kk<arr.size()));
+            }while(!(kk>=0 && kk<man.size()));
                 do{
                 System.out.println("Inserisci giorno (tra 1 e 5):");
                 
@@ -337,8 +340,116 @@ public class PlannerDemo {
             }
             
             //end if
-        }else if(scelta == 4){
+        }else if(scelta == 5){
+            //stampa ore
+             int q=0;
+            String num;
+            int k;
+            String gg;
+            int giorno;
+            SystemAdministrator admin=new SystemAdministrator("admin","admin","luigi","ciccio@ciccio.com",1);
+            q=0;
+            ArrayList <Maintainer> man=admin.viewMaintainer();
+            System.out.println("Scegli Maintainer: \n");
+            for(AbstractUtente att : man){
+            System.out.println(q+"- "+att.toString()+"\n");
+            q++;
+            }
             
+            try{
+            do{
+            System.out.println("Inserisci un numero valido: \n"); 
+            BufferedReader scanf= new BufferedReader(new InputStreamReader(System.in));
+            num= scanf.readLine();
+            k=Integer.parseInt(num);   
+            }while(!(k>=0 && k<man.size()));
+            
+            do{
+                System.out.println("Inserisci giorno (tra 1 e 5):");
+                
+                BufferedReader scanf= new BufferedReader(new InputStreamReader(System.in));
+                gg= scanf.readLine();
+                giorno=Integer.parseInt(gg);    
+            }while(!(giorno>=1 && giorno<=5));
+            
+            HashMap <Integer,Integer> mappa=p.maintainerAval(man.get(k), giorno);
+            HashMap<String,String> mappabuona=new HashMap<>();
+            for(int io=1;io<=mappa.size();io++){
+                Integer cc=mappa.get(io);
+                switch (io) {
+                    case 1:
+                        mappabuona.put("o8_9 ", cc+" minuti");
+                        break;
+                    case 2:
+                        mappabuona.put("o9_10 ", cc+" minuti");
+                        break;
+                    case 3:
+                        mappabuona.put("o10_11 ", cc+" minuti");
+                        break;
+                    case 4:
+                        mappabuona.put("o11_12 ", cc+" minuti");
+                        break;
+                    case 5:
+                        mappabuona.put("o14_15 ", cc+" minuti");
+                        break;
+                    case 6:
+                        mappabuona.put("o15_16 ", cc+" minuti");
+                        break;
+                    case 7:
+                        mappabuona.put("o16_17 ", cc+" minuti");
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+                System.out.println("Giorno = "+giorno+" "+mappabuona.toString());
+                System.out.println("\n");
+            }catch(IOException ex){
+                System.out.println(ex.getMessage());
+            }
+        //end if
+        }else if(scelta==6){
+            int q;
+            String num;
+            int k;
+            SystemAdministrator admin=new SystemAdministrator("admin","admin","luigi","ciccio@ciccio.com",1);
+            q=0;
+            ArrayList <Maintainer> man=admin.viewMaintainer();
+            System.out.println("Scegli Maintainer: \n");
+            for(AbstractUtente att : man){
+            System.out.println(q+"- "+att.toString()+"\n");
+            q++;
+            }
+            
+            try{
+            do{
+            System.out.println("Inserisci un numero valido: \n"); 
+            BufferedReader scanf= new BufferedReader(new InputStreamReader(System.in));
+            num= scanf.readLine();
+            k=Integer.parseInt(num);   
+            }while(!(k>=0 && k<man.size()));
+            
+            ArrayList<HashMap> mappa=p.maintainerAvalPerc(man.get(k));
+            
+            int w=1;
+            HashMap <String,Object> mappa1=new HashMap<>();
+            for (int r=0; r<mappa.size(); r++){
+                mappa1=mappa.get(r);
+                System.out.println("Giorno "+w+" = "+mappa1.toString());
+                w++;
+            }
+                System.out.println("\n");
+            
+            
+            
+            }catch(IOException ex){
+                System.out.println(ex.getMessage());
+            }
+        }else if(scelta==7){
+            break;
+        }else{
+            System.out.println("Inserisci un numero valido \n");
         }
         
         }while(true);
