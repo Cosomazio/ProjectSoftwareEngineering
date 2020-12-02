@@ -210,13 +210,21 @@ public class SystemAdministrator extends AbstractUtente {
         Comunicatore com=new Comunicatore();
         ResultSet s;
         HashMap <String,Object> chiavi=new HashMap<>();
+        HashMap <String,Object> chiaviora=new HashMap<>();
         chiavi.put("mid",man.getId());
+        chiaviora.put("maintainer", man.getId());
         try{
         com.apri();
         com.deleteQuery("maintainer_procedura", chiavi);
         com.chiudi();
         com.apri();
         com.deleteQuery("maintainer_competenze", chiavi);
+        com.chiudi();
+        com.apri();
+        com.deleteQuery("pianificazione", chiaviora);
+        com.chiudi();
+        com.apri();
+        com.deleteQuery("orari", chiaviora);
         com.chiudi();
         com.apri();
         com.deleteQuery("maintainer", chiavi);

@@ -74,11 +74,11 @@ public class SystemAdministratorTest {
      * Test of modificaMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*
-    @Test
+    
+    /*@Test
     public void testModificaMaintainer() throws SQLException {
         System.out.println("modificaMaintainer");
-        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",0);
         String username = "nicola";
         String password = "5678";
         String nome = "luigi";
@@ -93,7 +93,7 @@ public class SystemAdministratorTest {
         procedure.add(new Procedure(p,null,"paperino"));
         procedure.add(new Procedure(p,null,"cornuto"));
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
-        Maintainer expResult = new Maintainer(username, password, nome,email, 1,skill,procedure);
+        Maintainer expResult = new Maintainer(username, password, nome,email, 0,skill,procedure);
         Maintainer result = instance.modificaMaintainer(man, username, password, nome, email, skill, procedure);
         if (result==null){
             fail("Errore nella modifica del maintainer");
@@ -108,22 +108,22 @@ public class SystemAdministratorTest {
      * Test of cancellaMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*
-    @Test
+    
+    /*@Test
     public void testCancellaMaintainer() throws SQLException {
         System.out.println("cancellaMaintainer");
-        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",0);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaMaintainer(man);
         Comunicatore com=new Comunicatore();
         com.apri();
         HashMap < String, Object> map= new HashMap <> ();
-        map.put("mid", 1);
+        map.put("mid", 0);
         ArrayList <String> a=new ArrayList<>();
         a.add("mid");
         
         ResultSet rs=com.selectionQuery("maintainer", a, map);
-        if (rs.next()!=false){
+        if (rs.next() != false){
             fail("Erroe nella cancellazione del maintaimer");
         }
         com.chiudi();
