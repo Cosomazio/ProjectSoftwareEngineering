@@ -182,7 +182,7 @@ public class PlannerTest {
     /**
      * Test of modifyActivity method, of class Planner.
      */
-    
+    /*
     @Test
     public void testModifyActivity() {
          
@@ -327,7 +327,7 @@ public class PlannerTest {
     /**
      * Test of maintainerAvalPerc method, of class Planner.
      */
-    
+    /*
     @Test
     public void testMaintainerAvalPerc() {
        System.out.println("maintainerAvalPerc");
@@ -341,7 +341,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         
     }
-    
+    */
     @Test
     public void testToString() {
         System.out.println("toString");
