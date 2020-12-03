@@ -73,7 +73,7 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-*/
+
     /**
      * Test of modificaMaintainer method, of class SystemAdministrator.
      * @throws java.sql.SQLException
@@ -140,8 +140,8 @@ public class SystemAdministratorTest {
      * Test of createPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*
-    @Test
+    
+    /*@Test
     public void testCreatePlanner() throws SQLException {
         System.out.println("createPlanner");
         String username = "ciccio";
@@ -166,17 +166,17 @@ public class SystemAdministratorTest {
      * Test of modificaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*
-    @Test
+    
+    /*@Test
     public void testModificaPlanner() throws SQLException {
         System.out.println("modificaPlanner");
-        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",2);
+        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",0);
         String username = "napoli98";
         String password = "1357";
         String nome = "francesco";
         String email = "nicoladinari@gmail.com";
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
-        Planner expResult = new Planner(username,password,nome,email,2);
+        Planner expResult = new Planner(username,password,nome,email,0);
         Planner result = instance.modificaPlanner(pln, username, password, nome, email);
         if(result==null){
             fail("Errore nella modifica del planner");
@@ -192,16 +192,16 @@ public class SystemAdministratorTest {
      * @throws java.sql.SQLException
      */
     
-    @Test
+    /*@Test
     public void testCancellaPlanner() throws SQLException {
         System.out.println("cancellaPlanner");
-        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",2);
+        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",0);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaPlanner(pln);
         Comunicatore com=new Comunicatore();
         com.apri();
         HashMap < String, Object> map= new HashMap <> ();
-        map.put("pid", 2);
+        map.put("pid", 0);
         ArrayList <String> a=new ArrayList<>();
         a.add("pid");
         
@@ -217,7 +217,7 @@ public class SystemAdministratorTest {
     /**
      * Test of toString method, of class SystemAdministrator.
      */
-    
+    /*
     @Test
     public void testViewMaintainer() {
         Boolean flag= false;
@@ -241,7 +241,7 @@ public class SystemAdministratorTest {
         }
         assertEquals(flag, true);
     }
-    
+    */
     
     @Test
     public void testToString() {
@@ -259,7 +259,7 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    @Test
+    /*@Test
     public void testViewPlanner(){
         System.out.println("viewPlanner");
         SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
@@ -292,4 +292,5 @@ public class SystemAdministratorTest {
             fail(ex.getMessage());
         }
     }
+*/
 }
