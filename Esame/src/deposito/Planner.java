@@ -347,6 +347,7 @@ public class Planner extends AbstractUtente {
             com=new Comunicatore();
             com.apri();
             ResultSet set=com.selectionQuery(tableAtt, colonneAtt, doveAtt);
+            com.chiudi();
             while(set.next()){
                 int id=set.getInt("aid");
                 String office=set.getString("office");
@@ -360,7 +361,7 @@ public class Planner extends AbstractUtente {
                 boolean interrompibile=set.getBoolean("interrompibile");
                 int ewoid=set.getInt("ewoid");
                 String pianificazione=set.getString("pianificazione");
-                com.chiudi();
+                //com.chiudi();
                 
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
@@ -371,10 +372,10 @@ public class Planner extends AbstractUtente {
                 act.setId(id);
                 //System.out.println("sdg"+act);
                 res.add(act);
-                com=new Comunicatore();
-                com.apri();
+                //com=new Comunicatore();
+                //com.apri();
             }
-            com.chiudi();
+            //com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
