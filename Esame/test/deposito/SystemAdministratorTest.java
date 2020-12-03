@@ -170,13 +170,13 @@ public class SystemAdministratorTest {
     @Test
     public void testModificaPlanner() throws SQLException {
         System.out.println("modificaPlanner");
-        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
+        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",2);
         String username = "napoli98";
         String password = "1357";
         String nome = "francesco";
         String email = "nicoladinari@gmail.com";
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
-        Planner expResult = new Planner(username,password,nome,email,1);
+        Planner expResult = new Planner(username,password,nome,email,2);
         Planner result = instance.modificaPlanner(pln, username, password, nome, email);
         if(result==null){
             fail("Errore nella modifica del planner");
@@ -191,17 +191,17 @@ public class SystemAdministratorTest {
      * Test of cancellaPlanner method, of class SystemAdministrator.
      * @throws java.sql.SQLException
      */
-    /*
+    
     @Test
     public void testCancellaPlanner() throws SQLException {
         System.out.println("cancellaPlanner");
-        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",1);
+        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",2);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         instance.cancellaPlanner(pln);
         Comunicatore com=new Comunicatore();
         com.apri();
         HashMap < String, Object> map= new HashMap <> ();
-        map.put("pid", 1);
+        map.put("pid", 2);
         ArrayList <String> a=new ArrayList<>();
         a.add("pid");
         
