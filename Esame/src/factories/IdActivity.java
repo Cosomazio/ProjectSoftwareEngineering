@@ -10,8 +10,8 @@ package factories;
  * @author tomma
  */
 public class IdActivity {
-    private static IdActivity istanza=null;
-    private int id=0;
+    private static IdActivity istanza;
+    
     
     public synchronized static IdActivity getInstance(){
         if (istanza == null) {
@@ -20,7 +20,7 @@ public class IdActivity {
         return istanza;
     }
 
-    
+    private int id;
     private IdActivity(){}
     public synchronized int getId() {
         return ++id;
