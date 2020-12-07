@@ -257,7 +257,7 @@ public class PlannerTest {
     /**
      * Test of viewActivities method, of class Planner.
      */
-    /*
+    
     @Test
     public void testViewActivities() {
         List<AbstractActivity> res1=instance.viewActivities();
@@ -277,12 +277,15 @@ public class PlannerTest {
         AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
         
         List<AbstractActivity> res=instance.viewActivities();
+        AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,interrompibile,procedura,"Planned");
         
+        assertEquals(plact2.getId(), plact.getId()+1);
         Boolean found=false;
         assertNotEquals(plact, null);
         assertEquals(res.size(), 1);
         assertEquals(res.get(0).compareTo(plact), 0);
     }
+    
     /**
      * Test of viewEWO method, of class Planner.
      */
