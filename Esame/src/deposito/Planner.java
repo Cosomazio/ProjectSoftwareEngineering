@@ -8,8 +8,6 @@ import factories.*;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import utile.Ora;
 /**
@@ -23,7 +21,7 @@ public class Planner extends AbstractUtente {
     
     //il metodo è int solo per farmi restituire qualcosa per il test
     public int assegnaMan(Maintainer man, AbstractActivity act,int giorno,String orario){
-       //Se non c'è abbastanza tempo nell'orario scelto allora si va a prendere automaticamente il tempo restante nella casella dopo
+       //Se non c'è abbastanza tempo nell'orario scelto allora si va a prendere automaticamente il tempo restante nella casella dopo(si fa solo per due caselle vicine)
        Comunicatore com = new Comunicatore();
        HashMap<String,Object> mappaWhere = new HashMap<>();
        mappaWhere.put("maintainer", man.getId());
@@ -39,11 +37,17 @@ public class Planner extends AbstractUtente {
        int tempoIntervento = act.getTempo();
         try {
             com.apri();
-            array=this.selezione(mappaWhere);
-            array=this.tempo(array, tempoIntervento, orario);
+            array=this.disponibilitaAttuale(mappaWhere);
+            if(array == null){
+                return -1;
+            }
+            arr=this.modificaDisponibilita(array, tempoIntervento, orario);
+            if(arr == null){
+                return -1;
+            }
             //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINO
             com.insertQuery("pianificazione", tempMap);
-            this.aggiorna(array, mappaWhere);
+            this.aggiornaDisponibilita(arr, mappaWhere);
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -51,10 +55,10 @@ public class Planner extends AbstractUtente {
         }
         return 1;
     }
-    private ArrayList tempo(ArrayList<Integer> array,int tempoIntervento,String orario){
+    private ArrayList modificaDisponibilita(ArrayList<Integer> array,int tempoIntervento,String orario){
         int temp,i,j=0;
         ArrayList<Integer> arr = new ArrayList<>();
-        arr=this.ora(orario);
+        arr=this.sceltaOrario(orario);
         i=arr.get(0);
         j=arr.get(1);
         
@@ -78,12 +82,13 @@ public class Planner extends AbstractUtente {
             }
         }catch(Exception ex){
             System.out.println(ex.getMessage());
+            return null;
         }
         
         return array;
     }
     
-    private ArrayList selezione(HashMap<String,Object> mappa){
+    private ArrayList disponibilitaAttuale(HashMap<String,Object> mappa){
             Comunicatore com = new Comunicatore();
             ArrayList<Integer> array = new ArrayList<>();
         try {
@@ -102,11 +107,12 @@ public class Planner extends AbstractUtente {
             }
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
+                return null;
     }
         return array;
     }
     
-    private void aggiorna(ArrayList<Integer> array,HashMap<String,Object> mappa){
+    private void aggiornaDisponibilita(ArrayList<Integer> array,HashMap<String,Object> mappa){
         try {
             Comunicatore com = new Comunicatore();
             com.apri();
@@ -127,7 +133,7 @@ public class Planner extends AbstractUtente {
         }
     }
     
-    private ArrayList ora(String orario){
+    private ArrayList sceltaOrario(String orario){
         int i=0,j=0;
         ArrayList<Integer> array = new ArrayList<>();
         
@@ -145,9 +151,6 @@ public class Planner extends AbstractUtente {
         return array;
     }
     
-    public void planActivity(InterfaceActivity act){
-        
-    }
     public void creaEwo(int id, Sito sito ,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
@@ -157,19 +160,16 @@ public class Planner extends AbstractUtente {
             List<String> skills, List<String> materiali){
         
     }
-    public void gestisciMateriali(InterfaceActivity act,List<String> materiali){
-        
-    }
     
-    //sito non esiste
+    /*Crea un attività e restituisce l'attività creata altrimenti ritorna null*/
     public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
         int res;
         
-        AbstractActivity attivita=null;
-        attivita=this.tipoAttivita(attivita, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+        AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+        
         Comunicatore com;    
         try {    
             com= new Comunicatore();
@@ -190,37 +190,79 @@ public class Planner extends AbstractUtente {
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
         return attivita;
     }
-    private AbstractActivity tipoAttivita(AbstractActivity attivita,Sito sito,String tipologia,String descrizione,int tempo,
+    /*--------------------------------------------*/
+    /*Crea l'attività in base al suo tipo se non riesce a fare almeno una delle condizioni ritorna null*/
+    private AbstractActivity tipoAttivita(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita){
-        
+            AbstractActivity attivita = null;
+            
         if(tipoAttivita.equals("Planned")){
-            PlannedBuilder builder= new PlannedBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita = builder.getResult();
+            attivita = this.createPlanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            return attivita;
         }else if(tipoAttivita.equals("Unplanned")){
-            UnplannedBuilder builder = new UnplannedBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita=builder.getResult();
+            attivita = this.createUnplanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            return attivita;
         }else if(tipoAttivita.equals("Extra")){
-            ExtraBuilder builder = new ExtraBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita=builder.getResult();
-        }else{
-            EwoBuilder builder = new EwoBuilder();
-            builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-            attivita = builder.getResult();
-        }
+            attivita = this.createExtra(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            return attivita;
+        }else if(tipoAttivita.equals("Ewo")){
+            attivita = this.createEWO(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            return attivita;
+        }else
+            return attivita;
+        
+    }
+    
+    /*--------------------------------------------*/
+    private AbstractActivity createPlanned(Sito sito,String tipologia,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura){
+        
+        PlannedBuilder builder = new PlannedBuilder();
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        AbstractActivity attivita = builder.getResult();
         return attivita;
     }
-    public void modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
+    private AbstractActivity createUnplanned(Sito sito,String tipologia,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura){
+        
+        UnplannedBuilder builder = new UnplannedBuilder();
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        AbstractActivity attivita = builder.getResult();
+        return attivita;
+    }
+    private AbstractActivity createExtra(Sito sito,String tipologia,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura){
+        
+        ExtraBuilder builder = new ExtraBuilder();
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        AbstractActivity attivita = builder.getResult();
+        return attivita;
+    }
+    private AbstractActivity createEWO(Sito sito,String tipologia,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura){
+        
+        EwoBuilder builder = new EwoBuilder();
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        AbstractActivity attivita = builder.getResult();
+        return attivita;
+    }
+    
+    /*--------------------------------------------*/
+    
+    /*Ritorna l'attività modificata oppure ritorna il valore null*/
+    public AbstractActivity modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
             List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
         
         int res;
-        AbstractActivity expResult = act;
         Comunicatore com;
         
         try {    
@@ -242,11 +284,14 @@ public class Planner extends AbstractUtente {
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
-        
+        return act;
         //AbstractActivity result=
     }    
-    public void deleteActivity(AbstractActivity act){
+    
+    /*Ritorna l'attività eliminata oppure null*/
+    public AbstractActivity deleteActivity(AbstractActivity act){
         Comunicatore com;
         int id = act.getId();
         try{
@@ -261,7 +306,9 @@ public class Planner extends AbstractUtente {
             com.chiudi();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
+        return act;
     }
     
     /*
@@ -365,8 +412,8 @@ public class Planner extends AbstractUtente {
                 
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
-                AbstractActivity attivita=null;
-                AbstractActivity act=tipoAttivita(attivita, s, tipologia, 
+                
+                AbstractActivity act=tipoAttivita( s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione);
                 act.setId(id);
@@ -431,12 +478,11 @@ public class Planner extends AbstractUtente {
                 map.put(index=rs.findColumn("o15_16"), rs.getInt(index));
                 map.put(index=rs.findColumn("o16_17"), rs.getInt(index));
             }
-            
-           
-            
+
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
         
         

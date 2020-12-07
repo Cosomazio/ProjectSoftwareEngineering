@@ -7,12 +7,7 @@ package deposito;
 
 //import java.time.OffsetTime;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -51,39 +46,36 @@ public class PlannerTest {
     /*
     */
     Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
-    /*
+    
     @Test
     public void testAssegnaMan() {
+        
+        SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
         System.out.println("assegnaMan");
-        Maintainer man = new Maintainer("nicola","5678","luigi","ciccio.pasticcio@hot.com",1);
+        Maintainer man = sy.createMaintainer("Giacomo", "pass", "Giacomo", "prova@email.it");
+        if(man == null){
+            fail("Errore nella creazione del Maintainer");
+        }
         Sito sito1 = new Sito("ufficio","area");
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
-        AbstractActivity act = new PlannedActivity(4,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
+        AbstractActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "Planned");
+        if(act==null){
+            fail("Errore nella creazione dell'Attività");
+        }
         int giorno=1;
         String orario="o8_9";
         int i=instance.assegnaMan(man, act,giorno,orario);
         if(i==-1){
             fail("Assegnazione non effettuata");
         }
+        sy.cancellaMaintainer(man);
+        instance.deleteActivity(act);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of planActivity method, of class Planner.
-     */
-    /*
-    @Test
-    public void testPlanActivity() {
-        System.out.println("planActivity");
-        InterfaceActivity act = null;
-        Planner instance = null;
-        instance.planActivity(act);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of creaEwo method, of class Planner.
@@ -144,45 +136,49 @@ public class PlannerTest {
      */
     
      
-   /*
+   
     @Test
     public void testCreateActivity() {
+        
         System.out.println("createActivity");
-        int id = 1;
+        String tipoAttivita="Planned";
         Sito sito = new Sito("ufficio","area");
         String tipologia = "elettrico";
         String descrizione = "prova di descizione";
         int tempo = 70;
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
-        int week = 2;
+        int week = 50;
         Boolean interrompibile = true;
         Procedure procedura = new Procedure();
         ArrayList<String> array=new ArrayList<>();
-        array.add("aid");
         HashMap<String,Object> mappa = new HashMap<>();
-        mappa.put("aid", id);
         Comunicatore com = new Comunicatore();
         try {
             com.apri();
-            ResultSet rs = com.selectionQuery("attivita", array, mappa);
-            if(rs.next()!=false){
-                throw new SQLException("Impossibile eseguire inserimento, elemento già presente");
-            }
-            instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+
+                AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+                array.add("aid");
+                mappa.put("aid", act.getId());
+                ResultSet rs = com.selectionQuery("attivita", array, mappa);
+                if(rs.next() == false){
+                    throw new SQLException("Impossibile eseguire inserimento, si è verificato un errore nell'operazione");
+                }
+                else {
+                    instance.deleteActivity(act);
+                }
+            
             com.chiudi();
         } catch (SQLException ex) {
             fail(ex.getMessage());
         }
-        
-        
         
     }
 
     /**
      * Test of modifyActivity method, of class Planner.
      */
-    /*
+    
     @Test
     public void testModifyActivity() {
          
@@ -191,9 +187,9 @@ public class PlannerTest {
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
-        AbstractActivity act = new PlannedActivity(1,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
         Sito sito = new Sito("ufficio2","area");
         String tipologia = "Meccanico";
+        String tipoAttivita= "Planned";
         String descrizione = "descrizione cambiata";
         int tempo = 90;
         materiali.add("Chiodi di garofano");
@@ -201,21 +197,29 @@ public class PlannerTest {
         Boolean interrompibile = false;
         
         Comunicatore com = new Comunicatore();
-        HashMap<String,Object> mappa = new HashMap<>();
-        mappa.put("aid", act.getId());
-        instance.modifyActivity(act, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        
         
         try {
             com.apri();
-            ResultSet rs = com.selectionQuery("attivita", null, mappa);
-            while(rs.next()){
-                Sito st=new Sito(rs.getString("office"),rs.getString("area"));
-                AbstractActivity act2 = new PlannedActivity(rs.getInt("aid"),st,rs.getString("tipologia"),rs.getString("descrizione"),rs.getInt("tempo"),materiali,rs.getInt("week"),rs.getBoolean("interrompibile"),procedura);
-                //assertEquals(act.toString(),act2.toString());
+            AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+            HashMap<String,Object> mappa = new HashMap<>();
+            mappa.put("aid", act.getId());
+            ArrayList<String> array=new ArrayList<>();
+            array.add("aid");
+
+            ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            if(rs.next()==false){
+                throw new SQLException("Attenzione attività non presente e quindi non modificabile");
             }
+            else{
+                AbstractActivity act2 = instance.modifyActivity(act, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+                assertTrue("Modifica non avvenuta.ERRORE",(act.getId()==act2.getId()));
+            }
+            
+            instance.deleteActivity(act);
             com.chiudi();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            fail(ex.getMessage());
         }
         
         
@@ -226,7 +230,7 @@ public class PlannerTest {
     /**
      * Test of deleteActivity method, of class Planner.
      */
-    /*
+    
     @Test
     public void testDeleteActivity() {
        System.out.println("deleteActivity");
@@ -234,19 +238,35 @@ public class PlannerTest {
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
-        AbstractActivity act = new PlannedActivity(1,sito1,"elettrico","prova di descrizione",70,materiali,2,true,procedura);
-        ArrayList<String> array=new ArrayList<>();
-        array.add("aid");
-        HashMap<String,Object> mappa = new HashMap<>();
-        mappa.put("aid", act.getId());
-        instance.deleteActivity(act);
+        Sito sito = new Sito("ufficio2","area");
+        String tipologia = "Meccanico";
+        String descrizione = "descrizione cambiata";
+        int tempo = 90;
+        materiali.add("Chiodi di garofano");
+        int week = 52;
+        String tipoAttivita="Planned";
+        Boolean interrompibile = false;
+        
+        
         
         Comunicatore com = new Comunicatore();
         try {
             com.apri();
+            AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+            if(act == null){
+                
+            }
+            ArrayList<String> array=new ArrayList<>();
+            array.add("aid");
+            HashMap<String,Object> mappa = new HashMap<>();
+            mappa.put("aid", act.getId());
             ResultSet rs = com.selectionQuery("attivita", array, mappa);
-            if(rs.next()!=false){
-                throw new SQLException("Cancellazione non effettuata");
+            if(rs.next()==false){
+                throw new SQLException("Attività non presente quindi non è stato possibile cancellare");
+            }
+            else{
+                AbstractActivity act2 = instance.deleteActivity(act);
+                assertTrue("Cancellazione Avvenuta con successo", act.equals(act2));
             }
             com.chiudi();
         } catch (SQLException ex) {
@@ -257,7 +277,7 @@ public class PlannerTest {
     /**
      * Test of viewActivities method, of class Planner.
      */
-    
+    /*
     @Test
     public void testViewActivities() {
         List<AbstractActivity> res1=instance.viewActivities();
@@ -300,30 +320,21 @@ public class PlannerTest {
     }
 */
     /**
-     * Test of sortedActivities method, of class Planner.
-     */
-    /*
-    @Test
-    public void testSortedActivities() {
-        System.out.println("sortedActivities");
-        Planner instance = null;
-        instance.sortedActivities();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-*/
-    /**
      * Test of maintainerAval method, of class Planner.
      */
-    /*
+    
     @Test
     public void testMaintainerAval() {
         System.out.println("Verifica disponibilità");
-        Maintainer man=new Maintainer("peppe","pippo","mario","maiopeppe@hotmail.it",2);
+        SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
+        Maintainer man = sy.createMaintainer("man", "pass", "Paolo", "paoloman@email.it");
         HashMap mappa = new HashMap();
         mappa = instance.maintainerAval(man, 2);
+        if(mappa == null){
+            fail("ERRORE NELLA MAPPA DI MAINTAINERAVAL");
+        }
         System.out.println(mappa.toString());
-        
+        sy.cancellaMaintainer(man);
         
     }
 
