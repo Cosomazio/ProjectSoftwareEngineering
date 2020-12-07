@@ -48,11 +48,14 @@ public class SystemAdministratorTest {
 
     /**
      * Test of createMaintainer method, of class SystemAdministrator.
-     * @throws java.sql.SQLException
+     * 
      */
-    /*
+    
     @Test
-    public void testCreateMaintainer() throws SQLException {
+    public void testCreateMaintainer() {
+        
+        Boolean flag=false;
+        Comunicatore com=new Comunicatore();
         System.out.println("createMaintainer");
         String username = "paperino";
         String password = "1234";
@@ -60,12 +63,33 @@ public class SystemAdministratorTest {
         String email = "ciccio@ciccio.com";
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
         Maintainer result = instance.createMaintainer(username, password, nome, email);
-         if(result==null){
+        Maintainer expResult;
+        if(result==null){
             fail("Errore nell'inserimeto del maintainer");
         }else{
-        int id=result.getId();
-        Maintainer expResult = new Maintainer(username,password, nome, email,id);
-        assertEquals(expResult.toString(), result.toString());
+            HashMap<String, Object> map=new HashMap<>();
+            map.put("mid",result.getId());
+            try{
+                com.apri();
+                ResultSet rs= com.selectionQuery("maintainer", null, map);
+                while(rs.next()){
+                    String n=rs.getString("nome");
+                    String p=rs.getString("pass");
+                    String e=rs.getString("email");
+                    String u=rs.getString("username");
+                    int i=rs.getInt("mid");
+                    expResult=new Maintainer(u,p,n,e,i);
+                    if(expResult.toString().equals(result.toString())){
+                        flag=true;
+                    }
+                }
+                instance.cancellaMaintainer(result);
+                
+            }catch(SQLException ex){
+                fail(ex.getMessage());
+            }
+            assertTrue(flag);
+            
         
         }
         
@@ -76,18 +100,24 @@ public class SystemAdministratorTest {
 
     /**
      * Test of modificaMaintainer method, of class SystemAdministrator.
-     * @throws java.sql.SQLException
+     * 
      */
     
-    /*@Test
-    public void testModificaMaintainer() throws SQLException {
+    @Test
+    public void testModificaMaintainer(){
+        Comunicatore com=new Comunicatore();
+        Boolean flag=false;
         System.out.println("modificaMaintainer");
-        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",0);
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        Maintainer rs =instance.createMaintainer("paperino", "1234", "papera", "ciccio@ciccio.com");
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",rs.getId());
+        HashMap <String,Object> map=new HashMap<>();
+        map.put("mid",rs.getId());
         String username = "nicola";
         String password = "5678";
         String nome = "luigi";
         String email = "luigi@luigi.com";
-        Set<String> skill = new HashSet <> ();
+        /*Set<String> skill = new HashSet <> ();
         skill.add("pippo");
         skill.add("paperino");
         skill.add("cornuto");
@@ -96,13 +126,31 @@ public class SystemAdministratorTest {
         procedure.add(new Procedure(p,null,"pippo"));
         procedure.add(new Procedure(p,null,"paperino"));
         procedure.add(new Procedure(p,null,"cornuto"));
-        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
-        Maintainer expResult = new Maintainer(username, password, nome,email, 0,skill,procedure);
-        Maintainer result = instance.modificaMaintainer(man, username, password, nome, email, skill, procedure);
+        */
+        Maintainer expResult;
+        Maintainer result = instance.modificaMaintainer(man, username, password, nome, email,null,null);
         if (result==null){
             fail("Errore nella modifica del maintainer");
         }else{
-        assertEquals(expResult.toString(), result.toString());
+            try{
+                com.apri();
+                ResultSet res=com.selectionQuery("maintainer", null, map);
+                while(res.next()){
+                    String n=res.getString("nome");
+                    String p=res.getString("pass");
+                    String e=res.getString("email");
+                    String u=res.getString("username");
+                    int i=res.getInt("mid");
+                    expResult=new Maintainer(u,p,n,e,i);
+                    if(expResult.toString().equals(result.toString())){
+                        flag=true;
+                    }
+                }
+                instance.cancellaMaintainer(man);
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+            }
+            assertTrue(flag);
         }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -110,28 +158,32 @@ public class SystemAdministratorTest {
 
     /**
      * Test of cancellaMaintainer method, of class SystemAdministrator.
-     * @throws java.sql.SQLException
+     * 
      */
     
-    /*@Test
-    public void testCancellaMaintainer() throws SQLException {
+    @Test
+    public void testCancellaMaintainer() {
         System.out.println("cancellaMaintainer");
-        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",0);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        Maintainer rs=instance.createMaintainer("paperino","1234","papera","ciccio@ciccio.com");
+        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",rs.getId());
         instance.cancellaMaintainer(man);
         Comunicatore com=new Comunicatore();
+        try{
         com.apri();
         HashMap < String, Object> map= new HashMap <> ();
-        map.put("mid", 0);
+        map.put("mid", rs.getId());
         ArrayList <String> a=new ArrayList<>();
         a.add("mid");
         
-        ResultSet rs=com.selectionQuery("maintainer", a, map);
-        if (rs.next() != false){
+        ResultSet res=com.selectionQuery("maintainer", a, map);
+        if (res.next() != false){
             fail("Erroe nella cancellazione del maintaimer");
         }
         com.chiudi();
-       
+        }catch(SQLException ex){
+            fail(ex.getMessage());
+        }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }

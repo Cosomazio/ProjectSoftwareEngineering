@@ -20,7 +20,7 @@ public class SystemAdministrator extends AbstractUtente {
     public SystemAdministrator(String username,String password,String nome,String email,int id){
         super(username,password,nome,email,id);
     }
-    
+    //creazione del maintainer; Se va in errore ritorna null,  altrimenti il maintainer creato
     public Maintainer createMaintainer(String username, String password, String nome, String email){
         
         MaintainerBuilder builder= new MaintainerBuilder();
@@ -39,12 +39,14 @@ public class SystemAdministrator extends AbstractUtente {
            com.apri(); 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
         try{
           com.insertQuery("maintainer", map); 
           int i = this.inserisciOrari(m.getId());
           if(i==-1){
-              throw new SQLException("Errore");
+              System.out.println("Errore nell'inserimento degli orari nel DB");
+              return null;
           }
         }catch(SQLException ex2){
           System.out.println(ex2.getMessage());
@@ -54,11 +56,13 @@ public class SystemAdministrator extends AbstractUtente {
            com.chiudi(); 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
         
         return m;
                  
     }
+    //crea la tabella orari per l'apposito maintainer, ritorna 1 se va a buon fine altrimenti -1
     private int inserisciOrari(int id){
         HashMap<String,Object> mappa = new HashMap<>();
         Comunicatore com = new Comunicatore();
@@ -86,7 +90,7 @@ public class SystemAdministrator extends AbstractUtente {
             }   
         return 1;
     }
-    
+    //modifica il maintainer; ritorna null se va in errore altrimenti ritorna il maintainer modificato 
     public Maintainer modificaMaintainer(Maintainer man, String username, String password, String nome,
             String email, Set<String> skill, Set<Procedure> procedure){
         
@@ -99,22 +103,26 @@ public class SystemAdministrator extends AbstractUtente {
         
         int l=modificaTabellaMaintainer(man);
         if (l==-1){
+            System.out.println("Errore nella modifica del maintainer");
             return null;
         }
         
         int i=inserisciCompetenze(man,skill);
         if (i==-1){
+            System.out.println("Errore nell'inserimento delle competenze");
             return null;
         }
         
         int f=inserisciProcedura(man,procedure);
         
         if (f==-1){
+            System.out.println("Errore nell'inserimento della procedura");
             return null;
         }
         
         return man;
     }
+    //modifica il maintainer nel DB ritorna 1 se va a buon fine altrimenti -1
     private int modificaTabellaMaintainer (Maintainer man){
         Comunicatore com= new Comunicatore(); 
         HashMap <String, Object> value= new HashMap<> ();
@@ -128,6 +136,7 @@ public class SystemAdministrator extends AbstractUtente {
         com.apri();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return -1;
         }
         try{
           com.updateQuery("maintainer", value, chiavi);  
@@ -139,9 +148,12 @@ public class SystemAdministrator extends AbstractUtente {
            com.chiudi(); 
         }catch(SQLException ex3){
             System.out.println(ex3.getMessage());
+            return -1;
         }
         return 1;
     }
+    
+    //inserisce le competenze per l'apposito Maintainer, restituisce 1 se va a buon fine altirmenti -1
     private int inserisciCompetenze(Maintainer man, Set<String> skill){
         if(skill==null){
             skill=new HashSet<>();
@@ -158,6 +170,7 @@ public class SystemAdministrator extends AbstractUtente {
             com.apri();
             }catch(SQLException ex){
                 System.out.println(ex.getMessage());
+                return -1;
             }
             try{
                 com.insertQuery("maintainer_competenze", skills);
@@ -169,11 +182,13 @@ public class SystemAdministrator extends AbstractUtente {
                 com.chiudi();
             }catch(SQLException ex3){
                 System.out.println(ex3.getMessage());
+                return -1;
             }
             skills.clear();
         }
         return 1;
     }
+    //inserisce la procedura per l'apposito Maintainer, restiuisce 1 se va a buon fine altrimenti -1
     public int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
         if(procedure==null)
             procedure=new HashSet<Procedure>();
@@ -187,26 +202,28 @@ public class SystemAdministrator extends AbstractUtente {
             procedures.put("nomefile", pr.getNomefile());
             try{
                 com.apri();
-            }catch(SQLException ex7){
-                System.out.println(ex7.getMessage());
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+                return -1;
             }
             try{
                 com.insertQuery("maintainer_procedura", procedures);
-            }catch(SQLException ex8){
-                System.out.println(ex8.getMessage());  
+            }catch(SQLException ex1){
+                System.out.println(ex1.getMessage());  
                 return -1;
             }   
             try{
                 com.chiudi();
-            }catch(SQLException ex9){
-                System.out.println(ex9.getMessage());
+            }catch(SQLException ex2){
+                System.out.println(ex2.getMessage());
+                return -1;
             }
             procedures.clear();
         }
         return 1;
     }
-    
-    public void cancellaMaintainer (Maintainer man){
+    //Cancella il mainteiner, restituisce il maintainer cancellato se è andato a buon fine altrimenti null
+    public Maintainer cancellaMaintainer (Maintainer man){
         Comunicatore com=new Comunicatore();
         ResultSet s;
         HashMap <String,Object> chiavi=new HashMap<>();
@@ -231,9 +248,11 @@ public class SystemAdministrator extends AbstractUtente {
         com.chiudi();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
-        
+        return man;
     }
+    //Crea il planner, restituisce il planner se andata a buon fine altrimenti null;
     public Planner createPlanner(String username, String password, String nome, String email){
         PlannerBuilder builder= new PlannerBuilder();
         builder.reset(nome, username, password, email);
@@ -249,7 +268,8 @@ public class SystemAdministrator extends AbstractUtente {
         try{
           com.apri();  
         }catch(SQLException ex){
-            System.out.println(ex.getMessage());  
+            System.out.println(ex.getMessage()); 
+            return null;
         }
         try{
             com.insertQuery("planner" , map);
@@ -261,11 +281,12 @@ public class SystemAdministrator extends AbstractUtente {
             com.chiudi();   
         }catch(SQLException ex3){
             System.out.println(ex3.getMessage());
+            return null;
         }
         return p;
        
     }
-    
+    //Modifica il planner passatoci come parametro, restituisce il planner se è andato a buon fine altrimenti null
     public Planner modificaPlanner(Planner pln,String username, String password, String nome, String email){
         pln.setNome(nome);
         pln.setUsername(username);
@@ -284,6 +305,7 @@ public class SystemAdministrator extends AbstractUtente {
             com.apri();   
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
         try{
           com.updateQuery("planner", value, chiavi);     
@@ -295,11 +317,13 @@ public class SystemAdministrator extends AbstractUtente {
             com.chiudi();   
         }catch(SQLException ex3){
             System.out.println(ex3.getMessage());
+            return null;
         }
         return pln;
         
     }
-    public void cancellaPlanner(Planner pln){
+    //cancella il planner passatoci come parametro, ritorna il planner cancellato se va a buon fine altrimenti null
+    public Planner cancellaPlanner(Planner pln){
         Comunicatore com= new Comunicatore();
         HashMap <String,Object> map= new HashMap <>();
         map.put("pid", pln.getId());
@@ -309,8 +333,9 @@ public class SystemAdministrator extends AbstractUtente {
             com.chiudi();     
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
-        
+        return pln;
     }
     
     @Override
