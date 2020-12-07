@@ -514,6 +514,31 @@ public class Planner extends AbstractUtente {
         return super.toString()+"Planner";
     }        
             
-            
+    public ArrayList<Maintainer> viewMaintainer(){
+        ArrayList<Maintainer> elenco=new ArrayList<>();
+        Comunicatore com=new Comunicatore();
+        String nome;
+        String username;
+        String pass;
+        String email;
+        int id;
+        try{
+            com.apri();
+            ResultSet rs=com.selectionQuery("Maintainer", null, null);
+            while(rs.next()){
+                nome=rs.getString("nome");
+                username=rs.getString("username");
+                pass=rs.getString("pass");
+                email=rs.getString("email");
+                id=rs.getInt("mid");
+                elenco.add(new Maintainer(username,pass,nome,email,id));
+            }
+            com.chiudi();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        
+        return elenco;
+    }        
     
 }
