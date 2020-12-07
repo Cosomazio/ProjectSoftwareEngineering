@@ -217,21 +217,12 @@ public class AdminDemo extends javax.swing.JFrame {
                String password = textPassword.getText();
                String email = textEmail.getText();
                
-               if (rButtonPlanner.isSelected())
-                   try {
-                       SystemAdministrator a= temp.admin;
-                       a.createPlanner(username, password, nome, email);
-               } catch (SQLException ex) {
-                   JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
-               }
-               else{
-                   try {
-                       SystemAdministrator x= temp.admin;
-                       x.createMaintainer(username, password, nome, email);
-                       
-                   } catch (SQLException ex) {
-                       JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
-                   }
+               if (rButtonPlanner.isSelected()) {
+                   SystemAdministrator a= temp.admin;
+                   a.createPlanner(username, password, nome, email);
+                } else{
+                   SystemAdministrator x= temp.admin;
+                   x.createMaintainer(username, password, nome, email);
                }
                textNome.setText("");
                textUsername.setText("");
@@ -310,18 +301,10 @@ public class AdminDemo extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(list.getSelectedValue() instanceof deposito.Planner){
-                    try {
-                        temp.admin.cancellaPlanner((Planner) list.getSelectedValue());
-                } catch (SQLException ex) {
-                   JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
-                }
+                    temp.admin.cancellaPlanner((Planner) list.getSelectedValue());
               }
                 else{
-                    try {
-                        temp.admin.cancellaMaintainer((Maintainer) list.getSelectedValue());
-                    } catch (SQLException ex) {
-                      JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);  
-                    }
+                    temp.admin.cancellaMaintainer((Maintainer) list.getSelectedValue());
                 }
                 JOptionPane.showMessageDialog(new JFrame(), "Cancellazione avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
                 temp.setVisible(true);
@@ -488,18 +471,10 @@ public class AdminDemo extends javax.swing.JFrame {
                         String email = textEmail.getText();
                         
                         if(val instanceof Planner){
-                            try {
-                                temp.admin.modificaPlanner((Planner)val, username, password, nome, email);
-                            } catch (SQLException ex) {
-                                JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
-                            }
+                            temp.admin.modificaPlanner((Planner)val, username, password, nome, email);
                         }
                         else{
-                            try{
-                                temp.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
-                            }catch (SQLException ex){
-                                JOptionPane.showMessageDialog(new JFrame(), ex.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
-                            }
+                            temp.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
                         }
                         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
                         frame.setVisible(true);
