@@ -220,7 +220,7 @@ public class SystemAdministratorTest {
     /*
     @Test
     public void testViewMaintainer() {
-        Boolean flag= false;
+        Boolean flag = false;
         System.out.println("viewMaintainer");
         SystemAdministrator instance = new SystemAdministrator("test", "xxxx", "tentativo", "prova.test@gmail.com", 0);
         Maintainer man;

@@ -16,14 +16,30 @@ import java.util.ArrayList;
  * @author franc
  */
 public class Comunicatore {
-
+    
+    private static Comunicatore instance;
     private Connection c;
 
+//  gestione del Singleton per il comunicatore
+    public synchronized Comunicatore getInstance(){
+        if(instance==null){
+            instance = new Comunicatore();
+        }
+        return instance;
+    }
+    
+    public Comunicatore(){} //costruttore privato a causa del singleton
+    
+    //consente l'apertura della connessione da parte del comunicatore
     public synchronized Connection apri() throws SQLException {
         this.c = DriverManager.getConnection("jdbc:postgresql://kandula.db.elephantsql.com:5432/figslypy", "figslypy", "lwHyJdBS_3DZCU4mlrffKxLP7hwmyZio");
         return this.c;
     }
-
+    
+    //gestisce una queri di inserimento all'interno del db.
+    //Parametri: String table: nome della tabella in cui inserire
+    //           HashMap<String, Object> params: mappa conenente nomi e valori dei parametri che si vogliono inserire nella tabella
+    //lancia una SQLException nel caso in cui ci sia un errore con l'inserimento nel DB
     public int insertQuery(String table, HashMap<String, Object> params) throws SQLException {
         int i, j;
         Object par;
@@ -49,7 +65,12 @@ public class Comunicatore {
 
         return this.eseguiUpdate(query + values);
     }
-
+    
+    //gestisce una query di acnellazione dalla tabella table all'interno del DB
+    //Parametri: String table: nome della tabella da cui si vuole cancellare
+    //           HashMap<String, Object> params: mappa contenente i nomi degli 
+    //  attributi e i rispettivi valori secondo cui cancellare un elemento tramite la clausola where
+    
     public int deleteQuery(String table, HashMap<String, Object> params) throws SQLException {
         int i = 0;
         Object p;
@@ -65,7 +86,11 @@ public class Comunicatore {
         //System.out.println(query + values);
         return this.eseguiUpdate(query + values);
     }
-
+    
+    //quey di aggiornamento
+    //Parametri: String table nome della tabella in cui si vuole aggiornare
+    //           HashMap<String, Object> params
+    
     public int updateQuery(String table, HashMap<String, Object> params, HashMap<String, Object> chiavi) throws SQLException {
         int i = 0;
         Object p;

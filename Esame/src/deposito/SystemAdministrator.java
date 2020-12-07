@@ -21,7 +21,7 @@ public class SystemAdministrator extends AbstractUtente {
         super(username,password,nome,email,id);
     }
     
-    public Maintainer createMaintainer(String username, String password, String nome, String email) throws SQLException{
+    public Maintainer createMaintainer(String username, String password, String nome, String email){
         
         MaintainerBuilder builder= new MaintainerBuilder();
         builder.reset(nome, username, password, email);
@@ -88,7 +88,7 @@ public class SystemAdministrator extends AbstractUtente {
     }
     
     public Maintainer modificaMaintainer(Maintainer man, String username, String password, String nome,
-            String email, Set<String> skill, Set<Procedure> procedure) throws SQLException{
+            String email, Set<String> skill, Set<Procedure> procedure){
         
         man.setEmail(email);
         man.setNome(nome);
@@ -206,7 +206,7 @@ public class SystemAdministrator extends AbstractUtente {
         return 1;
     }
     
-    public void cancellaMaintainer (Maintainer man) throws SQLException{
+    public void cancellaMaintainer (Maintainer man){
         Comunicatore com=new Comunicatore();
         ResultSet s;
         HashMap <String,Object> chiavi=new HashMap<>();
@@ -234,7 +234,7 @@ public class SystemAdministrator extends AbstractUtente {
         }
         
     }
-    public Planner createPlanner(String username, String password, String nome, String email) throws SQLException{
+    public Planner createPlanner(String username, String password, String nome, String email){
         PlannerBuilder builder= new PlannerBuilder();
         builder.reset(nome, username, password, email);
         Planner p=builder.getResult();
@@ -266,7 +266,7 @@ public class SystemAdministrator extends AbstractUtente {
        
     }
     
-    public Planner modificaPlanner(Planner pln,String username, String password, String nome, String email) throws SQLException{
+    public Planner modificaPlanner(Planner pln,String username, String password, String nome, String email){
         pln.setNome(nome);
         pln.setUsername(username);
         pln.setPassword(password);
@@ -299,7 +299,7 @@ public class SystemAdministrator extends AbstractUtente {
         return pln;
         
     }
-    public void cancellaPlanner(Planner pln) throws SQLException{
+    public void cancellaPlanner(Planner pln){
         Comunicatore com= new Comunicatore();
         HashMap <String,Object> map= new HashMap <>();
         map.put("pid", pln.getId());
