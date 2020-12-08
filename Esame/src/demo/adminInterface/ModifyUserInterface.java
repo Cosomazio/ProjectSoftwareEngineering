@@ -241,17 +241,14 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         String email = tfMail.getText();
         
         AbstractUtente val =(AbstractUtente) list.getSelectedValue();
+        AbstractUtente u=null;
         if(val instanceof Planner){
-            Planner p = this.admin.modificaPlanner((Planner)val, username, password, nome, email);
-            if (p==null){
-                errorMsg("Errore modifica", "modifica planner fallita");
-            }
+            u = this.admin.modificaPlanner((Planner)val, username, password, nome, email);
+        }else{
+            u = this.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
         }
-        else{
-            Maintainer m = this.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
-            if (m==null){
-                errorMsg("Errore modifica", "modifica maintainer fallita");
-            }
+        if (u==null){
+            errorMsg("Errore modifica", "modifica utente fallita");
         }
         refreshList();
         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);

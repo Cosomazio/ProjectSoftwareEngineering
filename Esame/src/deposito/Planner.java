@@ -5,6 +5,7 @@
  */
 package deposito;
 import factories.*;
+import java.lang.reflect.*;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
@@ -194,6 +195,23 @@ public class Planner extends AbstractUtente {
         }
         return attivita;
     }
+    private AbstractActivity vistaAttivita(int id,int ewoid,Sito sito,String tipologia,String descrizione,int tempo,
+            List<String> materiali, int week, Boolean interrompibile, 
+            Procedure procedura,String tipoAttivita){
+        AbstractActivity attivita = null;
+        if(tipoAttivita.equals("Planned")){
+            attivita=new PlannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        }else if(tipoAttivita.equals("Unplanned")){
+            attivita=new UnplannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        }else if(tipoAttivita.equals("Extra")){
+            attivita=new ExtraActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        }else if(tipoAttivita.equals("EWO")) {
+            attivita=new EwoActivity(ewoid, id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        }
+        return attivita;
+    }
+    
+    
     /*--------------------------------------------*/
     /*Crea l'attività in base al suo tipo se non riesce a fare almeno una delle condizioni ritorna null*/
     private AbstractActivity tipoAttivita(Sito sito,String tipologia,String descrizione,int tempo,
@@ -415,11 +433,10 @@ public class Planner extends AbstractUtente {
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
                 
-                AbstractActivity act=tipoAttivita( s, tipologia, 
+                AbstractActivity act=vistaAttivita(id, ewoid, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione);
-                act.setId(id);
-                //System.out.println("sdg"+act);
+                
                 res.add(act);
                 //com=new Comunicatore();
                 //com.apri();

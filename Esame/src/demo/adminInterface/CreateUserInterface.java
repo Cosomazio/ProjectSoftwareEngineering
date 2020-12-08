@@ -190,21 +190,17 @@ public class CreateUserInterface extends javax.swing.JFrame {
         String username = tfUsername.getText();
         String password = tfPassword.getText();
         String email = tfMail.getText();
-
+        AbstractUtente u =null;
         if (rbPlanner.isSelected()){
             SystemAdministrator a= this.admin;
-            Planner p = a.createPlanner(username, password, nome, email);
-            if (p==null){
-                errorMsg("Errore creazione", "creazione planner fallita");
-            }
+            u = a.createPlanner(username, password, nome, email);
         }else{   
             SystemAdministrator x= this.admin;
-            Maintainer m= x.createMaintainer(username, password, nome, email);
-            if (m==null){
-                errorMsg("Errore creazione", "creazione maintainer fallita");
-            }
+            u= x.createMaintainer(username, password, nome, email);
         }
-        
+        if (u==null){
+            errorMsg("Errore cancellazione", "cancellazione planner fallita");
+        }
         JOptionPane.showMessageDialog(new JFrame(), "Creazione avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_btOKActionPerformed
