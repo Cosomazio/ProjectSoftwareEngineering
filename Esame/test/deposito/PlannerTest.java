@@ -45,7 +45,7 @@ public class PlannerTest {
      */
     /*
     */
-    Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
+/*    Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
     
     @Test
     public void testAssegnaMan() {
@@ -75,7 +75,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-
+*/
 
     /**
      * Test of creaEwo method, of class Planner.
@@ -136,7 +136,7 @@ public class PlannerTest {
      */
     
      
-   
+/*   
     @Test
     public void testCreateActivity() {
         
@@ -174,11 +174,11 @@ public class PlannerTest {
         }
         
     }
-
+*/
     /**
      * Test of modifyActivity method, of class Planner.
      */
-    
+/*    
     @Test
     public void testModifyActivity() {
          
@@ -221,16 +221,12 @@ public class PlannerTest {
         } catch (SQLException ex) {
             fail(ex.getMessage());
         }
-        
-        
-        
-
     }
-
+*/
     /**
      * Test of deleteActivity method, of class Planner.
      */
-    
+/*    
     @Test
     public void testDeleteActivity() {
        System.out.println("deleteActivity");
@@ -273,7 +269,7 @@ public class PlannerTest {
             fail(ex.getMessage());
         }
     }
-
+*/
     /**
      * Test of viewActivities method, of class Planner.
      */
@@ -322,7 +318,7 @@ public class PlannerTest {
     /**
      * Test of maintainerAval method, of class Planner.
      */
-    
+  /*  
     @Test
     public void testMaintainerAval() {
         System.out.println("Verifica disponibilità");
@@ -337,7 +333,7 @@ public class PlannerTest {
         sy.cancellaMaintainer(man);
         
     }
-
+*/
     /**
      * Test of maintainerAvalPerc method, of class Planner.
      */
@@ -356,6 +352,7 @@ public class PlannerTest {
         
     }
     */
+    /*
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -372,8 +369,8 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    
-    
+    */
+   /* 
     @Test
     public void testSortedActivities(){
         System.out.println("sortedActivities");
@@ -400,5 +397,34 @@ public class PlannerTest {
             if(ac.getWeek()!=cal.get(Calendar.WEEK_OF_YEAR))
                 fail("LA SETTIMANA NON è CORRETTA");
         }
+    }
+    */
+    
+    
+    @Test
+    public void testViewMaintainer(){
+        System.out.println("viewMaintainer");
+        Boolean flag = false;
+        
+        Planner instance=new Planner("prova", "pass", "planner", "prova@1", 0);
+        ArrayList<Maintainer> archivio = instance.viewMaintainer();
+        if(archivio == null)
+            fail("ERRORE NELLA VIEW");
+        if(archivio.isEmpty())
+            flag=true;
+        
+        SystemAdministrator util=new SystemAdministrator("admin", "password", "nome", "email", 0);
+        Maintainer man = util.createMaintainer("username", "password", "nome", "email");
+        
+        if(man == null)
+            fail("ERRORE NELLA CREAZIONE");
+        archivio=instance.viewMaintainer();
+        
+        for(Maintainer m:archivio){
+            if(m.equals(man))
+                flag=true;
+        }
+        util.cancellaMaintainer(man);
+        assertTrue(flag);
     }
 }
