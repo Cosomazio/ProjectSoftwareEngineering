@@ -364,7 +364,7 @@ public class SystemAdministrator extends AbstractUtente {
         return archivio;
         
     }
-    
+    //restituisce un arrayList di Planner altrimenti ritorna null
     public ArrayList<Planner> viewPlanner(){
         ArrayList<Planner> res=new ArrayList<>();
         String tablePlan="planner";
@@ -393,6 +393,7 @@ public class SystemAdministrator extends AbstractUtente {
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
         
         

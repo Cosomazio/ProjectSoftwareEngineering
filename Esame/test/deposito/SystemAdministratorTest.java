@@ -251,47 +251,69 @@ public class SystemAdministratorTest {
     @Test
     public void testModificaPlanner() {
         System.out.println("modificaPlanner");
+        Comunicatore com= Comunicatore.getInstance();
         Boolean flag=false;
-        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",0);
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        Planner pln = instance.createPlanner("ciccio","1234","Luigi","ciccio@ciccio.com");
         String username = "napoli98";
         String password = "1357";
         String nome = "francesco";
         String email = "nicoladinari@gmail.com";
-        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
-        Planner expResult = new Planner(username,password,nome,email,0);
+        HashMap <String,Object> map=new HashMap<>();
+        map.put("pid",pln.getId());
+        
         Planner result = instance.modificaPlanner(pln, username, password, nome, email);
         if(result==null){
             fail("Errore nella modifica del planner");
         }else{
-            assertEquals(expResult.toString(), result.toString());
+            try{
+            com.apri();
+            ResultSet rs=com.selectionQuery("planner", null, map);
+            while(rs.next()){
+                String u=rs.getString("username");
+                String p=rs.getString("pass");
+                String n=rs.getString("nome");
+                String e=rs.getString("email");
+                int i=rs.getInt("pid");
+             Planner expResult = new Planner(u,p,n,e,i);
+             if(expResult.toString().equals(result.toString())){
+                flag=true;
+            }   
+            }
+            instance.cancellaPlanner(result);
+            }catch(SQLException ex){
+                fail(ex.getMessage());
+            }
         }
+        assertTrue(flag);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
     /**
      * Test of cancellaPlanner method, of class SystemAdministrator.
-     * @throws java.sql.SQLException
+     * 
      */
     
-    /*@Test
-    public void testCancellaPlanner() throws SQLException {
+    @Test
+    public void testCancellaPlanner() {
         System.out.println("cancellaPlanner");
-        Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",0);
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        Planner pln = instance.createPlanner("ciccio","1234","Luigi","ciccio@ciccio.com");
         instance.cancellaPlanner(pln);
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
+        try{
         com.apri();
         HashMap < String, Object> map= new HashMap <> ();
-        map.put("pid", 0);
-        ArrayList <String> a=new ArrayList<>();
-        a.add("pid");
-        
-        ResultSet rs=com.selectionQuery("planner", a, map);
+        map.put("pid", pln.getId());
+        ResultSet rs=com.selectionQuery("planner", null, map);
         if (rs.next()!=false){
             fail("Erroe nella cancellazione del planner");
         }
         com.chiudi();
+        }catch(SQLException ex){
+            fail(ex.getMessage());
+        }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
@@ -342,7 +364,7 @@ public class SystemAdministratorTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    /*@Test
+    @Test
     public void testViewPlanner(){
         System.out.println("viewPlanner");
         SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
@@ -356,24 +378,28 @@ public class SystemAdministratorTest {
         if(archivio1.isEmpty()){
             flag=true;
         }
-        try {
-            plan=instance.createPlanner(username, password, nome, email);
-        } catch (SQLException ex) {
-            fail(ex.getMessage());
+        
+        plan=instance.createPlanner(username, password, nome, email);
+        if(plan==null){
+            fail("ERRORE NELLA CREAZIONE");
         }
         
         ArrayList<Planner> planners=instance.viewPlanner();
+        if(planners==null){
+            fail("ERRORE NELLA VIEW");
+        }
         for(Planner p: planners){
             if(p.equals(plan) ){
                 flag=true;
             }
         }
-        assertEquals(flag, true);
-        try {
-            instance.cancellaPlanner(plan);
-        } catch (SQLException ex) {
-            fail(ex.getMessage());
+        if(instance.cancellaPlanner(plan)== null){
+            fail("ERRORE NELLA CANCELLAZIONE DEL PLANNER");
         }
+        assertEquals(flag, true);
+        
+        
+        
     }
-*/
+
 }
