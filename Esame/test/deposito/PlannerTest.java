@@ -45,7 +45,7 @@ public class PlannerTest {
      */
     /*
     */
-/*    Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
+   Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
     
     @Test
     public void testAssegnaMan() {
@@ -75,7 +75,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-*/
+
 
     /**
      * Test of creaEwo method, of class Planner.
@@ -136,7 +136,7 @@ public class PlannerTest {
      */
     
      
-/*   
+   
     @Test
     public void testCreateActivity() {
         
@@ -155,12 +155,14 @@ public class PlannerTest {
         HashMap<String,Object> mappa = new HashMap<>();
         Comunicatore com = Comunicatore.getInstance();
         try {
-            com.apri();
+            
 
                 AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
                 array.add("aid");
                 mappa.put("aid", act.getId());
+                com.apri();
                 ResultSet rs = com.selectionQuery("attivita", array, mappa);
+                com.chiudi();
                 if(rs.next() == false){
                     throw new SQLException("Impossibile eseguire inserimento, si è verificato un errore nell'operazione");
                 }
@@ -168,17 +170,16 @@ public class PlannerTest {
                     instance.deleteActivity(act);
                 }
             
-            com.chiudi();
         } catch (SQLException ex) {
             fail(ex.getMessage());
         }
         
     }
-*/
+
     /**
      * Test of modifyActivity method, of class Planner.
      */
-/*    
+    
     @Test
     public void testModifyActivity() {
          
@@ -200,14 +201,15 @@ public class PlannerTest {
         
         
         try {
-            com.apri();
+            
             AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
             HashMap<String,Object> mappa = new HashMap<>();
             mappa.put("aid", act.getId());
             ArrayList<String> array=new ArrayList<>();
             array.add("aid");
-
+            com.apri();
             ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            com.chiudi();
             if(rs.next()==false){
                 throw new SQLException("Attenzione attività non presente e quindi non modificabile");
             }
@@ -217,16 +219,16 @@ public class PlannerTest {
             }
             
             instance.deleteActivity(act);
-            com.chiudi();
+            
         } catch (SQLException ex) {
             fail(ex.getMessage());
         }
     }
-*/
+
     /**
      * Test of deleteActivity method, of class Planner.
      */
-/*    
+ 
     @Test
     public void testDeleteActivity() {
        System.out.println("deleteActivity");
@@ -247,7 +249,7 @@ public class PlannerTest {
         
         Comunicatore com = Comunicatore.getInstance();
         try {
-            com.apri();
+            
             AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
             if(act == null){
                 
@@ -256,7 +258,9 @@ public class PlannerTest {
             array.add("aid");
             HashMap<String,Object> mappa = new HashMap<>();
             mappa.put("aid", act.getId());
+            com.apri();
             ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            com.chiudi();
             if(rs.next()==false){
                 throw new SQLException("Attività non presente quindi non è stato possibile cancellare");
             }
@@ -264,16 +268,16 @@ public class PlannerTest {
                 AbstractActivity act2 = instance.deleteActivity(act);
                 assertTrue("Cancellazione Avvenuta con successo", act.equals(act2));
             }
-            com.chiudi();
+            
         } catch (SQLException ex) {
             fail(ex.getMessage());
         }
     }
-*/
+
     /**
      * Test of viewActivities method, of class Planner.
      */
-    /*
+
     @Test
     public void testViewActivities() {
         List<AbstractActivity> res1=instance.viewActivities();
@@ -318,7 +322,7 @@ public class PlannerTest {
     /**
      * Test of maintainerAval method, of class Planner.
      */
-  /*  
+   
     @Test
     public void testMaintainerAval() {
         System.out.println("Verifica disponibilità");
@@ -333,7 +337,7 @@ public class PlannerTest {
         sy.cancellaMaintainer(man);
         
     }
-*/
+
     /**
      * Test of maintainerAvalPerc method, of class Planner.
      */
@@ -352,7 +356,7 @@ public class PlannerTest {
         
     }
     */
-    /*
+   
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -369,8 +373,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    */
-   /* 
+    
     @Test
     public void testSortedActivities(){
         System.out.println("sortedActivities");
@@ -398,7 +401,7 @@ public class PlannerTest {
                 fail("LA SETTIMANA NON è CORRETTA");
         }
     }
-    */
+    
     
     
     @Test
