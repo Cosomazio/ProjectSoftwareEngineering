@@ -228,6 +228,11 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         
     }
     
+    private void errorMsg(String title,String msg){
+        JOptionPane.showMessageDialog(new JFrame(), title, msg, JOptionPane.ERROR_MESSAGE);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+    
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
         String nome = tfNome.getText();
@@ -237,10 +242,16 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         
         AbstractUtente val =(AbstractUtente) list.getSelectedValue();
         if(val instanceof Planner){
-            this.admin.modificaPlanner((Planner)val, username, password, nome, email);
+            Planner p = this.admin.modificaPlanner((Planner)val, username, password, nome, email);
+            if (p==null){
+                errorMsg("Errore modifica", "modifica planner fallita");
+            }
         }
         else{
-            this.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
+            Maintainer m = this.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
+            if (m==null){
+                errorMsg("Errore modifica", "modifica maintainer fallita");
+            }
         }
         refreshList();
         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);

@@ -180,7 +180,10 @@ public class CreateUserInterface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    
+    private void errorMsg(String title,String msg){
+        JOptionPane.showMessageDialog(new JFrame(), title, msg, JOptionPane.ERROR_MESSAGE);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
         String nome =tfNome.getText();
@@ -190,10 +193,16 @@ public class CreateUserInterface extends javax.swing.JFrame {
 
         if (rbPlanner.isSelected()){
             SystemAdministrator a= this.admin;
-            a.createPlanner(username, password, nome, email);
+            Planner p = a.createPlanner(username, password, nome, email);
+            if (p==null){
+                errorMsg("Errore creazione", "creazione planner fallita");
+            }
         }else{   
             SystemAdministrator x= this.admin;
-            x.createMaintainer(username, password, nome, email);
+            Maintainer m= x.createMaintainer(username, password, nome, email);
+            if (m==null){
+                errorMsg("Errore creazione", "creazione maintainer fallita");
+            }
         }
         
         JOptionPane.showMessageDialog(new JFrame(), "Creazione avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
