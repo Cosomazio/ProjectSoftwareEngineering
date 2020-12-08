@@ -43,6 +43,7 @@ public class SystemAdministrator extends AbstractUtente {
         }
         try{
           com.insertQuery("maintainer", map); 
+          com.chiudi();
           int i = this.inserisciOrari(m.getId());
           if(i==-1){
               System.out.println("Errore nell'inserimento degli orari nel DB");
@@ -52,12 +53,7 @@ public class SystemAdministrator extends AbstractUtente {
           System.out.println(ex2.getMessage());
           return null;  
         }
-        try{
-           com.chiudi(); 
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-            return null;
-        }
+       
         
         return m;
                  
@@ -68,7 +64,7 @@ public class SystemAdministrator extends AbstractUtente {
         Comunicatore com = Comunicatore.getInstance();
         
         try {
-            com.apri();
+            
         
         for(int i = 1 ;i<=5;i++){
             mappa.put("o8_9", 60);
@@ -80,10 +76,13 @@ public class SystemAdministrator extends AbstractUtente {
             mappa.put("o16_17", 60);
             mappa.put("maintainer", id);
             mappa.put("giorno", i);
+            
+            com.apri();
             com.insertQuery("orari", mappa);
             mappa.clear();
-            }
             com.chiudi();
+            }
+            
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return -1;

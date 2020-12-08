@@ -72,6 +72,7 @@ public class SystemAdministratorTest {
             try{
                 com.apri();
                 ResultSet rs= com.selectionQuery("maintainer", null, map);
+                com.chiudi();
                 while(rs.next()){
                     String n=rs.getString("nome");
                     String p=rs.getString("pass");
@@ -83,6 +84,7 @@ public class SystemAdministratorTest {
                         flag=true;
                     }
                 }
+                
                 instance.cancellaMaintainer(result);
                 
             }catch(SQLException ex){
@@ -135,6 +137,7 @@ public class SystemAdministratorTest {
             try{
                 com.apri();
                 ResultSet res=com.selectionQuery("maintainer", null, map);
+                com.chiudi();
                 while(res.next()){
                     String n=res.getString("nome");
                     String p=res.getString("pass");
@@ -147,8 +150,9 @@ public class SystemAdministratorTest {
                     }
                 }
                 instance.cancellaMaintainer(man);
+              
             }catch(SQLException ex){
-                System.out.println(ex.getMessage());
+                fail(ex.getMessage());
             }
             assertTrue(flag);
         }
@@ -177,10 +181,11 @@ public class SystemAdministratorTest {
         a.add("mid");
         
         ResultSet res=com.selectionQuery("maintainer", a, map);
+        com.chiudi();
         if (res.next() != false){
             fail("Erroe nella cancellazione del maintaimer");
         }
-        com.chiudi();
+        
         }catch(SQLException ex){
             fail(ex.getMessage());
         }
@@ -190,25 +195,49 @@ public class SystemAdministratorTest {
     
     /**
      * Test of createPlanner method, of class SystemAdministrator.
-     * @throws java.sql.SQLException
+     * 
      */
     
-    /*@Test
-    public void testCreatePlanner() throws SQLException {
+    @Test
+    public void testCreatePlanner() {
         System.out.println("createPlanner");
+        Boolean flag=false;
+        Comunicatore com=Comunicatore.getInstance();
         String username = "ciccio";
         String password = "1234";
-        String nome = "12345";
+        String nome = "Luca";
         String email = "ciccio@ciccio.com";
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
-        
+        HashMap <String, Object> map=new HashMap<>();
         Planner result = instance.createPlanner(username, password, nome, email);
         if(result==null){
             fail("Errore nell'inserimento del Planner");
         }else{
-        int id=result.getId();
-        Planner expResult =new Planner(username,password,nome,email,id);
-        assertEquals(expResult.toString(), result.toString());
+        map.put("pid", result.getId());
+       
+        try{
+            com.apri();
+            ResultSet rs=com.selectionQuery("planner", null, map);
+            com.chiudi();
+            while(rs.next()){
+                String u=rs.getString("username");
+                String p=rs.getString("pass");
+                String n=rs.getString("nome");
+                String e=rs.getString("email");
+                int i=rs.getInt("pid");
+            Planner expResult =new Planner(u,p,n,e,i);
+            if(expResult.toString().equals(result.toString())){
+                flag=true;
+            }
+            
+            }
+            instance.cancellaPlanner(result);
+           
+        }catch(SQLException ex){
+            fail(ex.getMessage());
+        }
+        assertTrue(flag);
+        
     }
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
@@ -216,12 +245,13 @@ public class SystemAdministratorTest {
 
     /**
      * Test of modificaPlanner method, of class SystemAdministrator.
-     * @throws java.sql.SQLException
+     * @
      */
     
-    /*@Test
-    public void testModificaPlanner() throws SQLException {
+    @Test
+    public void testModificaPlanner() {
         System.out.println("modificaPlanner");
+        Boolean flag=false;
         Planner pln = new Planner("ciccio","1234","12345","ciccio@ciccio.com",0);
         String username = "napoli98";
         String password = "1357";
