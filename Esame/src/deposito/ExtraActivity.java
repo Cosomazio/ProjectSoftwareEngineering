@@ -16,4 +16,9 @@ public class ExtraActivity extends AbstractActivity {
     public ExtraActivity(int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
         super(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+" Extra";
+    }
 }

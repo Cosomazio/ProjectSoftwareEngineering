@@ -153,7 +153,7 @@ public class PlannerTest {
         Procedure procedura = new Procedure();
         ArrayList<String> array=new ArrayList<>();
         HashMap<String,Object> mappa = new HashMap<>();
-        Comunicatore com = new Comunicatore();
+        Comunicatore com = Comunicatore.getInstance();
         try {
             com.apri();
 
@@ -196,7 +196,7 @@ public class PlannerTest {
         int week = 52;
         Boolean interrompibile = false;
         
-        Comunicatore com = new Comunicatore();
+        Comunicatore com = Comunicatore.getInstance();
         
         
         try {
@@ -249,7 +249,7 @@ public class PlannerTest {
         
         
         
-        Comunicatore com = new Comunicatore();
+        Comunicatore com = Comunicatore.getInstance();
         try {
             com.apri();
             AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);

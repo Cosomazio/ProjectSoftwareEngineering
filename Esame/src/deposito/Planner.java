@@ -22,7 +22,7 @@ public class Planner extends AbstractUtente {
     //il metodo è int solo per farmi restituire qualcosa per il test
     public int assegnaMan(Maintainer man, AbstractActivity act,int giorno,String orario){
        //Se non c'è abbastanza tempo nell'orario scelto allora si va a prendere automaticamente il tempo restante nella casella dopo(si fa solo per due caselle vicine)
-       Comunicatore com = new Comunicatore();
+       Comunicatore com = Comunicatore.getInstance();
        HashMap<String,Object> mappaWhere = new HashMap<>();
        mappaWhere.put("maintainer", man.getId());
        mappaWhere.put("giorno", giorno);
@@ -89,7 +89,7 @@ public class Planner extends AbstractUtente {
     }
     
     private ArrayList disponibilitaAttuale(HashMap<String,Object> mappa){
-            Comunicatore com = new Comunicatore();
+            Comunicatore com = Comunicatore.getInstance();
             ArrayList<Integer> array = new ArrayList<>();
         try {
             com.apri();
@@ -114,7 +114,7 @@ public class Planner extends AbstractUtente {
     
     private void aggiornaDisponibilita(ArrayList<Integer> array,HashMap<String,Object> mappa){
         try {
-            Comunicatore com = new Comunicatore();
+            Comunicatore com = Comunicatore.getInstance();
             com.apri();
             HashMap<String,Object> mappaModifica = new HashMap<>();
             mappaModifica.put("o8_9", array.get(0));
@@ -172,7 +172,7 @@ public class Planner extends AbstractUtente {
         
         Comunicatore com;    
         try {    
-            com= new Comunicatore();
+            com= Comunicatore.getInstance();
             com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("aid",attivita.getId());
@@ -266,7 +266,7 @@ public class Planner extends AbstractUtente {
         Comunicatore com;
         
         try {    
-            com= new Comunicatore();
+            com= Comunicatore.getInstance();
             com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("office",sito.getOffice());
@@ -295,7 +295,7 @@ public class Planner extends AbstractUtente {
         Comunicatore com;
         int id = act.getId();
         try{
-            com=new Comunicatore();
+            com=Comunicatore.getInstance();
             com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("aid",id);
@@ -325,7 +325,7 @@ public class Planner extends AbstractUtente {
         Comunicatore com=null;
         Procedure proc=null;
         try {
-            com=new Comunicatore();
+            com=Comunicatore.getInstance();
             com.apri();
             ResultSet set= com.selectionQuery(tableProc, colonneProc, doveProc);
             while(set.next()){
@@ -354,7 +354,7 @@ public class Planner extends AbstractUtente {
         Comunicatore com=null;
         
         try {
-            com=new Comunicatore();
+            com=Comunicatore.getInstance();
             com.apri();
             ResultSet set= com.selectionQuery(tableAttMat, colonneAttMat, doveAttMat);
             while(set.next()){
@@ -391,7 +391,7 @@ public class Planner extends AbstractUtente {
         
         Comunicatore com;
         try {
-            com=new Comunicatore();
+            com=Comunicatore.getInstance();
             com.apri();
             ResultSet set=com.selectionQuery(tableAtt, colonneAtt, doveAtt);
             com.chiudi();
@@ -464,7 +464,7 @@ public class Planner extends AbstractUtente {
         mappadove.put("giorno", giorno);
         ArrayList<String> array =new ArrayList<>();
         try {    
-            com= new Comunicatore();
+            com= Comunicatore.getInstance();
             com.apri();
             int index;
             ResultSet rs= com.selectionQuery("orari", null, mappadove);
@@ -503,7 +503,7 @@ public class Planner extends AbstractUtente {
         colonne.add("o15_16");
         colonne.add("o16_17");
         ResultSet result;
-        Comunicatore com= new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         for (int i=1; i<=5;i++){
             HashMap <String,String> map=new HashMap<>();
             dove.put("giorno", i);
@@ -562,7 +562,7 @@ public class Planner extends AbstractUtente {
             
     public ArrayList<Maintainer> viewMaintainer(){
         ArrayList<Maintainer> elenco=new ArrayList<>();
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         String nome;
         String username;
         String pass;

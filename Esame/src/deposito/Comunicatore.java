@@ -21,14 +21,14 @@ public class Comunicatore {
     private Connection c;
 
 //  gestione del Singleton per il comunicatore
-    public synchronized Comunicatore getInstance(){
+    public static synchronized Comunicatore getInstance(){
         if(instance==null){
             instance = new Comunicatore();
         }
         return instance;
     }
     
-    public Comunicatore(){} //costruttore privato a causa del singleton
+    private Comunicatore(){} //costruttore privato a causa del singleton
     
     //consente l'apertura della connessione da parte del comunicatore
     public synchronized Connection apri() throws SQLException {
@@ -89,7 +89,9 @@ public class Comunicatore {
     
     //quey di aggiornamento
     //Parametri: String table nome della tabella in cui si vuole aggiornare
-    //           HashMap<String, Object> params
+    //           HashMap<String, Object> params: mappa contenente i nomi degli attributi
+    //                                          e i corrispondenti valori che verranno aggiornati
+    //           HashMap<String, Object> chiavi: mappa delle chiavi per la clausola where
     
     public int updateQuery(String table, HashMap<String, Object> params, HashMap<String, Object> chiavi) throws SQLException {
         int i = 0;
@@ -123,6 +125,13 @@ public class Comunicatore {
         return this.eseguiUpdate(query + values);
     }
     
+    /* Effettua una query di selezione da una tabella e lancia un'eccezione nel caso ci siano problemi col database
+    Parametri: String table nome della tabella da cui si vuole selezionare
+               ArrayList<String> lista delle colonne della tabella che ci si vuol fare restituire
+               HashMap<String, Object> mappa dei valori per la clausola where
+    
+    per selezionare tutta la tabella basta passare 2° e 3° parametro a null
+    */
     public ResultSet selectionQuery(String table, ArrayList<String> colonne, HashMap<String, Object> dove) throws SQLException{
         ArrayList<String> chiavi;
         String fine;
@@ -165,7 +174,10 @@ public class Comunicatore {
         return this.eseguiSelezione(query+values+luogo);
     }
 
-    
+    /*utility privata per consentire la manipolazione degli attributi per la 
+        query in modo da aggiungere le virgole dopo i valori degli attributi
+        rispettando la sintassi SQL
+    */
     private String virgole(ArrayList<String> strings, String query){
         int i;
         for(i=0; i<strings.size()-1;i++){
@@ -175,7 +187,10 @@ public class Comunicatore {
         return query;
     }
     
-    
+    /*  utility privata che consente, dato l'array delle chiavi e la mappa 
+        dei parametri, restituisce la parte della query per la clausola where
+        rispettando la sintassi SQL
+    */
     private String clausolaWhere(ArrayList<String> array, HashMap<String, Object> cont){
         int i=0;
         Object p;
@@ -196,6 +211,7 @@ public class Comunicatore {
         return values;
     }
     
+    //utility per la tarsformazione di un set in un arrayList
     private ArrayList<String> setToArray(Set<String> set) {
         ArrayList<String> l = new ArrayList<>();
         for (String chiave : set) {
@@ -203,18 +219,23 @@ public class Comunicatore {
         }
         return l;
     }
-
+    
+    // utility per l'esecuzione effettiva della query di aggiornamento in senso
+    // SQL lancia un'eccezione nel caso in cui si siano problemi con DB
     private int eseguiUpdate(String query) throws SQLException{
             Statement pt = c.createStatement();
             return pt.executeUpdate(query);
     }
     
+    //utility per l'esecuzione di una query di selezione, lancia una eccexione
+    // nel caso di problemi col DataBAse
     private ResultSet eseguiSelezione(String query) throws SQLException{
         Statement st;
         st = c.createStatement();
         return st.executeQuery(query);
     }
-
+    
+    //chiude la connesione con il DB, lancia un'eccezione in caso di errori
     public void chiudi() throws SQLException {
         this.c.close();
     }

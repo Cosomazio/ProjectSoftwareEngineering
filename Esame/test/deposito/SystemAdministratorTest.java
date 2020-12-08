@@ -55,7 +55,7 @@ public class SystemAdministratorTest {
     public void testCreateMaintainer() {
         
         Boolean flag=false;
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         System.out.println("createMaintainer");
         String username = "paperino";
         String password = "1234";
@@ -105,7 +105,7 @@ public class SystemAdministratorTest {
     
     @Test
     public void testModificaMaintainer(){
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         Boolean flag=false;
         System.out.println("modificaMaintainer");
         SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
@@ -168,7 +168,7 @@ public class SystemAdministratorTest {
         Maintainer rs=instance.createMaintainer("paperino","1234","papera","ciccio@ciccio.com");
         Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",rs.getId());
         instance.cancellaMaintainer(man);
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         try{
         com.apri();
         HashMap < String, Object> map= new HashMap <> ();

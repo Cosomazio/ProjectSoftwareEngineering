@@ -26,7 +26,7 @@ public class SystemAdministrator extends AbstractUtente {
         MaintainerBuilder builder= new MaintainerBuilder();
         builder.reset(nome, username, password, email);
         Maintainer m=builder.getInstance();
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         HashMap <String, Object> map= new HashMap<>();
         
         map.put("mid", m.getId());
@@ -65,7 +65,7 @@ public class SystemAdministrator extends AbstractUtente {
     //crea la tabella orari per l'apposito maintainer, ritorna 1 se va a buon fine altrimenti -1
     private int inserisciOrari(int id){
         HashMap<String,Object> mappa = new HashMap<>();
-        Comunicatore com = new Comunicatore();
+        Comunicatore com = Comunicatore.getInstance();
         
         try {
             com.apri();
@@ -124,7 +124,7 @@ public class SystemAdministrator extends AbstractUtente {
     }
     //modifica il maintainer nel DB ritorna 1 se va a buon fine altrimenti -1
     private int modificaTabellaMaintainer (Maintainer man){
-        Comunicatore com= new Comunicatore(); 
+        Comunicatore com= Comunicatore.getInstance(); 
         HashMap <String, Object> value= new HashMap<> ();
         value.put("username", man.getUsername());
         value.put("pass", man.getPassword());
@@ -158,7 +158,7 @@ public class SystemAdministrator extends AbstractUtente {
         if(skill==null){
             skill=new HashSet<>();
         }
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         Iterator iter= skill.iterator();
         HashMap <String, Object> skills=new HashMap<>();
         String sk;
@@ -192,7 +192,7 @@ public class SystemAdministrator extends AbstractUtente {
     public int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
         if(procedure==null)
             procedure=new HashSet<Procedure>();
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         Iterator iterpro= procedure.iterator();
         HashMap <String, Object> procedures=new HashMap<>();
         Procedure pr;
@@ -224,7 +224,7 @@ public class SystemAdministrator extends AbstractUtente {
     }
     //Cancella il mainteiner, restituisce il maintainer cancellato se è andato a buon fine altrimenti null
     public Maintainer cancellaMaintainer (Maintainer man){
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         ResultSet s;
         HashMap <String,Object> chiavi=new HashMap<>();
         HashMap <String,Object> chiaviora=new HashMap<>();
@@ -257,7 +257,7 @@ public class SystemAdministrator extends AbstractUtente {
         PlannerBuilder builder= new PlannerBuilder();
         builder.reset(nome, username, password, email);
         Planner p=builder.getResult();
-        Comunicatore com= new Comunicatore();
+        Comunicatore com= Comunicatore.getInstance();
         
         HashMap <String,Object> map= new HashMap<>();
         map.put("pid", p.getId());
@@ -292,7 +292,7 @@ public class SystemAdministrator extends AbstractUtente {
         pln.setUsername(username);
         pln.setPassword(password);
         pln.setEmail(email);
-        Comunicatore com=new Comunicatore();
+        Comunicatore com=Comunicatore.getInstance();
         
         HashMap <String,Object> value=new HashMap <> ();
         value.put("username", pln.getUsername());
@@ -324,7 +324,7 @@ public class SystemAdministrator extends AbstractUtente {
     }
     //cancella il planner passatoci come parametro, ritorna il planner cancellato se va a buon fine altrimenti null
     public Planner cancellaPlanner(Planner pln){
-        Comunicatore com= new Comunicatore();
+        Comunicatore com= Comunicatore.getInstance();
         HashMap <String,Object> map= new HashMap <>();
         map.put("pid", pln.getId());
         try{
@@ -345,7 +345,7 @@ public class SystemAdministrator extends AbstractUtente {
     }
     
     public ArrayList<Maintainer> viewMaintainer(){
-        Comunicatore com = new Comunicatore();
+        Comunicatore com = Comunicatore.getInstance();
         ArrayList<Maintainer> archivio= new ArrayList<>();
         try {
             com.apri();
@@ -377,7 +377,7 @@ public class SystemAdministrator extends AbstractUtente {
         colonnePlan.add("nome");
         colonnePlan.add("email");
         
-        Comunicatore com= new Comunicatore();
+        Comunicatore com= Comunicatore.getInstance();
         try {
             com.apri();
             ResultSet set= com.selectionQuery(tablePlan, colonnePlan, dovePlan);
