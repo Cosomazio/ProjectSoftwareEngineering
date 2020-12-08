@@ -269,7 +269,7 @@ public class SystemAdministratorTest {
     /**
      * Test of toString method, of class SystemAdministrator.
      */
-    /*
+    
     @Test
     public void testViewMaintainer() {
         Boolean flag = false;
@@ -281,19 +281,20 @@ public class SystemAdministratorTest {
             flag=true;
             //System.out.println("è andata bene");
         }
-        try {
-            man = instance.createMaintainer("tentativo", "12345", "di prova", "tenta.Prova@gmail.com");
-            ArrayList<Maintainer> archivio = instance.viewMaintainer();
-            for(Maintainer m: archivio)
-                if(m.equals(man))
-                    flag=true;
-            instance.cancellaMaintainer(man);
-        } catch (SQLException ex) {
-            fail(ex.getMessage());
+        man = instance.createMaintainer("tentativo", "12345", "di prova", "tenta.Prova@gmail.com");
+        if(man == null){
+            fail("ERRORE NELLA CREAZIONE");
         }
+        ArrayList<Maintainer> archivio = instance.viewMaintainer();
+        for(Maintainer m: archivio){
+            if(m.equals(man))
+                flag=true;
+        }
+        instance.cancellaMaintainer(man);
+        
         assertEquals(flag, true);
     }
-    */
+    
     
     @Test
     public void testToString() {
