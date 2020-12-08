@@ -144,13 +144,24 @@ public class DeleteUserInterface extends javax.swing.JFrame {
         list.setVisibleRowCount(plans.size()+mans.size());
     }
     
+    private void errorMsg(String title,String msg){
+        JOptionPane.showMessageDialog(new JFrame(), title, msg, JOptionPane.ERROR_MESSAGE);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+    
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
         if(list.getSelectedValue() instanceof deposito.Planner){
-            this.admin.cancellaPlanner((Planner) list.getSelectedValue());
+            Planner p= this.admin.cancellaPlanner((Planner) list.getSelectedValue());
+            if (p==null){
+                errorMsg("Errore cancellazione", "cancellazione planner fallita");
+            }
         }
         else{
-            this.admin.cancellaMaintainer((Maintainer) list.getSelectedValue());
+            Maintainer m = this.admin.cancellaMaintainer((Maintainer) list.getSelectedValue());
+            if (m==null){
+                errorMsg("Errore cancellazione", "cancellazione maintainer fallita");
+            }
         }
         JOptionPane.showMessageDialog(new JFrame(), "Cancellazione avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
