@@ -582,6 +582,7 @@ public class Planner extends AbstractUtente {
             com.chiudi();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+            return null;
         }
         
         return elenco;
