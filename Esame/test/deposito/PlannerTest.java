@@ -46,7 +46,7 @@ public class PlannerTest {
     /*
     */
    Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
-    
+    /*
     @Test
     public void testAssegnaMan() {
         
@@ -75,7 +75,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-
+    */
 
     /**
      * Test of creaEwo method, of class Planner.
@@ -341,21 +341,72 @@ public class PlannerTest {
     /**
      * Test of maintainerAvalPerc method, of class Planner.
      */
-    /*
+    
     @Test
     public void testMaintainerAvalPerc() {
        System.out.println("maintainerAvalPerc");
-        Maintainer man = new Maintainer("paperino","1234","papera","ciccio@ciccio.com",1);
+       Boolean flag=false;
+      Sito sito1 = new Sito("ufficio","area");
+        List<String> materiali = new ArrayList();
+        materiali.add("Mattoni");
+        Procedure procedura = new Procedure();
+        Sito sito = new Sito("ufficio2","area");
+        String tipologia = "Meccanico";
+        String descrizione = "descrizione cambiata";
+        int tempo = 40;
+        materiali.add("Chiodi di garofano");
+        int week = 52;
+        String tipoAttivita="Planned";
+        Boolean interrompibile = false;
+       SystemAdministrator admin=new SystemAdministrator("username","pass","admin","email",4);
+       Maintainer man=admin.createMaintainer("man", "pass", "man", "ciccio@ciccio.com");
+       AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+            
+       HashMap<String,Object> map=new HashMap<>();
+       
+       int i=instance.assegnaMan(man, act, 2, "o8_9");
+       
         
         ArrayList<HashMap> l=instance.maintainerAvalPerc(man);
         if(l==null){
             fail("Errore nella realizzazione delle percentuali");
         }
+        map=l.get(1);
+        String s=(String) map.get("o8_9");
+        try{
+        Comunicatore com=Comunicatore.getInstance();
+        ArrayList<String>arr=new ArrayList<>();
+        arr.add("o8_9");
+        //maintainer ,giorno
+        HashMap <String,Object> m=new HashMap<>();
+        m.put("giorno", 2);
+        m.put("maintainer", man.getId());
+        com.apri();
+        ResultSet rs=com.selectionQuery("orari", arr, m);
+        com.chiudi();
+        int j;
+        String r;
+        while(rs.next()){
+            j=rs.getInt("o8_9");
+            j=(100*j)/60;
+            r=j+"%";
+            
+            if(s.equals(r)){
+            flag=true;
+            }
+        }
         
+        
+        }catch(SQLException ex){
+            fail("Errore");
+        }
+        admin.cancellaMaintainer(man);
+        instance.deleteActivity(act);
+        assertTrue(flag);
         // TODO review the generated test code and remove the default call to fail.
         
     }
-    */
+    
    
     @Test
     public void testToString() {
