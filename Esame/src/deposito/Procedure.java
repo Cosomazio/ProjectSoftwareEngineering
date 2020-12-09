@@ -17,9 +17,8 @@ public class Procedure {
     private File smp;
     private Set<String> competenze;
 
-    public Procedure(File smp, Set<String> competenze,String nomefile) {
+    public Procedure(File smp,String nomefile) {
         this.smp = smp;
-        this.competenze = competenze;
         this.nomefile=nomefile;
     }
 
@@ -41,15 +40,5 @@ public class Procedure {
 
     public void setSmp(File smp) {
         this.smp = smp;
-    }
-
-    public Set<String> getCompetenze() {
-        return competenze;
-    }
-
-    public void setCompetenze(Set<String> competenze) {
-        this.competenze = competenze;
-    }
-    
-    
+    }    
 }
