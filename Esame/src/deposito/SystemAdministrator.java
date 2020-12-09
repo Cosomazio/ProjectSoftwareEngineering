@@ -399,6 +399,83 @@ public class SystemAdministrator extends AbstractUtente {
         
         return res;
     }
+    /**
+     * Aggiunge una lista di competenze nella tabella competenze
+     * @param competenze
+     * @return le competenze aggiunte o null se fallisce
+     */
+    public List<String> createCompetenze(List<String> competenze){
+        Comunicatore com=Comunicatore.getInstance();
+        int ret=0;
+        String tableComp="competenze";
+        
+        for (String competenza: competenze){
+            HashMap <String,Object> mapComp=new HashMap<>();
+            mapComp.put("competenza", competenza);
+            try {
+                com.apri();
+                ret = com.insertQuery(tableComp,mapComp);
+                com.chiudi();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                return null;
+            }
+        }
+        
+        return competenze;
+    }
     
+    /**
+     * Cancella una lista di competenze nella tabella competenze
+     * @param competenze
+     * @return le competenze rimosse o null se fallisce
+     */
+    public List<String> cancellaCompetenze(List<String> competenze){
+        Comunicatore com=Comunicatore.getInstance();
+        int ret=0;
+        String tableComp="competenze";
+        HashMap <String,Object> mapComp=new HashMap<>();
+        
+        for(String competenza: competenze){
+            mapComp.put("competenza",competenza);
+        }
+        
+        try {
+            com.apri();
+            ret=com.deleteQuery(tableComp, mapComp);
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return  competenze;
+    }
+    
+    /**
+     * Mostra la lista di competenze nella tabella competenze
+     * @return la lista di competenze
+     */
+    public List<String> viewCompetenze(){
+        Comunicatore com=Comunicatore.getInstance();
+        String tableComp="competenze";
+        ResultSet res;
+        ArrayList<String> colonneComp= new ArrayList<>();
+        HashMap<String, Object> doveComp=null;
+        colonneComp.add("competenza");
+        
+        List<String> competenze=new ArrayList<>();
+        try {
+            com.apri();
+            res=com.selectionQuery(tableComp, colonneComp, doveComp);
+            com.chiudi();
+            while(res.next()){
+                competenze.add(res.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return competenze;
+    }
     
 }

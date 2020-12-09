@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -174,12 +175,12 @@ public class SystemAdministratorTest {
         instance.cancellaMaintainer(man);
         Comunicatore com=Comunicatore.getInstance();
         try{
-        com.apri();
+        
         HashMap < String, Object> map= new HashMap <> ();
         map.put("mid", rs.getId());
         ArrayList <String> a=new ArrayList<>();
         a.add("mid");
-        
+        com.apri();
         ResultSet res=com.selectionQuery("maintainer", a, map);
         com.chiudi();
         if (res.next() != false){
@@ -401,5 +402,195 @@ public class SystemAdministratorTest {
         
         
     }
-
+    
+    @Test
+    public void testCancellaCompetenze(){
+        System.out.println("cancellaCompetenze");
+        String tableComp="competenze";
+        
+        Comunicatore com=Comunicatore.getInstance();
+        ArrayList<String> colonneComp=new ArrayList<>();
+        colonneComp.add("competenza");
+        
+        List<String> competenze=new ArrayList<>();
+        competenze.add("saldatura");
+        //competenze.add("elettronica");
+        
+        //vede se già presenti
+        ArrayList<String> elementi=new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet set=com.selectionQuery(tableComp, colonneComp, null);
+            com.chiudi();
+            while(set.next()){
+                elementi.add(set.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        
+        //se non presente inserisce
+        if(!elementi.containsAll(competenze)){
+            HashMap<String,Object> insertComp=new HashMap<>();
+            for (String s: competenze){
+                insertComp.put("competenza", s);
+            }
+            try {
+                com.apri();
+                com.insertQuery(tableComp,insertComp );
+                com.chiudi();
+            } catch (SQLException ex) {
+                fail(ex.getMessage());
+            }
+        }
+        
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        instance.cancellaCompetenze(competenze);
+        
+        //verifica l'eliminazione
+        ArrayList<String> elementiFinali=new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet set=com.selectionQuery(tableComp, colonneComp, null);
+            com.chiudi();
+            while(set.next()){
+                elementiFinali.add(set.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        Boolean ko=elementiFinali.containsAll(competenze);
+        assertFalse(ko);
+    }
+    
+    
+    
+    
+    @Test
+    public void testCreateCompetenze(){
+        System.out.println("createCompetenze");
+        String tableComp="competenze";
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        
+        Comunicatore com=Comunicatore.getInstance();
+        ArrayList<String> colonneComp=new ArrayList<>();
+        colonneComp.add("competenza");
+        
+        List<String> competenze=new ArrayList<>();
+        competenze.add("saldatura");
+        //competenze.add("elettronica");
+        
+        //vede se già presenti
+        ArrayList<String> elementi=new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet set=com.selectionQuery(tableComp, colonneComp, null);
+            com.chiudi();
+            while(set.next()){
+                elementi.add(set.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        //se presente, rimuove l'elemento
+        if(elementi.containsAll(competenze)){
+            HashMap<String, Object> removeComp=new HashMap<>();
+            for (String s: competenze){
+                removeComp.put("competenza", s);
+            }
+            com=Comunicatore.getInstance();
+            try {
+                com.apri();
+                com.deleteQuery(tableComp, removeComp);
+                com.chiudi();
+            } catch (SQLException ex) {
+                fail(ex.getMessage());
+            }
+        }
+        
+        instance.createCompetenze(competenze);
+        
+        com=Comunicatore.getInstance();
+        //verifica l'inserimento
+        ArrayList<String> elementiFinali=new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet set=com.selectionQuery(tableComp, colonneComp, null);
+            com.chiudi();
+            while(set.next()){
+                elementiFinali.add(set.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        Boolean ok=elementiFinali.containsAll(competenze);
+        
+        
+        //rimuove l'elemento
+        HashMap<String, Object> removeComp=new HashMap<>();
+        for (String s: competenze){
+            removeComp.put("competenza", s);
+        }
+        com=Comunicatore.getInstance();
+        try {
+            com.apri();
+            com.deleteQuery(tableComp, removeComp);
+            com.chiudi();
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        assertTrue(ok);
+    }
+    
+    @Test
+    public void testViewCompetenze(){
+        System.out.println("viewCompetenze");
+        String tableComp="competenze";
+        SystemAdministrator instance = new SystemAdministrator("pippo","pass","nome","email",5);
+        
+        Comunicatore com=Comunicatore.getInstance();
+        ArrayList<String> colonneComp=new ArrayList<>();
+        colonneComp.add("competenza");
+        
+        List<String> competenze=new ArrayList<>();
+        competenze.add("saldatura");
+        //competenze.add("elettronica");
+        //vede se già presenti
+        ArrayList<String> elementi=new ArrayList<>();
+        try {
+            com.apri();
+            ResultSet set=com.selectionQuery(tableComp, colonneComp, null);
+            com.chiudi();
+            while(set.next()){
+                elementi.add(set.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        //se non presente, inserisce l'elemento
+        if(!elementi.containsAll(competenze)){
+            instance.createCompetenze(competenze);
+        }
+        
+        List<String> elementiView=instance.viewCompetenze();
+        Boolean ok=elementiView.containsAll(competenze);
+        assertTrue(ok);
+        for(String r: elementiView)
+            System.out.println(r);
+        //rimuove l'elemento
+        HashMap<String, Object> removeComp=new HashMap<>();
+        for (String s: competenze){
+            removeComp.put("competenza", s);
+        }
+        com=Comunicatore.getInstance();
+        try {
+            com.apri();
+            com.deleteQuery(tableComp, removeComp);
+            com.chiudi();
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        assertTrue(ok);
+    }
+    
 }
