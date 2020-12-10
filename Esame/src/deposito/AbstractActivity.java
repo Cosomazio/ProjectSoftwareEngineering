@@ -25,7 +25,7 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
     
     public AbstractActivity(int id, Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
-                int week,Boolean interrompibile,Procedure procedura){
+                int week,Boolean interrompibile,Procedure procedura,String wNotes){
         this.id=id;
         this.sito=sito;
         this.tipologia=tipologia;
@@ -35,6 +35,7 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
         this.week=week;
         this.interrompibile=interrompibile;
         this.procedura=procedura;
+        this.wnotes=wNotes;
     }
 
     @Override

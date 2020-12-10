@@ -19,13 +19,13 @@ public class UnplannedBuilder extends ActivityBuilder {
     @Override
     public void reset(Sito sito, String tipologia, String descrizione, 
             int tempo, List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura) {
+            Procedure procedura,String wNotes) {
             
         IdActivity generatore= IdActivity.getInstance();
         int id= generatore.getId();
         
         this.result = new UnplannedActivity(id,sito,tipologia,
-                descrizione,tempo,materiali,week,interrompibile,procedura);
+                descrizione,tempo,materiali,week,interrompibile,procedura,wNotes);
     }
     public UnplannedActivity getResult(){
         return this.result;

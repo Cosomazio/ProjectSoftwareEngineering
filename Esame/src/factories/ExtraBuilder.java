@@ -16,10 +16,10 @@ public class ExtraBuilder extends ActivityBuilder{
     private ExtraActivity result;
     
     public void reset(Sito sito,String tipologia,String descrizione, int tempo,List<String> materiali,int week,
-            Boolean interrompibile, Procedure procedura){
+            Boolean interrompibile, Procedure procedura,String wNotes){
         IdActivity generatore = IdActivity.getInstance();
         int id = generatore.getId();
-        this.result = new ExtraActivity(id,sito,tipologia,descrizione, tempo,materiali,week,interrompibile,procedura);
+        this.result = new ExtraActivity(id,sito,tipologia,descrizione, tempo,materiali,week,interrompibile,procedura,wNotes);
     }
     
     public ExtraActivity getResult(){

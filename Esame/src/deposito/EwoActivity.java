@@ -19,8 +19,8 @@ public class EwoActivity extends UnplannedActivity{
     private AreaState areaStatus;
     public enum GeneralState{notStarted,inProgress,closed};
     private GeneralState generalStatus;
-    public EwoActivity(int ewoId,int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura) {
-        super(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+    public EwoActivity(int ewoId,int id, Sito sito, String tipologia, String descrizione, int tempo, List<String> materiali, int week, Boolean interrompibile, Procedure procedura,String wNotes) {
+        super(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         this.ewoID=ewoId;
         this.manStatus=MaintainerState.sent;
         this.areaStatus=AreaState.notSent;

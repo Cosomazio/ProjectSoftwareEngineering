@@ -17,11 +17,11 @@ public class PlannedBuilder extends ActivityBuilder{
     
     public void reset(Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
-                int week,Boolean interrompibile,Procedure procedura){
+                int week,Boolean interrompibile,Procedure procedura,String wNotes){
         IdActivity generatore = IdActivity.getInstance();
         int id=generatore.getId();
         
-        this.result=new PlannedActivity(id,sito,tipologia,descrizione,tempo,materiali,week, interrompibile, procedura);
+        this.result=new PlannedActivity(id,sito,tipologia,descrizione,tempo,materiali,week, interrompibile, procedura,wNotes);
         
     }
     

@@ -16,6 +16,6 @@ public abstract class ActivityBuilder {
     
     public abstract void reset(Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
-                int week,Boolean interrompibile,Procedure procedura);
+                int week,Boolean interrompibile,Procedure procedura,String wNotes);
     
 }

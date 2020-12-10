@@ -157,7 +157,7 @@ public class PlannerTest {
         try {
             
 
-                AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+                AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita,"");
                 array.add("aid");
                 mappa.put("aid", act.getId());
                 com.apri();
@@ -201,7 +201,7 @@ public class PlannerTest {
         Comunicatore com = Comunicatore.getInstance();
         ResultSet rs;
         
-        AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+        AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita,"");
         if(act == null)
             fail("ERRORE ATTIVITA NON CREATA");
         
@@ -258,7 +258,7 @@ public class PlannerTest {
         Comunicatore com = Comunicatore.getInstance();
         try {
             
-            AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+            AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita,"");
             if(act == null){
                 
             }
@@ -302,10 +302,10 @@ public class PlannerTest {
         int week = 2;
         Boolean interrompibile = true;
         Procedure procedura=null;
-        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned");
+        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"Planned","");
         
         List<AbstractActivity> res=instance.viewActivities();
-        AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,interrompibile,procedura,"Planned");
+        AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,interrompibile,procedura,"Planned","");
         instance.deleteActivity(plact);
         instance.deleteActivity(plact2);
         assertEquals(plact2.getId(), plact.getId()+1);
@@ -369,7 +369,7 @@ public class PlannerTest {
         Boolean interrompibile = false;
        SystemAdministrator admin=new SystemAdministrator("username","pass","admin","email",4);
        Maintainer man=admin.createMaintainer("man", "pass", "man", "ciccio@ciccio.com");
-       AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+       AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita,"");
             
        HashMap<String,Object> map=new HashMap<>();
        
@@ -512,7 +512,7 @@ public class PlannerTest {
         if(!archivio.isEmpty())
             fail("CREAZIONI SPURIE");
         
-        AbstractActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, Boolean.TRUE, procedura, tipoAttivita);
+        AbstractActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, Boolean.TRUE, procedura, tipoAttivita,"");
         
         archivio = instance.viewEwo();
         

@@ -163,6 +163,7 @@ public class Planner extends AbstractUtente {
         String tipologia, descrizione;
         Boolean interrompibile;
         Procedure procedura;
+        String wNotes;
         try {
             com.apri();
             rs = com.selectionQuery("attivita", null, null);
@@ -178,8 +179,9 @@ public class Planner extends AbstractUtente {
                     tempo=rs.getInt("tempo");
                     week=rs.getInt("week");
                     interrompibile=rs.getBoolean("interrompibile");
+                    wNotes=rs.getString("wnotes");
                     
-                    EwoActivity res=new EwoActivity(ewoid, aid, site, tipologia, descrizione, tempo, this.getMateriali(aid), week, interrompibile, procedura);
+                    EwoActivity res=new EwoActivity(ewoid, aid, site, tipologia, descrizione, tempo, this.getMateriali(aid), week, interrompibile, procedura,wNotes);
                     archivio.add(res);
                 }
         }
@@ -193,11 +195,11 @@ public class Planner extends AbstractUtente {
     /*Crea un attività e restituisce l'attività creata altrimenti ritorna null*/
     public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
+            Procedure procedura,String wNotes,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
         int res;
         
-        AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+        AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoAttivita);
         
         Comunicatore com;    
         try {    
@@ -213,6 +215,7 @@ public class Planner extends AbstractUtente {
             mappa.put("week",attivita.getWeek());
             mappa.put("interrompibile",attivita.getInterrompibile());
             mappa.put("pianificazione",tipoAttivita);
+            mappa.put("wnotes",wNotes);
         
             res= com.insertQuery("Attivita", mappa);
             
@@ -225,16 +228,16 @@ public class Planner extends AbstractUtente {
     }
     private AbstractActivity vistaAttivita(int id,int ewoid,Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura,String tipoAttivita){
+            Procedure procedura,String tipoAttivita,String wNotes){
         AbstractActivity attivita = null;
         if(tipoAttivita.equals("Planned")){
-            attivita=new PlannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=new PlannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }else if(tipoAttivita.equals("Unplanned")){
-            attivita=new UnplannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=new UnplannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }else if(tipoAttivita.equals("Extra")){
-            attivita=new ExtraActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=new ExtraActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }else if(tipoAttivita.equals("EWO")) {
-            attivita=new EwoActivity(ewoid, id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita=new EwoActivity(ewoid, id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }
         return attivita;
     }
@@ -244,20 +247,20 @@ public class Planner extends AbstractUtente {
     /*Crea l'attività in base al suo tipo se non riesce a fare almeno una delle condizioni ritorna null*/
     private AbstractActivity tipoAttivita(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura,String tipoAttivita){
+            Procedure procedura,String wNotes,String tipoAttivita){
             AbstractActivity attivita = null;
             
         if(tipoAttivita.equals("Planned")){
-            attivita = this.createPlanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = this.createPlanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
             return attivita;
         }else if(tipoAttivita.equals("Unplanned")){
-            attivita = this.createUnplanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = this.createUnplanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
             return attivita;
         }else if(tipoAttivita.equals("Extra")){
-            attivita = this.createExtra(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = this.createExtra(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
             return attivita;
         }else if(tipoAttivita.equals("Ewo")){
-            attivita = this.createEWO(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+            attivita = this.createEWO(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
             return attivita;
         }else
             return attivita;
@@ -267,37 +270,37 @@ public class Planner extends AbstractUtente {
     /*--------------------------------------------*/
     private PlannedActivity createPlanned(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura){
+            Procedure procedura,String wNotes){
         
         PlannedBuilder builder = new PlannedBuilder();
-        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         PlannedActivity attivita = builder.getResult();
         return attivita;
     }
     private UnplannedActivity createUnplanned(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura){
+            Procedure procedura,String wNotes){
         
         UnplannedBuilder builder = new UnplannedBuilder();
-        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         UnplannedActivity attivita = builder.getResult();
         return attivita;
     }
     private ExtraActivity createExtra(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura){
+            Procedure procedura,String wNotes){
         
         ExtraBuilder builder = new ExtraBuilder();
-        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         ExtraActivity attivita = builder.getResult();
         return attivita;
     }
     private EwoActivity createEWO(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura){
+            Procedure procedura,String wNotes){
         
         EwoBuilder builder = new EwoBuilder();
-        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
+        builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         EwoActivity attivita = builder.getResult();
         return attivita;
     }
@@ -451,6 +454,7 @@ public class Planner extends AbstractUtente {
                 boolean interrompibile=set.getBoolean("interrompibile");
                 int ewoid=set.getInt("ewoid");
                 String pianificazione=set.getString("pianificazione");
+                String wNotes=set.getString("wnotes");
                 //com.chiudi();
                 
                 List<String> materiali=getMateriali(id);
@@ -458,7 +462,7 @@ public class Planner extends AbstractUtente {
                 
                 AbstractActivity act=vistaAttivita(id, ewoid, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
-                        procedura, pianificazione);
+                        procedura, pianificazione,wNotes);
                 
                 res.add(act);
                 //com=new Comunicatore();
