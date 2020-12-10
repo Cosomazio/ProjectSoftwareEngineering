@@ -182,6 +182,7 @@ public class PlannerTest {
     
     @Test
     public void testModifyActivity() {
+        boolean flag=false;
          
         System.out.println("modifyActivity");
         Sito sito1 = new Sito("ufficio","area");
@@ -198,27 +199,35 @@ public class PlannerTest {
         Boolean interrompibile = false;
         
         Comunicatore com = Comunicatore.getInstance();
+        ResultSet rs;
         
+        AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
+        if(act == null)
+            fail("ERRORE ATTIVITA NON CREATA");
         
-        try {
-            
-            AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, tipoAttivita);
-            HashMap<String,Object> mappa = new HashMap<>();
-            mappa.put("aid", act.getId());
-            ArrayList<String> array=new ArrayList<>();
-            array.add("aid");
+        instance.modifyActivity(act, "NOTE MODIFICATE");
+        
+        HashMap<String,Object> mappa = new HashMap<>();
+        mappa.put("area", act.getSito().getArea());
+        mappa.put("office", act.getSito().getOffice());
+        ArrayList<String> array=new ArrayList<>();
+        array.add("wnotes");
+        
+        try{
             com.apri();
-            ResultSet rs = com.selectionQuery("attivita", array, mappa);
+            rs = com.selectionQuery("sito", array, mappa);
             com.chiudi();
+            
             if(rs.next()==false){
-                throw new SQLException("Attenzione attività non presente e quindi non modificabile");
+                flag=false;
             }
             else{
-                AbstractActivity act2 = instance.modifyActivity(act, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-                assertTrue("Modifica non avvenuta.ERRORE",(act.getId()==act2.getId()));
+                if(rs.getString("wnotes").equals(act.getSito().getWorkspaceNote()))
+                    flag=true;
             }
             
             instance.deleteActivity(act);
+            assertTrue(flag);
             
         } catch (SQLException ex) {
             fail(ex.getMessage());
@@ -298,7 +307,8 @@ public class PlannerTest {
         
         List<AbstractActivity> res=instance.viewActivities();
         AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,interrompibile,procedura,"Planned");
-        
+        instance.deleteActivity(plact);
+        instance.deleteActivity(plact2);
         assertEquals(plact2.getId(), plact.getId()+1);
         Boolean found=false;
         assertNotEquals(plact, null);
@@ -480,5 +490,39 @@ public class PlannerTest {
         }
         util.cancellaMaintainer(man);
         assertTrue(flag);
+    }
+    
+    @Test
+    public void testViewEwo(){
+        boolean flag=true;
+        System.out.println("viewEwo");
+        
+        List<String> materiali = new ArrayList();
+        materiali.add("Mattoni");
+        Procedure procedura = new Procedure();
+        Sito sito = new Sito("ufficio2","area");
+        String tipologia = "Meccanico";
+        String tipoAttivita= "Ewo";
+        String descrizione = "descrizione cambiata";
+        int tempo = 90;
+        materiali.add("Chiodi di garofano");
+        int week = 52;
+        Boolean interrompibile = false;
+        
+        ArrayList<EwoActivity> archivio = instance.viewEwo();
+        if(!archivio.isEmpty())
+            fail("CREAZIONI SPURIE");
+        
+        AbstractActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, Boolean.TRUE, procedura, tipoAttivita);
+        
+        archivio = instance.viewEwo();
+        
+        for(EwoActivity e:archivio){
+            if(e.compareTo(ewo)==0)
+                flag=true;
+        }
+        
+       assertTrue(flag);
+        
     }
 }

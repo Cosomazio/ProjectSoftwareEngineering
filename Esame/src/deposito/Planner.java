@@ -48,8 +48,8 @@ public class Planner extends AbstractUtente {
             }
             //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINO
             com.insertQuery("pianificazione", tempMap);
-            this.aggiornaDisponibilita(arr, mappaWhere);
             com.chiudi();
+            this.aggiornaDisponibilita(arr, mappaWhere);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return -1;
@@ -152,14 +152,42 @@ public class Planner extends AbstractUtente {
         return array;
     }
     
-    public void creaEwo(int id, Sito sito ,String descrizione,int tempo,
-            List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura){
+    public ArrayList<EwoActivity> viewEwo(){
+        //select all fromm attivita where ewoid is not null
         
-    }
-    public void modificaEWO(EwoActivity ewo, String descrizione,OffsetTime tempo,
-            List<String> skills, List<String> materiali){
-        
+        Comunicatore com = Comunicatore.getInstance();
+        ArrayList<EwoActivity> archivio= new ArrayList<>();
+        ResultSet rs;
+        int ewoid, aid, tempo, week;
+        Sito site;
+        String tipologia, descrizione;
+        Boolean interrompibile;
+        Procedure procedura;
+        try {
+            com.apri();
+            rs = com.selectionQuery("attivita", null, null);
+            com.chiudi();
+            while(rs.next()){
+                ewoid=rs.getInt("ewoid");
+                if(ewoid!=0){
+                    aid=rs.getInt("aid");
+                    site=new Sito(rs.getString("office"), rs.getString("area"));
+                    procedura=this.getProcedure(rs.getString("nomefile"));
+                    tipologia=rs.getString("tipologia");
+                    descrizione=rs.getString("descrizione");
+                    tempo=rs.getInt("tempo");
+                    week=rs.getInt("week");
+                    interrompibile=rs.getBoolean("interrompibile");
+                    
+                    EwoActivity res=new EwoActivity(ewoid, aid, site, tipologia, descrizione, tempo, this.getMateriali(aid), week, interrompibile, procedura);
+                    archivio.add(res);
+                }
+        }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return archivio;
     }
     
     /*Crea un attività e restituisce l'attività creata altrimenti ritorna null*/
@@ -237,75 +265,71 @@ public class Planner extends AbstractUtente {
     }
     
     /*--------------------------------------------*/
-    private AbstractActivity createPlanned(Sito sito,String tipologia,String descrizione,int tempo,
+    private PlannedActivity createPlanned(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
         PlannedBuilder builder = new PlannedBuilder();
         builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-        AbstractActivity attivita = builder.getResult();
+        PlannedActivity attivita = builder.getResult();
         return attivita;
     }
-    private AbstractActivity createUnplanned(Sito sito,String tipologia,String descrizione,int tempo,
+    private UnplannedActivity createUnplanned(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
         UnplannedBuilder builder = new UnplannedBuilder();
         builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-        AbstractActivity attivita = builder.getResult();
+        UnplannedActivity attivita = builder.getResult();
         return attivita;
     }
-    private AbstractActivity createExtra(Sito sito,String tipologia,String descrizione,int tempo,
+    private ExtraActivity createExtra(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
         ExtraBuilder builder = new ExtraBuilder();
         builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-        AbstractActivity attivita = builder.getResult();
+        ExtraActivity attivita = builder.getResult();
         return attivita;
     }
-    private AbstractActivity createEWO(Sito sito,String tipologia,String descrizione,int tempo,
+    private EwoActivity createEWO(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura){
         
         EwoBuilder builder = new EwoBuilder();
         builder.reset(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura);
-        AbstractActivity attivita = builder.getResult();
+        EwoActivity attivita = builder.getResult();
         return attivita;
     }
     
     /*--------------------------------------------*/
     
     /*Ritorna l'attività modificata oppure ritorna il valore null*/
-    public AbstractActivity modifyActivity(AbstractActivity act, Sito sito,String tipologia, String descrizione, int tempo, 
-            List<String> materiali, int week, Boolean interrompibile, Procedure procedura){
+    public AbstractActivity modifyActivity(AbstractActivity act, String wnotes){
         
         int res;
         Comunicatore com;
         
         try {    
             com= Comunicatore.getInstance();
-            com.apri();
+            
             HashMap<String,Object> mappa= new HashMap<>();
-            mappa.put("office",sito.getOffice());
-            mappa.put("area",sito.getArea());
-            mappa.put("tipologia",tipologia);
-            mappa.put("descrizione",descrizione);
-            mappa.put("tempo",tempo);
-            mappa.put("week",week);
-            mappa.put("interrompibile",interrompibile);
+            mappa.put("wnotes", wnotes);
+            
             HashMap<String,Object> mappa2= new HashMap<>();
-            mappa2.put("aid",act.getId());
+            mappa2.put("area",act.getSito().getArea());
+            mappa2.put("office", act.getSito().getOffice());
             
-            res=com.updateQuery("Attivita", mappa,mappa2);
-            
+            com.apri();
+            res=com.updateQuery("Sito", mappa,mappa2);
             com.chiudi();
+            act.getSito().setWorkspaceNote(wnotes);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
         }
         return act;
-        //AbstractActivity result=
+        
     }    
     
     /*Ritorna l'attività eliminata oppure null*/
@@ -349,7 +373,7 @@ public class Planner extends AbstractUtente {
             while(set.next()){
                 String nomefile=set.getString("nomefile");
                 String smp=set.getString("smp");
-                proc=new Procedure(null, null, nomefile);
+                proc=new Procedure(null, nomefile);
             }
             com.chiudi();
         } catch (SQLException ex) {
@@ -450,10 +474,6 @@ public class Planner extends AbstractUtente {
         
         
         return res;
-    }
-    
-    public void viewEWO() {
-        
     }
     
     public ArrayList<AbstractActivity> sortedActivities(){
