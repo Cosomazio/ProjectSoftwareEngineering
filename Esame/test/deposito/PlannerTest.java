@@ -8,6 +8,8 @@ package deposito;
 //import java.time.OffsetTime;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,7 +48,7 @@ public class PlannerTest {
     /*
     */
    Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
-    /*
+    
     @Test
     public void testAssegnaMan() {
         
@@ -60,7 +62,7 @@ public class PlannerTest {
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
-        AbstractActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "Planned");
+        AbstractActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "s","Planned");
         if(act==null){
             fail("Errore nella creazione dell'Attività");
         }
@@ -75,7 +77,7 @@ public class PlannerTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
-    */
+    
 
     /**
      * Test of creaEwo method, of class Planner.
@@ -524,5 +526,61 @@ public class PlannerTest {
         
        assertTrue(flag);
         
+    }
+    
+    @Test
+    public void testAssegnaManEWO(){
+        System.out.println("assegnaManEWO");
+        
+        SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
+        System.out.println("assegnaMan");
+        Maintainer man = sy.createMaintainer("Giacomo", "pass", "Giacomo", "prova@email.it");
+        if(man == null){
+            fail("Errore nella creazione del Maintainer");
+        }
+        Sito sito1 = new Sito("ufficio","area");
+        List<String> materiali = new ArrayList();
+        materiali.add("Mattoni");
+        Procedure procedura = new Procedure();
+        EwoActivity act = (EwoActivity) instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "s","Ewo");
+        if(act==null){
+            fail("Errore nella creazione dell'Attività");
+        }
+        int giorno=1;
+        String orario="o8_9";
+        int i=instance.assegnaManEWO(man, act, giorno, orario);
+        if(i==-1){
+            fail("Assegnazione non effettuata");
+        }
+        
+        Comunicatore com=Comunicatore.getInstance();
+        ArrayList<String> colonne=new ArrayList<>();
+        colonne.add("manstate");
+        colonne.add("genstate");
+        colonne.add("depstate");
+        
+        HashMap<String,Object> dove=new HashMap<>();
+        dove.put("aid",act.getId());
+        try {
+            com.apri();
+            ResultSet set= com.selectionQuery("attivita", colonne, dove);
+            com.chiudi();
+            while (set.next()) {
+                String manS= set.getString("manstate");
+                String genS= set.getString("genstate");
+                String depS= set.getString("depstate");
+                
+                //System.out.println("aa"+manS+"bb"+genS+"cc"+depS+"dd");
+                assertEquals(act.getManStatus().getString(), manS);
+                assertEquals(act.getGeneralStatus().getString(), genS);
+                assertEquals(act.getAreaStatus().getString(), depS);
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        sy.cancellaMaintainer(man);
+        instance.deleteActivity(act);
     }
 }

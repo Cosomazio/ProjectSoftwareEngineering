@@ -9,6 +9,8 @@ import java.lang.reflect.*;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import utile.Ora;
 /**
@@ -56,6 +58,31 @@ public class Planner extends AbstractUtente {
             return -1;
         }
         return 1;
+    }
+    
+    public int assegnaManEWO(Maintainer man, EwoActivity act,int giorno,String orario){
+        act.setManStatus(EwoActivity.MaintainerState.sent);
+        act.setAreaStatus(EwoActivity.AreaState.sent);
+        act.setGeneralStatus(EwoActivity.GeneralState.inProgress);
+        int res=assegnaMan(man, act, giorno, orario);
+        Comunicatore com=Comunicatore.getInstance();
+        String tabAttivita="attivita";
+        HashMap<String,Object> paramsAtt=new HashMap<>();
+        paramsAtt.put("manstate", act.getManStatus().getString());
+        paramsAtt.put("depstate", act.getAreaStatus().getString());
+        paramsAtt.put("genstate", act.getGeneralStatus().getString());
+        HashMap<String,Object> chiaviAtt=new HashMap<>();
+        chiaviAtt.put("aid",act.getId());
+        try {
+            com.apri();
+            com.updateQuery(tabAttivita, paramsAtt, chiaviAtt);
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return -1;
+        }
+        
+        return res;
     }
     private ArrayList modificaDisponibilita(ArrayList<Integer> array,int tempoIntervento,String orario){
         int temp,i,j=0;

@@ -5,6 +5,7 @@
  */
 package deposito;
 
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -47,7 +48,30 @@ public class Maintainer extends AbstractUtente{
         return super.toString() + "Maintainer{" +  "skill=" + skill + ", procedure=" + procedure + '}';
     }
     
-    
+    public int doneActivity(EwoActivity act){
+        act.setAreaStatus(EwoActivity.AreaState.received);
+        act.setManStatus(EwoActivity.MaintainerState.received);
+        act.setGeneralStatus(EwoActivity.GeneralState.closed);
+        int res=1;
+        Comunicatore com=Comunicatore.getInstance();
+        String tabAttivita="attivita";
+        HashMap<String,Object> paramsAtt=new HashMap<>();
+        paramsAtt.put("manstate", act.getManStatus().getString());
+        paramsAtt.put("depstate", act.getAreaStatus().getString());
+        paramsAtt.put("genstate", act.getGeneralStatus().getString());
+        HashMap<String,Object> chiaviAtt=new HashMap<>();
+        chiaviAtt.put("aid",act.getId());
+        try {
+            com.apri();
+            com.updateQuery(tabAttivita, paramsAtt, chiaviAtt);
+            com.chiudi();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return -1;
+        }
+        
+        return res;
+    }
     
     
 }

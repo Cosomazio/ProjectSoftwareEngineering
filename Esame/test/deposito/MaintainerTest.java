@@ -5,12 +5,9 @@
  */
 package deposito;
 
-import java.util.Set;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.sql.*;
+import java.util.*;
+import org.junit.*;
 import static org.junit.Assert.*;
 
 /**
@@ -38,72 +35,55 @@ public class MaintainerTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getSkill method, of class Maintainer.
-     */
+    
     @Test
-    public void testGetSkill() {
-        System.out.println("getSkill");
-        Maintainer instance = null;
-        Set<String> expResult = null;
-        Set<String> result = instance.getSkill();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setSkill method, of class Maintainer.
-     */
-    @Test
-    public void testSetSkill() {
-        System.out.println("setSkill");
-        Set<String> skill = null;
-        Maintainer instance = null;
-        instance.setSkill(skill);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getProcedure method, of class Maintainer.
-     */
-    @Test
-    public void testGetProcedure() {
-        System.out.println("getProcedure");
-        Maintainer instance = null;
-        Set<Procedure> expResult = null;
-        Set<Procedure> result = instance.getProcedure();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setProcedure method, of class Maintainer.
-     */
-    @Test
-    public void testSetProcedure() {
-        System.out.println("setProcedure");
-        Set<Procedure> procedure = null;
-        Maintainer instance = null;
-        instance.setProcedure(procedure);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toString method, of class Maintainer.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        Maintainer instance = null;
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDoneActivity(){
+        System.out.println("doneActivity");
+        
+        Sito sito1 = new Sito("ufficio","area");
+        List<String> materiali = new ArrayList();
+        materiali.add("Mattoni");
+        Procedure procedura = new Procedure();
+        Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
+        SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
+        System.out.println("assegnaMan");
+        Maintainer man = sy.createMaintainer("Giacomo", "pass", "Giacomo", "prova@email.it");
+        EwoActivity act = (EwoActivity) instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "s","Ewo");
+        String orario="o9_10";
+        instance.assegnaManEWO(man, act, 2, orario);
+        
+        man.doneActivity(act);
+        
+        
+        Comunicatore com=Comunicatore.getInstance();
+        ArrayList<String> colonne=new ArrayList<>();
+        colonne.add("manstate");
+        colonne.add("genstate");
+        colonne.add("depstate");
+        
+        HashMap<String,Object> dove=new HashMap<>();
+        dove.put("aid",act.getId());
+        try {
+            com.apri();
+            ResultSet set= com.selectionQuery("attivita", colonne, dove);
+            com.chiudi();
+            while (set.next()) {
+                String manS= set.getString("manstate");
+                String genS= set.getString("genstate");
+                String depS= set.getString("depstate");
+                
+                System.out.println("aa-"+manS+"-bb-"+genS+"-cc-"+depS+"-dd");
+                assertEquals(act.getManStatus().getString(), manS);
+                assertEquals(act.getGeneralStatus().getString(), genS);
+                assertEquals(act.getAreaStatus().getString(), depS);
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        sy.cancellaMaintainer(man);
+        instance.deleteActivity(act);
     }
     
 }
