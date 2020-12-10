@@ -317,13 +317,12 @@ public class Planner extends AbstractUtente {
             mappa.put("wnotes", wnotes);
             
             HashMap<String,Object> mappa2= new HashMap<>();
-            mappa2.put("area",act.getSito().getArea());
-            mappa2.put("office", act.getSito().getOffice());
+            mappa2.put("aid",act.getId());
             
             com.apri();
-            res=com.updateQuery("Sito", mappa,mappa2);
+            res=com.updateQuery("Attivita", mappa,mappa2);
             com.chiudi();
-            act.getSito().setWorkspaceNote(wnotes);
+            act.setWnotes(wnotes);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;

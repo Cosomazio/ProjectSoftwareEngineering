@@ -208,21 +208,20 @@ public class PlannerTest {
         instance.modifyActivity(act, "NOTE MODIFICATE");
         
         HashMap<String,Object> mappa = new HashMap<>();
-        mappa.put("area", act.getSito().getArea());
-        mappa.put("office", act.getSito().getOffice());
+        mappa.put("aid", act.getId());
         ArrayList<String> array=new ArrayList<>();
         array.add("wnotes");
         
         try{
             com.apri();
-            rs = com.selectionQuery("sito", array, mappa);
+            rs = com.selectionQuery("attivita", array, mappa);
             com.chiudi();
             
             if(rs.next()==false){
                 flag=false;
             }
             else{
-                if(rs.getString("wnotes").equals(act.getSito().getWorkspaceNote()))
+                if(rs.getString("wnotes").equals(act.getWnotes()))
                     flag=true;
             }
             
