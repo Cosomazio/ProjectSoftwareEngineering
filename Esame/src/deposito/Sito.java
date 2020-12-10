@@ -12,17 +12,10 @@ package deposito;
 public class Sito {
     private String office;
     private String area;
-    private String workspaceNote;
 
     public Sito(String office, String area) {
         this.office = office;
         this.area = area;
-    }
-
-    public Sito(String office, String area, String workspaceNote) {
-        this.office = office;
-        this.area = area;
-        this.workspaceNote = workspaceNote;
     }
 
     public String getOffice() {
@@ -41,17 +34,9 @@ public class Sito {
         this.area = area;
     }
 
-    public String getWorkspaceNote() {
-        return workspaceNote;
-    }
-
-    public void setWorkspaceNote(String workspaceNote) {
-        this.workspaceNote = workspaceNote;
-    }
-
     @Override
     public String toString() {
-        return "Sito{" + "office=" + office + ", area=" + area + ", workspaceNote=" + workspaceNote + '}';
+        return "Sito{" + "office=" + office + ", area=" + area + '}';
     }
     
     

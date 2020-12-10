@@ -521,6 +521,7 @@ public class PlannerTest {
             if(e.compareTo(ewo)==0)
                 flag=true;
         }
+        instance.deleteActivity(ewo);
         
        assertTrue(flag);
         

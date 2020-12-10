@@ -21,6 +21,7 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
     private int week;
     private Boolean interrompibile;
     private Procedure procedura;
+    private String wnotes;
     
     public AbstractActivity(int id, Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
@@ -113,6 +114,14 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
         this.procedura = procedura;
     }
 
+    public String getWnotes() {
+        return wnotes;
+    }
+
+    public void setWnotes(String wnotes) {
+        this.wnotes = wnotes;
+    }
+    
     @Override
     public int compareTo(Object other) {
         AbstractActivity altro;
