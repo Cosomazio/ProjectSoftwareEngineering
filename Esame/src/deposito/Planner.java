@@ -37,7 +37,7 @@ public class Planner extends AbstractUtente {
        int temp,i,j;
        int tempoIntervento = act.getTempo();
         try {
-            com.apri();
+            
             array=this.disponibilitaAttuale(mappaWhere);
             if(array == null){
                 return -1;
@@ -47,6 +47,7 @@ public class Planner extends AbstractUtente {
                 return -1;
             }
             //IL CONTROLLO LO FACCIO SOLO PER DUE ORARI VICINO
+            com.apri();
             com.insertQuery("pianificazione", tempMap);
             com.chiudi();
             this.aggiornaDisponibilita(arr, mappaWhere);
@@ -106,6 +107,7 @@ public class Planner extends AbstractUtente {
                 array.add(rs.getInt("o16_17"));
 
             }
+            com.chiudi();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
                 return null;
@@ -372,12 +374,13 @@ public class Planner extends AbstractUtente {
             com=Comunicatore.getInstance();
             com.apri();
             ResultSet set= com.selectionQuery(tableProc, colonneProc, doveProc);
+            com.chiudi();
             while(set.next()){
                 String nomefile=set.getString("nomefile");
                 String smp=set.getString("smp");
                 proc=new Procedure(null, nomefile);
             }
-            com.chiudi();
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
@@ -402,12 +405,13 @@ public class Planner extends AbstractUtente {
             com=Comunicatore.getInstance();
             com.apri();
             ResultSet set= com.selectionQuery(tableAttMat, colonneAttMat, doveAttMat);
+            com.chiudi();
             while(set.next()){
                 int maid=set.getInt("maid");
                 String materiale=set.getString("materiale");
                 res.add(materiale);
             }
-            com.chiudi();
+            
             
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -434,6 +438,7 @@ public class Planner extends AbstractUtente {
         colonneAtt.add("interrompibile");
         colonneAtt.add("ewoid");
         colonneAtt.add("pianificazione");
+        colonneAtt.add("wnotes");
         
         Comunicatore com;
         try {
@@ -508,9 +513,10 @@ public class Planner extends AbstractUtente {
         ArrayList<String> array =new ArrayList<>();
         try {    
             com= Comunicatore.getInstance();
-            com.apri();
             int index;
+            com.apri();
             ResultSet rs= com.selectionQuery("orari", null, mappadove);
+            com.chiudi();
             while(rs.next()){
                 
                 map.put(index=rs.findColumn("o8_9"), rs.getInt(index));
@@ -522,7 +528,7 @@ public class Planner extends AbstractUtente {
                 map.put(index=rs.findColumn("o16_17"), rs.getInt(index));
             }
 
-            com.chiudi();
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
