@@ -14,10 +14,9 @@ import java.util.Set;
  */
 public class Procedure {
     private String nomefile;
-    private File smp;
-    private Set<String> competenze;
+    private String smp;
 
-    public Procedure(File smp,String nomefile) {
+    public Procedure(String smp,String nomefile) {
         this.smp = smp;
         this.nomefile=nomefile;
     }
@@ -34,11 +33,16 @@ public class Procedure {
         this.nomefile = nomefile;
     }
     
-    public File getSmp() {
+    public String getSmp() {
         return smp;
     }
 
-    public void setSmp(File smp) {
+    public void setSmp(String smp) {
         this.smp = smp;
     }    
+
+    @Override
+    public String toString() {
+        return "Procedure= " +  nomefile;
+    }
 }
