@@ -511,11 +511,15 @@ public class Planner extends AbstractUtente {
         return res;
     }
     
+    // restituisce un null nel caso in cui non ci sia niente nella tabella attività.
     public ArrayList<AbstractActivity> sortedActivities(){
         Calendar c=Calendar.getInstance();
         java.util.Date d= new java.util.Date();
         c.setTime(d);
         ArrayList<AbstractActivity> activities = this.viewActivities();
+        if(activities == null){
+            return null;
+        }
         ArrayList<AbstractActivity> result=new ArrayList<>();
         
         Stream a=activities.stream()
