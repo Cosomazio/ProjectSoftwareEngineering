@@ -31,6 +31,7 @@ public class MaintainerInterface extends javax.swing.JFrame {
             dl.addElement(m);
         }
         this.manList.setModel(dl);
+        
     }
 
     /**
@@ -101,7 +102,7 @@ public class MaintainerInterface extends javax.swing.JFrame {
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         Maintainer man = (Maintainer) this.manList.getSelectedValue();
-        MaintainerEwoInterface mei = new MaintainerEwoInterface(man);
+        MaintainerEwoInterface mei = new MaintainerEwoInterface(man,this);
         mei.setVisible(true);
     }//GEN-LAST:event_buttonOKActionPerformed
 

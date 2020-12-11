@@ -8,6 +8,7 @@ package demo.maintainerInterface;
 import deposito.EwoActivity;
 import deposito.Maintainer;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.*;
 
 /**
@@ -26,10 +27,41 @@ public class MaintainerEwoInterface extends javax.swing.JFrame {
         this.actList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         DefaultListModel lm = new DefaultListModel();
         this.actList.setModel(lm);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-    public MaintainerEwoInterface(Maintainer man){
+    public MaintainerEwoInterface(Maintainer man,JFrame parent){
         this();
         this.man = man;
+        this.addWindowListener( new WindowListener () {
+            @Override
+            public void windowOpened(WindowEvent we) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                parent.setVisible(true);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent we) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent we) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent we) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent we) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent we) {
+            }
+        } );
     }
 
     /**
