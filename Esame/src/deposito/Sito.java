@@ -36,7 +36,7 @@ public class Sito {
 
     @Override
     public String toString() {
-        return "Sito{" + "office=" + office + ", area=" + area + '}';
+        return "Sito{" +  office + " - " + area + '}';
     }
     
     
