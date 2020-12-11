@@ -73,7 +73,9 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
     }
     
     private void aggiornaTabella(){
-        DefaultTableModel model = (DefaultTableModel)this.lista.getModel();
+        
+        
+        DefaultTableModel model = (DefaultTableModel) this.lista.getModel();
         
         ArrayList<AbstractActivity> act = this.planner.viewActivities();
 
@@ -83,7 +85,8 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
             //model.insertRow(model.getRowCount(),new Integer[] {3,3,3});
         }
         
-        this.lista.setModel(model);
+        this.lista.setModel(model); 
+        this.lista.setSelectionMode(0);
     }
    
         
@@ -144,19 +147,24 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        lista.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(lista);
         if (lista.getColumnModel().getColumnCount() > 0) {
             lista.getColumnModel().getColumn(0).setResizable(false);
+            lista.getColumnModel().getColumn(0).setHeaderValue("ID");
             lista.getColumnModel().getColumn(1).setResizable(false);
+            lista.getColumnModel().getColumn(1).setHeaderValue("AREA");
             lista.getColumnModel().getColumn(2).setResizable(false);
+            lista.getColumnModel().getColumn(2).setHeaderValue("TIPO");
             lista.getColumnModel().getColumn(3).setResizable(false);
+            lista.getColumnModel().getColumn(3).setHeaderValue("TEMPO STIMATO INTERVENTO");
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
