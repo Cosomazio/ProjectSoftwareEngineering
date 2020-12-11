@@ -97,7 +97,7 @@ public class SystemAdministrator extends AbstractUtente {
         man.setNome(nome);
         man.setPassword(password);
         man.setProcedure(procedure);
-        man.setSkill(skill);
+        //le skill del maintainer sono modificate nel metodo addskill
         man.setUsername(username);
         
         int l=modificaTabellaMaintainer(man);
@@ -106,8 +106,8 @@ public class SystemAdministrator extends AbstractUtente {
             return null;
         }
         
-        int i=inserisciCompetenze(man,skill);
-        if (i==-1){
+        man=addSkill(man,skill);
+        if (man==null){
             System.out.println("Errore nell'inserimento delle competenze");
             return null;
         }
@@ -152,11 +152,16 @@ public class SystemAdministrator extends AbstractUtente {
         return 1;
     }
     
-    //inserisce le competenze per l'apposito Maintainer, restituisce 1 se va a buon fine altirmenti -1
-    private int inserisciCompetenze(Maintainer man, Set<String> skill){
+    //inserisce le competenze per l'apposito Maintainer, restituisce il maintainer modificato se va a buon fine altirmenti null
+    public Maintainer addSkill(Maintainer man, Set<String> skill){
         if(skill==null){
             skill=new HashSet<>();
+            man.setSkill(null);
+        }else{
+        man.setSkill(skill);
         }
+        
+        
         Comunicatore com=Comunicatore.getInstance();
         Iterator iter= skill.iterator();
         HashMap <String, Object> skills=new HashMap<>();
@@ -169,23 +174,71 @@ public class SystemAdministrator extends AbstractUtente {
             com.apri();
             }catch(SQLException ex){
                 System.out.println(ex.getMessage());
-                return -1;
+                return null;
             }
             try{
                 com.insertQuery("maintainer_competenze", skills);
             }catch(SQLException ex2){
                 System.out.println(ex2.getMessage());  
-                return -1;
+                return null;
             }
             try{
                 com.chiudi();
             }catch(SQLException ex3){
                 System.out.println(ex3.getMessage());
-                return -1;
+                return null;
             }
             skills.clear();
         }
-        return 1;
+        return man;
+    }
+    //cancella le slill associate ad un manutentore , ritorna il mnutentore modificato se va a buon fine altrimenti null
+    public Maintainer deleteSkill(Maintainer man,Set<String> skill){
+        Set<String> skillman=new HashSet<>();
+        skillman=man.getSkill();
+        for (String arr1 : skill) {
+            skillman.remove((String) arr1);
+        }
+        man.setSkill(skillman);
+        Iterator iter=skill.iterator();
+        Comunicatore com=Comunicatore.getInstance();
+        HashMap <String, Object> map=new HashMap<>();
+        String sk;
+        while(iter.hasNext()){
+            sk= (String) iter.next();
+            map.put("mid",man.getId());
+            map.put("competenza", sk);
+            try{
+                com.apri();
+                com.deleteQuery("maintainer_competenze", map);
+                com.chiudi();
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+                return null;
+            }
+        }
+        
+        return man;
+    }
+    //Restituisce un ArrayList<String> con tutte le skill associate al maintainer se va in errore restituisce null
+    public ArrayList<String> viewSkillMan(Maintainer man){
+        ArrayList<String> arr=new ArrayList<>();
+        HashMap<String,Object> map=new HashMap<>();
+        map.put("mid",man.getId());
+        Comunicatore com=Comunicatore.getInstance();
+        try{
+            com.apri();
+            ResultSet rs=com.selectionQuery("maintainer_competenze", null, map);
+            com.chiudi();
+            while (rs.next()){
+                arr.add(rs.getString("competenza"));
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+               
+        return arr;
     }
     //inserisce la procedura per l'apposito Maintainer, restiuisce 1 se va a buon fine altrimenti -1
     public int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
@@ -477,5 +530,7 @@ public class SystemAdministrator extends AbstractUtente {
         }
         return competenze;
     }
+    
+    
     
 }

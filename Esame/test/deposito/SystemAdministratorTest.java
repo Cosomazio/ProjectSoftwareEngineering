@@ -575,8 +575,8 @@ public class SystemAdministratorTest {
         List<String> elementiView=instance.viewCompetenze();
         Boolean ok=elementiView.containsAll(competenze);
         assertTrue(ok);
-        for(String r: elementiView)
-            System.out.println(r);
+        //for(String r: elementiView)
+            //System.out.println(r);
         //rimuove l'elemento
         HashMap<String, Object> removeComp=new HashMap<>();
         for (String s: competenze){
@@ -592,5 +592,112 @@ public class SystemAdministratorTest {
         }
         assertTrue(ok);
     }
+    @Test
+    public void testAddSkill(){
+        System.out.println("addSkill");
+        Boolean flag=false;
+        SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        Maintainer man=instance.createMaintainer("man", "12340", "luigi", "l@gmial.com");
+        Set<String> skill=new HashSet<>();
+        skill.add("Compressor knowledge");
+        skill.add("Pav certification");
+        man=instance.addSkill(man, skill);
+        Set<String> skillMan=man.getSkill();
+        Comunicatore com=Comunicatore.getInstance();
+        HashMap <String,Object> map=new HashMap<> ();
+        map.put("mid", man.getId());
+        ArrayList<String> arr=new ArrayList<>();
+        arr.add("competenza");
+        Set<String> skilldb=new HashSet<>();
+        try{
+            com.apri();
+            ResultSet rs=com.selectionQuery("maintainer_competenze", null, map);
+            com.chiudi();
+            while(rs.next()){
+                skilldb.add(rs.getString("competenza"));
+            }
+            if(skillMan.toString().equals(skilldb.toString())){
+                flag=true;
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        instance.cancellaMaintainer(man);
+        assertTrue(flag);
+    }
     
+    @Test
+    public void testDeleteSkill(){
+        System.out.println("deleteSkill");
+        Boolean flag=false;
+        SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        Maintainer man=instance.createMaintainer("man", "12340", "luigi", "l@gmial.com");
+        Set<String> skill=new HashSet<>();
+        Set<String> prova=new HashSet<>();
+        prova.add("Pav certification");
+        skill.add("Compressor knowledge");
+        skill.add("Pav certification");
+        man=instance.addSkill(man, skill);
+                 
+        
+        man=instance.deleteSkill(man, prova);
+         Set<String> skillMan=man.getSkill();
+        Comunicatore com=Comunicatore.getInstance();
+        HashMap <String,Object> map=new HashMap<> ();
+        map.put("mid", man.getId());
+        ArrayList<String>arr=new ArrayList<>();
+        arr.add("competenza");
+        Set<String> skilldb=new HashSet<>();
+        try{
+            com.apri();
+            ResultSet rs=com.selectionQuery("maintainer_competenze", arr, map);
+            com.chiudi();
+            while(rs.next()){
+                skilldb.add(rs.getString("competenza"));
+            }
+            if(skillMan.toString().equals(skilldb.toString())){
+                flag=true;
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage()); 
+        }
+        instance.cancellaMaintainer(man);
+        assertTrue(flag);
+            
+        
+    }
+    
+    @Test
+    public void testViewSkillMaintainer(){
+        System.out.println("viewSkillMaintainer");
+        Boolean flag=false;
+        SystemAdministrator instance = new SystemAdministrator("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+        Maintainer man=instance.createMaintainer("man", "12340", "luigi", "l@gmial.com");
+        Set<String> skill=new HashSet<>(); 
+        skill.add("Compressor knowledge");
+        skill.add("Pav certification");
+        instance.addSkill(man, skill);
+        ArrayList<String> arr=new ArrayList<>();
+        arr=instance.viewSkillMan(man);
+        ArrayList<String> arraydb=new ArrayList<>();
+        arraydb.add("competenza");
+        HashMap <String,Object> map=new HashMap<>();
+        map.put("mid", man.getId());
+        ArrayList<String> db=new ArrayList<>();
+        try{
+            Comunicatore com=Comunicatore.getInstance();
+            com.apri();
+            ResultSet rs=com.selectionQuery("maintainer_competenze", arraydb, map);
+            while(rs.next()){
+                db.add(rs.getString("competenza"));
+            }
+            if(arr.toString().equals(db.toString())){
+                flag=true;
+            }
+        }catch(SQLException ex ){
+            System.out.println(ex.getMessage());
+        }
+        instance.cancellaMaintainer(man);
+        assertTrue(flag);
+    }
 }
