@@ -35,8 +35,12 @@
                   <Component id="btnModifica" min="-2" pref="127" max="-2" attributes="0"/>
                   <Component id="btnVisualizza" min="-2" pref="127" max="-2" attributes="0"/>
                   <Component id="btnCrea" min="-2" pref="127" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="0" pref="259" max="32767" attributes="0"/>
               </Group>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
+              <Component id="jLabel1" pref="258" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>

@@ -40,9 +40,9 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
 
     @Override
     public String toString() {
-        return "AbstractActivity{" + "id=" + id + ", sito=" + sito + ", tipologia=" + tipologia + ", descrizione=" + descrizione + ", tempo=" + tempo + ", materiali=" + materiali + ", week=" + week + ", interrompibile=" + interrompibile + ", procedura=" + procedura + '}';
+        return "AbstractActivity{" + "id=" + id + ", sito=" + sito + ", tipologia=" + tipologia + ", descrizione=" + descrizione + ", tempo=" + tempo + ", materiali=" + materiali + ", week=" + week + ", interrompibile=" + interrompibile + ", procedura=" + procedura +",WKNotes= "+wnotes+ '}';
     }
-
+    
     public int getId() {
         return id;
     }

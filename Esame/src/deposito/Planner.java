@@ -224,12 +224,12 @@ public class Planner extends AbstractUtente {
     /*Crea un attività e restituisce l'attività creata altrimenti ritorna null*/
     public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
-            Procedure procedura,String wNotes,String tipoAttivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
+            Procedure procedura,String wNotes,String tipoattivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
         int res;
         
-        AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoAttivita);
-        
+        AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoattivita);
+        //BISOGNA GESTIRE IL FATTO DEI MATERIALI
         Comunicatore com;    
         try {    
             com= Comunicatore.getInstance();
@@ -243,12 +243,24 @@ public class Planner extends AbstractUtente {
             mappa.put("tempo",attivita.getTempo());
             mappa.put("week",attivita.getWeek());
             mappa.put("interrompibile",attivita.getInterrompibile());
-            mappa.put("pianificazione",tipoAttivita);
+            mappa.put("pianificazione",tipoattivita);
             mappa.put("wnotes",wNotes);
-        
+            mappa.put("nomefile",attivita.getProcedura().getNomefile());
+            if(tipoattivita.equals("Ewo")){
+                EwoActivity a = (EwoActivity)attivita;
+                mappa.put("ewoid",a.getEwoID());
+            }        
             res= com.insertQuery("Attivita", mappa);
+            mappa.clear();
+            for(int i = 0; i<attivita.getMateriali().size() ; i++){
+                mappa.put("maid", attivita.getId());
+                mappa.put("materiale",attivita.getMateriali().get(i));
+                com.insertQuery("attivita_materiale", mappa);
+            }
+            mappa.clear();
             
-            com.chiudi();
+            
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
@@ -265,7 +277,7 @@ public class Planner extends AbstractUtente {
             attivita=new UnplannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }else if(tipoAttivita.equals("Extra")){
             attivita=new ExtraActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
-        }else if(tipoAttivita.equals("EWO")) {
+        }else if(tipoAttivita.equals("Ewo")) {
             attivita=new EwoActivity(ewoid, id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }
         return attivita;
@@ -405,7 +417,7 @@ public class Planner extends AbstractUtente {
             while(set.next()){
                 String nomefile=set.getString("nomefile");
                 String smp=set.getString("smp");
-                proc=new Procedure(null, nomefile);
+                proc=new Procedure(smp, nomefile);
             }
             
         } catch (SQLException ex) {
@@ -473,6 +485,7 @@ public class Planner extends AbstractUtente {
             com.apri();
             ResultSet set=com.selectionQuery(tableAtt, colonneAtt, doveAtt);
             com.chiudi();
+            
             while(set.next()){
                 int id=set.getInt("aid");
                 String office=set.getString("office");
@@ -491,12 +504,16 @@ public class Planner extends AbstractUtente {
                 
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
-                
+                /*
+                if(materiali==null ){
+                    return null;
+                }*/
                 AbstractActivity act=vistaAttivita(id, ewoid, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione,wNotes);
                 
                 res.add(act);
+                
                 //com=new Comunicatore();
                 //com.apri();
             }
@@ -506,8 +523,7 @@ public class Planner extends AbstractUtente {
             return null;
         }
         
-        
-        
+       
         return res;
     }
     

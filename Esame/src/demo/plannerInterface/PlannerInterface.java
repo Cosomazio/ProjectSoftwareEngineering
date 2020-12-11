@@ -23,9 +23,7 @@ public class PlannerInterface extends javax.swing.JFrame {
     public PlannerInterface() {
         initComponents();
         
-        PlannerBuilder pb = new PlannerBuilder();
-        pb.reset("Planner", "planner", "plan", "planner@email.it");
-        planner=pb.getResult();
+        this.planner = new Planner("planner","plan","planner","planner@gmail.it",0);
         
         this.setTitle("Benvenuto "+ planner.getUsername());
     }
@@ -92,8 +90,11 @@ public class PlannerInterface extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnModifica, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVisualizza, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCrea, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                    .addComponent(btnCrea, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(32, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(98, 98, 98)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -119,7 +120,9 @@ public class PlannerInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificaActionPerformed
-        JOptionPane.showMessageDialog(new JFrame(), "FUNZIONALITÀ DA IMPLEMENTARE");
+        ModifyActivityInterface frame = new ModifyActivityInterface(this,planner);
+        frame.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnModificaActionPerformed
 
     private void btnCreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreaActionPerformed
@@ -129,7 +132,9 @@ public class PlannerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCreaActionPerformed
 
     private void btnVisualizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizzaActionPerformed
-        JOptionPane.showMessageDialog(new JFrame(), "FUNZIONALITÀ DA IMPLEMENTARE");
+        SelectionActivityInterface frame = new SelectionActivityInterface(this,planner);
+        frame.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnVisualizzaActionPerformed
 
     /**
