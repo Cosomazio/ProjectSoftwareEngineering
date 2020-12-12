@@ -269,6 +269,7 @@ public class Planner extends AbstractUtente {
             System.out.println(ex.getMessage());
             return null;
         }
+        attivita.setCompetenze(competenze);
         return attivita;
     }
     private AbstractActivity vistaAttivita(int id,int ewoid,Sito sito,String tipologia,String descrizione,int tempo,
