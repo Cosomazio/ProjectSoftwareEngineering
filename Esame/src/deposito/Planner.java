@@ -223,7 +223,7 @@ public class Planner extends AbstractUtente {
     
     /*Crea un attività e restituisce l'attività creata altrimenti ritorna null*/
     public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
-            List<String> materiali, int week, Boolean interrompibile, 
+            List<String> materiali, int week, List<String> competenze,Boolean interrompibile, 
             Procedure procedura,String wNotes,String tipoattivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
         int res;
@@ -258,7 +258,11 @@ public class Planner extends AbstractUtente {
                 com.insertQuery("attivita_materiale", mappa);
             }
             mappa.clear();
-            
+            for(int i = 0; i<competenze.size();i++){
+                mappa.put("attivita", attivita.getId());
+                mappa.put("competenza",competenze.get(i));
+                com.insertQuery("attivita_competenze", mappa);
+            }            
             
             
         } catch (SQLException ex) {

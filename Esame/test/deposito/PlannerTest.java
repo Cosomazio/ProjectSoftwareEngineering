@@ -61,8 +61,9 @@ public class PlannerTest {
         Sito sito1 = new Sito("ufficio","area");
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
+        List<String> competenze = new ArrayList();
         Procedure procedura = new Procedure();
-        AbstractActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "s","Planned");
+        AbstractActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50,competenze, Boolean.TRUE, procedura, "s","Planned");
         if(act==null){
             fail("Errore nella creazione dell'Attività");
         }
@@ -156,10 +157,11 @@ public class PlannerTest {
         ArrayList<String> array=new ArrayList<>();
         HashMap<String,Object> mappa = new HashMap<>();
         Comunicatore com = Comunicatore.getInstance();
+        List<String> competenze = new ArrayList();
         try {
             
 
-                AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, "",tipoAttivita);
+                AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura, "",tipoAttivita);
                 array.add("aid");
                 mappa.put("aid", act.getId());
                 com.apri();
@@ -199,11 +201,11 @@ public class PlannerTest {
         materiali.add("Chiodi di garofano");
         int week = 52;
         Boolean interrompibile = false;
-        
+        List<String> competenze = new ArrayList();
         Comunicatore com = Comunicatore.getInstance();
         ResultSet rs;
         
-        AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, "",tipoAttivita);
+        AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week,competenze, interrompibile, procedura, "",tipoAttivita);
         if(act == null)
             fail("ERRORE ATTIVITA NON CREATA");
         
@@ -254,13 +256,13 @@ public class PlannerTest {
         int week = 52;
         String tipoAttivita="Planned";
         Boolean interrompibile = false;
-        
+        List<String> competenze = new ArrayList();
         
         
         Comunicatore com = Comunicatore.getInstance();
         try {
             
-            AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,"", tipoAttivita);
+            AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week,competenze ,interrompibile, procedura,"", tipoAttivita);
             if(act == null){
                 
             }
@@ -304,10 +306,11 @@ public class PlannerTest {
         int week = 2;
         Boolean interrompibile = true;
         Procedure procedura=null;
-        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,interrompibile,procedura,"","Planned");
+        List<String> competenze = new ArrayList();
+        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
         
         List<AbstractActivity> res=instance.viewActivities();
-        AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,interrompibile,procedura,"","Planned");
+        AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
         instance.deleteActivity(plact);
         instance.deleteActivity(plact2);
         assertEquals(plact2.getId(), plact.getId()+1);
@@ -364,6 +367,7 @@ public class PlannerTest {
         Sito sito = new Sito("ufficio2","area");
         String tipologia = "Meccanico";
         String descrizione = "descrizione cambiata";
+        List<String> competenze = new ArrayList();
         int tempo = 40;
         materiali.add("Chiodi di garofano");
         int week = 52;
@@ -371,7 +375,7 @@ public class PlannerTest {
         Boolean interrompibile = false;
        SystemAdministrator admin=new SystemAdministrator("username","pass","admin","email",4);
        Maintainer man=admin.createMaintainer("man", "pass", "man", "ciccio@ciccio.com");
-       AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,"" ,tipoAttivita);
+       AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
             
        HashMap<String,Object> map=new HashMap<>();
        
@@ -509,12 +513,12 @@ public class PlannerTest {
         materiali.add("Chiodi di garofano");
         int week = 52;
         Boolean interrompibile = false;
-        
+        List<String> competenze = new ArrayList();
         ArrayList<EwoActivity> archivio = instance.viewEwo();
         if(!archivio.isEmpty())
             fail("CREAZIONI SPURIE");
         
-        AbstractActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, Boolean.TRUE, procedura,"d" ,tipoAttivita);
+        AbstractActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze,Boolean.TRUE, procedura,"d" ,tipoAttivita);
         
         archivio = instance.viewEwo();
         
@@ -542,7 +546,8 @@ public class PlannerTest {
         List<String> materiali = new ArrayList();
         materiali.add("Mattoni");
         Procedure procedura = new Procedure();
-        EwoActivity act = (EwoActivity) instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "s","Ewo");
+        List<String> competenze = new ArrayList();
+        EwoActivity act = (EwoActivity) instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50,competenze, Boolean.TRUE, procedura, "s","Ewo");
         if(act==null){
             fail("Errore nella creazione dell'Attività");
         }

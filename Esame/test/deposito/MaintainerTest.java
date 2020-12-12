@@ -48,7 +48,8 @@ public class MaintainerTest {
         SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
         System.out.println("assegnaMan");
         Maintainer man = sy.createMaintainer("Giacomo", "pass", "Giacomo", "prova@email.it");
-        EwoActivity act = (EwoActivity) instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50, Boolean.TRUE, procedura, "s","Ewo");
+        List<String> competenze = new ArrayList();
+        EwoActivity act = (EwoActivity) instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50,competenze, Boolean.TRUE, procedura, "s","Ewo");
         String orario="o9_10";
         instance.assegnaManEWO(man, act, 2, orario);
         
