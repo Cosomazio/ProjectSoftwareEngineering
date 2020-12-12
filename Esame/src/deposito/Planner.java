@@ -392,6 +392,9 @@ public class Planner extends AbstractUtente {
             mappa.clear();
             mappa.put("maid",id);
             com.deleteQuery("attivita_materiale", mappa);
+            mappa.clear();
+            mappa.put("attivita", id);
+            com.deleteQuery("attivita_competenze", mappa);
             com.chiudi();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
