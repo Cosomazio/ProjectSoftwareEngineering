@@ -77,16 +77,22 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel) this.lista.getModel();
         
-        ArrayList<AbstractActivity> act = this.planner.viewActivities();
-
-        for(AbstractActivity a : act){
-            
-            model.insertRow(model.getRowCount(),new Object[]{a.getId(),a.getSito().getOffice()+" - "+a.getSito().getArea(),a.getTipologia(),a.getTempo()});
-            //model.insertRow(model.getRowCount(),new Integer[] {3,3,3});
+        ArrayList<AbstractActivity> act = this.planner.sortedActivities();
+        if(act.isEmpty()){
+            JOptionPane.showMessageDialog(new JFrame(), "NON CI SONO ATTIVITA' PREVISTE PER LA SETTIMANA CORRENTE");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.setVisible(false);
         }
+        else{
+            this.setVisible(true);
+            for(AbstractActivity a : act){
+                model.insertRow(model.getRowCount(),new Object[]{a.getId(),a.getSito().getOffice()+" - "+a.getSito().getArea(),a.getTipologia(),a.getTempo()});
+            //model.insertRow(model.getRowCount(),new Integer[] {3,3,3});
+            }
         
-        this.lista.setModel(model); 
-        this.lista.setSelectionMode(0);
+            this.lista.setModel(model); 
+            this.lista.setSelectionMode(0);
+        }
     }
    
         
@@ -215,8 +221,17 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
-      
-       
+        ArrayList<AbstractActivity> archivio = this.planner.sortedActivities();
+        System.out.println(archivio.toString());
+        int index = this.lista.getSelectedRow();
+        if(index == -1){
+            JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELLA SELEZIONE");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
+        AbstractActivity abc = archivio.get(index);
+        ViewActivity va= new ViewActivity(this, this.planner, abc); 
+        va.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnSelectActionPerformed
 
     /**

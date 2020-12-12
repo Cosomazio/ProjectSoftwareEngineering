@@ -133,7 +133,7 @@ public class PlannerInterface extends javax.swing.JFrame {
 
     private void btnVisualizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizzaActionPerformed
         SelectionActivityInterface frame = new SelectionActivityInterface(this,planner);
-        frame.setVisible(true);
+        //frame.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnVisualizzaActionPerformed
 

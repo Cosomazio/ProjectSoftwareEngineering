@@ -9,6 +9,8 @@ package demo.plannerInterface;
 import deposito.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.*;
 import java.util.*;
 
@@ -31,11 +33,7 @@ public class ViewActivity extends javax.swing.JFrame {
         this();
         this.planner = planner;
         //this.insertDati(attivita);
-        this.panelWeek.setText("SETTIMANA");
-        this.panelDescr.setText(attivita.getDescrizione());
-        this.panelWN.setText(attivita.getWnotes());
-        String stringa = Integer.toString(attivita.getId())+" - "+attivita.getSito().getOffice()+" "+attivita.getSito().getArea()+" - "+Integer.toString(attivita.getTempo())+"'";
-        this.panelActivity.setText(stringa);
+        this.insertDati(attivita);
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -113,7 +111,6 @@ public class ViewActivity extends javax.swing.JFrame {
         panelActivity.setEditable(false);
         jScrollPane2.setViewportView(panelActivity);
 
-        panelWN.setEditable(false);
         jScrollPane3.setViewportView(panelWN);
 
         panelDescr.setEditable(false);
@@ -130,6 +127,7 @@ public class ViewActivity extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listSkill.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listSkill.setFocusable(false);
         jScrollPane5.setViewportView(listSkill);
 
@@ -203,9 +201,33 @@ public class ViewActivity extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void listaSkill(AbstractActivity act){
+        List<String> skills = act.getCompetenze();
+        DefaultListModel<String> list = new DefaultListModel<>();
+        for(int i =0; i<skills.size(); i++){
+            list.addElement(skills.get(i));
+        }
+        this.listSkill.setModel(list);
+    }
+        
+    
+    
     private void insertDati(AbstractActivity act){
+        this.panelWeek.setText(Integer.toString(this.currentWeek()));
+        this.panelDescr.setText(act.getDescrizione());
+        this.panelWN.setText(act.getWnotes());
+        String stringa = Integer.toString(act.getId())+" - "+act.getSito().getOffice()+" "+act.getSito().getArea()+" - "+ act.getTipologia()+ " - "+Integer.toString(act.getTempo())+"'";
+        this.panelActivity.setText(stringa);
+        this.listaSkill(act);
         
         
+    }
+    
+    private int currentWeek(){
+        Calendar c = Calendar.getInstance();
+        Date d = new Date();
+        c.setTime(d);
+        return c.get(Calendar.WEEK_OF_YEAR);
     }
     /**
      * @param args the command line arguments

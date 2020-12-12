@@ -42,7 +42,8 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
 
     @Override
     public String toString() {
-        return "AbstractActivity{" + "id=" + id + ", sito=" + sito + ", tipologia=" + tipologia + ", descrizione=" + descrizione + ", tempo=" + tempo + ", materiali=" + materiali + ", week=" + week + ", interrompibile=" + interrompibile + ", procedura=" + procedura +",WKNotes= "+wnotes+ '}';
+        return "AbstractActivity{" + "id=" + id + ", sito=" + sito + ", tipologia=" + tipologia + ", descrizione=" + descrizione + ", tempo=" + tempo + ", materiali=" + materiali + ", week=" + week + ", interrompibile=" + interrompibile + ", procedura=" + procedura +",WKNotes= "+wnotes+ 
+                 ", competenze= " + competenze+'}';
     }
     
     public int getId() {

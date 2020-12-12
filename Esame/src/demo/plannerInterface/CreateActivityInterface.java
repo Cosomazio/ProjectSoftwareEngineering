@@ -77,6 +77,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         this.listaMateriali();
         this.listaSito();
         this.listaTipologie();
+        this.listaCompetenze();
         
        
         
@@ -98,7 +99,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(new JFrame(), ex.getMessage());
         }
-        for(int i = 0; i<tipologia.size();i++){
+        for(int i = 0; i<tipologia.size(); i++){
             this.boxTipologia.addItem(tipologia.get(i));
         }
     }
@@ -125,6 +126,30 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         this.listMateriali.setModel(list);
         this.listMateriali.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
+    
+    /*------------------------------------------------------------
+                INSERIMENTO NELLA LISTA DI SKILL */
+    private void listaCompetenze(){
+        Comunicatore com = Comunicatore.getInstance();
+        List<String> competenze = new ArrayList<>();
+        try{
+            com.apri();
+            ResultSet set = com.selectionQuery("competenze", null, null);
+            com.chiudi();
+            while(set.next()){
+                competenze.add(set.getString("competenza"));
+            }
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(new JFrame(), ex.getMessage());
+        }
+        DefaultListModel<String> list = new DefaultListModel<>();
+        for(int i = 0; i< competenze.size();i++){
+            list.addElement(competenze.get(i));
+        }
+        this.listSkill.setModel(list);
+        this.listSkill.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    }
+                
     
     /*-------------------------------------------------------------
                     INSERIMENTO NEL BOX DELLA LISTA DEI SITI   */
@@ -186,6 +211,9 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaWnotes = new javax.swing.JTextArea();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listSkill = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -288,6 +316,15 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         areaWnotes.setRows(5);
         jScrollPane1.setViewportView(areaWnotes);
 
+        jLabel10.setText("Competenze");
+
+        listSkill.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(listSkill);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -350,11 +387,22 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(textDescrizione)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(80, 80, 80))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(106, 106, 106))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(89, 89, 89))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
@@ -363,10 +411,10 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(boxWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)
@@ -388,7 +436,15 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                                 .addComponent(boxInterrompibile))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel10)
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -402,12 +458,13 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnOkCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCancelCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnCancelCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
                         .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
@@ -442,6 +499,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         int tempo = Integer.parseInt(this.textTempo.getText());
         
         List<String> materiali = this.listMateriali.getSelectedValuesList();
+        List<String> competenze = this.listSkill.getSelectedValuesList();
         int week = Integer.parseInt((String) this.boxWeek.getSelectedItem());
         
         Boolean interrompibile = false;
@@ -464,7 +522,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         
         
        
-        AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoAttivita);
+        AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
         if(act != null){
             JOptionPane.showMessageDialog(new JFrame(), "Inserimento avvenuto con successo");
         }
@@ -574,6 +632,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelCreate;
     private javax.swing.JButton btnOkCreate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -586,7 +645,9 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JList<String> listMateriali;
+    private javax.swing.JList<String> listSkill;
     private javax.swing.JTextField textDescrizione;
     private javax.swing.JTextField textTempo;
     // End of variables declaration//GEN-END:variables

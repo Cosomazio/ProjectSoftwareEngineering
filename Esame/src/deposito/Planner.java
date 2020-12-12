@@ -468,6 +468,33 @@ public class Planner extends AbstractUtente {
         return res;
     }
     
+    private List<String> getCompetenze(int id){
+        List<String> res = new ArrayList<>();
+        String table = "attivita_competenze";
+        ArrayList<String> col = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
+        Comunicatore com=Comunicatore.getInstance();
+        
+        col.add("competenza");
+        col.add("attivita");
+        map.put("attivita", id);
+        
+        try{
+            com.apri();
+            ResultSet set = com.selectionQuery(table, col, map);
+            com.chiudi();
+            while(set.next()){
+                int attivita=set.getInt("attivita");
+                String skill = set.getString("competenza");
+                res.add(skill);
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return res;
+    }
+    
     public ArrayList<AbstractActivity> viewActivities(){
         ArrayList<AbstractActivity> res=new ArrayList<>();
         String tableAtt="Attivita";
@@ -512,6 +539,7 @@ public class Planner extends AbstractUtente {
                 
                 List<String> materiali=getMateriali(id);
                 Procedure procedura=getProcedure(nomefile);
+                List<String> competenze = getCompetenze(id);
                 /*
                 if(materiali==null ){
                     return null;
@@ -519,6 +547,7 @@ public class Planner extends AbstractUtente {
                 AbstractActivity act=vistaAttivita(id, ewoid, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione,wNotes);
+                act.setCompetenze(competenze);
                 
                 res.add(act);
                 
