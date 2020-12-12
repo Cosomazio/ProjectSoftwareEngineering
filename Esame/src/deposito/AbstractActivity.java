@@ -22,6 +22,7 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
     private Boolean interrompibile;
     private Procedure procedura;
     private String wnotes;
+    private List<String> competenze;
     
     public AbstractActivity(int id, Sito sito,String tipologia,
              String descrizione,int tempo,List<String> materiali,
@@ -36,6 +37,7 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
         this.interrompibile=interrompibile;
         this.procedura=procedura;
         this.wnotes=wNotes;
+        this.competenze=new ArrayList<>();
     }
 
     @Override
@@ -121,6 +123,14 @@ public abstract class AbstractActivity implements InterfaceActivity , Comparable
 
     public void setWnotes(String wnotes) {
         this.wnotes = wnotes;
+    }
+
+    public List<String> getCompetenze() {
+        return competenze;
+    }
+
+    public void setCompetenze(List<String> competenze) {
+        this.competenze = competenze;
     }
     
     @Override
