@@ -44,6 +44,8 @@ public class AdminInterface extends javax.swing.JFrame {
         btCreazione = new javax.swing.JButton();
         btModifica = new javax.swing.JButton();
         btCancella = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        btCompetenze = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +78,15 @@ public class AdminInterface extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("GESTISCI COMPETENZE");
+
+        btCompetenze.setText("GESTISCI");
+        btCompetenze.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCompetenzeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,15 +95,18 @@ public class AdminInterface extends javax.swing.JFrame {
                 .addGap(88, 88, 88)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel6)
+                        .addGap(41, 41, 41)
+                        .addComponent(btCompetenze, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btCreazione, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel3))
@@ -119,7 +133,11 @@ public class AdminInterface extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(btCancella))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(btCompetenze))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,6 +165,13 @@ public class AdminInterface extends javax.swing.JFrame {
         frame.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btCancellaActionPerformed
+
+    private void btCompetenzeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCompetenzeActionPerformed
+        // TODO add your handling code here:
+        ManageSkillDB frame=new ManageSkillDB(this,admin);
+        frame.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btCompetenzeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,11 +211,13 @@ public class AdminInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancella;
+    private javax.swing.JButton btCompetenze;
     private javax.swing.JButton btCreazione;
     private javax.swing.JButton btModifica;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }

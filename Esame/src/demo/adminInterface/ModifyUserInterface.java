@@ -63,6 +63,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Modifica utente");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.btAddSkill.setEnabled(false);
     }
 
     /**
@@ -86,6 +87,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         tfMail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        btAddSkill = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +125,13 @@ public class ModifyUserInterface extends javax.swing.JFrame {
 
         jLabel4.setText("mail");
 
+        btAddSkill.setText("AGGIUNGI SKILL");
+        btAddSkill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAddSkillActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,14 +140,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(131, 131, 131)
-                                .addComponent(btOK, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 127, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -152,7 +154,14 @@ public class ModifyUserInterface extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
-                        .addGap(85, 85, 85))))
+                        .addGap(85, 85, 85))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btOK, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                        .addComponent(btAddSkill)
+                        .addGap(33, 33, 33))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +187,8 @@ public class ModifyUserInterface extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btOK, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btAddSkill, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
@@ -187,6 +197,9 @@ public class ModifyUserInterface extends javax.swing.JFrame {
     
     private AbstractUtente refreshSelection(){
         AbstractUtente u  = (AbstractUtente)list.getSelectedValue();
+        if(u instanceof Maintainer ){
+            this.btAddSkill.setEnabled(true);
+        }
         if (u!=null){
             tfNome.setText(u.getNome());
             tfUsername.setText(u.getUsername());
@@ -199,6 +212,10 @@ public class ModifyUserInterface extends javax.swing.JFrame {
     private void refreshList(){
         DefaultListModel listUsers = new DefaultListModel();
         ArrayList<Maintainer> mans = this.admin.viewMaintainer();
+        if(mans==null){
+            errorMsg("errore","errore accesso al db");
+            return;
+        }
         mans.sort(new Comparator<Maintainer>(){
             @Override
             public int compare(Maintainer o1, Maintainer o2) {
@@ -206,6 +223,10 @@ public class ModifyUserInterface extends javax.swing.JFrame {
             }
         });
         ArrayList<Planner> plans = this.admin.viewPlanner();
+        if(plans==null){
+            errorMsg("errore","errore accesso al db");
+            return;
+        }
         plans.sort(new Comparator<Planner>(){
             @Override
             public int compare(Planner o1, Planner o2) {
@@ -265,6 +286,14 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         refreshSelection();
     }//GEN-LAST:event_listValueChanged
 
+    private void btAddSkillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddSkillActionPerformed
+        // TODO add your handling code here:
+        Maintainer man= (Maintainer)this.list.getSelectedValue();
+        AddSkillMaintainerInterface frame=new AddSkillMaintainerInterface(this, man,admin);
+        frame.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btAddSkillActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -301,6 +330,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAddSkill;
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btOK;
     private javax.swing.JLabel jLabel1;

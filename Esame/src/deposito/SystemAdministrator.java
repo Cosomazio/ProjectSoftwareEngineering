@@ -192,7 +192,13 @@ public class SystemAdministrator extends AbstractUtente {
         }
         return man;
     }
-    //cancella le slill associate ad un manutentore , ritorna il mnutentore modificato se va a buon fine altrimenti null
+    
+    /**
+     * Cancella le skill associate ad un manutentore
+     * @param man il manutentore che voglio modificare
+     * @param skill le skill da cancellare
+     * @return il manutentore modificato se va a buon fine altrimenti null
+     */
     public Maintainer deleteSkill(Maintainer man,Set<String> skill){
         Set<String> skillman=new HashSet<>();
         skillman=man.getSkill();
@@ -241,7 +247,7 @@ public class SystemAdministrator extends AbstractUtente {
         return arr;
     }
     //inserisce la procedura per l'apposito Maintainer, restiuisce 1 se va a buon fine altrimenti -1
-    public int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
+    private int inserisciProcedura(Maintainer man, Set<Procedure> procedure){
         if(procedure==null)
             procedure=new HashSet<Procedure>();
         Comunicatore com=Comunicatore.getInstance();
@@ -413,6 +419,7 @@ public class SystemAdministrator extends AbstractUtente {
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
         return archivio;
         

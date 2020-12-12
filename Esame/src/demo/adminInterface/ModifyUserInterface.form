@@ -27,16 +27,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
-                              <Component id="btOK" min="-2" pref="150" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btCancel" min="-2" pref="150" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -54,6 +45,14 @@
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btOK" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <Component id="btCancel" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace pref="95" max="32767" attributes="0"/>
+                      <Component id="btAddSkill" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -88,6 +87,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btOK" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
                   <Component id="btCancel" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btAddSkill" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="50" max="32767" attributes="0"/>
           </Group>
@@ -167,6 +167,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="mail"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btAddSkill">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="AGGIUNGI SKILL"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAddSkillActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

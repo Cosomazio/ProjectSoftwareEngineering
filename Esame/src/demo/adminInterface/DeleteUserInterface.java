@@ -133,6 +133,9 @@ public class DeleteUserInterface extends javax.swing.JFrame {
         DefaultListModel listUsers = new DefaultListModel();
         ArrayList<Maintainer> mans = this.admin.viewMaintainer();
         ArrayList<Planner> plans = this.admin.viewPlanner();
+        if(mans==null|| plans==null){
+            errorMsg("errore", "errore accesso al db");
+        }
         for(Planner p: plans)
             listUsers.addElement(p);
         for(Maintainer m: mans)
