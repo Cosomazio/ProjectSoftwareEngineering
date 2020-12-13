@@ -732,8 +732,8 @@ public class Planner extends AbstractUtente {
 
     private int dayPerc(HashMap<String,String> mappa){
         int media = 0;
-        for(String str : mappa.values()){
-            media+=Integer.parseInt(str);
+        for(String str : mappa.keySet()){
+            media+=Integer.parseInt(mappa.get(str));
         }
         return media/mappa.size();
     }

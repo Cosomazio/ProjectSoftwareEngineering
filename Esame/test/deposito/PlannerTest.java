@@ -377,43 +377,56 @@ public class PlannerTest {
        Maintainer man=admin.createMaintainer("man", "pass", "man", "ciccio@ciccio.com");
        AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
             
-       HashMap<String,Object> map=new HashMap<>();
+       HashMap<String,String> map=new HashMap<>();
        
        int i=instance.assegnaMan(man, act, 2, "o8_9");
        
         
-        ArrayList<HashMap> l=instance.maintainerAvalPerc(man);
+        ArrayList<Integer> l=instance.maintainerAvalPerc(man);
         if(l==null){
             fail("Errore nella realizzazione delle percentuali");
         }
-        map=l.get(1);
-        String s=(String) map.get("o8_9");
+        int s=l.get(1);
         try{
         Comunicatore com=Comunicatore.getInstance();
-        ArrayList<String>arr=new ArrayList<>();
-        arr.add("o8_9");
+        
         //maintainer ,giorno
         HashMap <String,Object> m=new HashMap<>();
         m.put("giorno", 2);
         m.put("maintainer", man.getId());
         com.apri();
-        ResultSet rs=com.selectionQuery("orari", arr, m);
+        ResultSet rs=com.selectionQuery("orari", null, m);
         com.chiudi();
         int j;
-        String r;
+        
+        int media=0;
         while(rs.next()){
-            j=rs.getInt("o8_9");
-            j=(100*j)/60;
-            r=j+"%";
-            
-            if(s.equals(r)){
+            j=(100*(rs.getInt("o8_9")))/60;
+            map.put("o8_9", Integer.toString(j));
+            j=(100*(rs.getInt("o9_10")))/60;
+            map.put("o9_10", Integer.toString(j));
+            j=(100*(rs.getInt("o10_11")))/60;
+            map.put("o10_11", Integer.toString(j));
+            j=(100*(rs.getInt("o11_12")))/60;
+            map.put("o11_12", Integer.toString(j));
+            j=(100*(rs.getInt("o14_15")))/60;
+            map.put("o14_15", Integer.toString(j));
+            j=(100*(rs.getInt("o15_16")))/60;
+            map.put("o15_16", Integer.toString(j));
+            j=(100*(rs.getInt("o16_17")))/60;
+            map.put("o16_17", Integer.toString(j));
+            for(String str : map.values()){
+            media+=Integer.parseInt(str);
+            }
+             media=media/map.size();
+            if(s==media){
             flag=true;
             }
         }
         
         
         }catch(SQLException ex){
-            fail("Errore");
+            fail(ex.getMessage());
         }
         admin.cancellaMaintainer(man);
         instance.deleteActivity(act);
