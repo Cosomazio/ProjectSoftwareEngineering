@@ -629,7 +629,7 @@ public class Planner extends AbstractUtente {
     
     public ArrayList maintainerAvalPerc(Maintainer man){
         int j=0;
-        ArrayList <HashMap> array=new ArrayList<>();
+        ArrayList <Integer> array=new ArrayList<>();
         ArrayList <String> colonne=new ArrayList<>();
         HashMap <String,Object> dove= new HashMap<>();
         
@@ -652,26 +652,29 @@ public class Planner extends AbstractUtente {
                 result=com.selectionQuery("orari", colonne, dove);
                 while(result.next()){
                     j=(100*(result.getInt("o8_9")))/60;
-                    map.put("o8_9", j+"%");
+                    map.put("o8_9", Integer.toString(j));
                     j=(100*(result.getInt("o9_10")))/60;
-                    map.put("o9_10", j+"%" );
+                    map.put("o9_10", Integer.toString(j));
                     j=(100*(result.getInt("o10_11")))/60;
-                    map.put("o10_11", j+"%" );
+                    map.put("o10_11", Integer.toString(j));
                     j=(100*(result.getInt("o11_12")))/60;
-                    map.put("o11_12", j+"%" );
+                    map.put("o11_12", Integer.toString(j));
                     j=(100*(result.getInt("o14_15")))/60;
-                    map.put("o14_15", j+"%" );
+                    map.put("o14_15", Integer.toString(j));
                     j=(100*(result.getInt("o15_16")))/60;
-                    map.put("o15_16", j+"%" );
+                    map.put("o15_16", Integer.toString(j));
                     j=(100*(result.getInt("o16_17")))/60;
-                    map.put("o16_17", j+"%" );
+                    map.put("o16_17", Integer.toString(j));
                 }
-                array.add(map);
+                
+                array.add(this.dayPerc(map));
                 com.chiudi();
             }catch(SQLException ex){
                 System.out.println(ex.getMessage());
                 return null;
             }
+            
+            
             dove.clear();
             
         }
@@ -725,5 +728,14 @@ public class Planner extends AbstractUtente {
         
         return elenco;
     }        
+    
+
+    private int dayPerc(HashMap<String,String> mappa){
+        int media = 0;
+        for(String str : mappa.values()){
+            media+=Integer.parseInt(str);
+        }
+        return media/mappa.size();
+    }
     
 }
