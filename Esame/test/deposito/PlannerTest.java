@@ -305,7 +305,7 @@ public class PlannerTest {
         List<String> materiali = new ArrayList();
         int week = 2;
         Boolean interrompibile = true;
-        Procedure procedura=null;
+        Procedure procedura=new Procedure("smp", "nomefile");
         List<String> competenze = new ArrayList();
         AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
         

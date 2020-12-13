@@ -233,7 +233,6 @@ public class Planner extends AbstractUtente {
         Comunicatore com;    
         try {    
             com= Comunicatore.getInstance();
-            com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("aid",attivita.getId());
             mappa.put("office",attivita.getSito().getOffice());
@@ -249,19 +248,25 @@ public class Planner extends AbstractUtente {
             if(tipoattivita.equals("Ewo")){
                 EwoActivity a = (EwoActivity)attivita;
                 mappa.put("ewoid",a.getEwoID());
-            }        
+            }
+            com.apri();
             res= com.insertQuery("Attivita", mappa);
+            com.chiudi();
             mappa.clear();
             for(int i = 0; i<attivita.getMateriali().size() ; i++){
                 mappa.put("maid", attivita.getId());
                 mappa.put("materiale",attivita.getMateriali().get(i));
+                com.apri();
                 com.insertQuery("attivita_materiale", mappa);
+                com.chiudi();
             }
             mappa.clear();
             for(int i = 0; i<competenze.size();i++){
                 mappa.put("attivita", attivita.getId());
                 mappa.put("competenza",competenze.get(i));
+                com.apri();
                 com.insertQuery("attivita_competenze", mappa);
+                com.chiudi();
             }            
             
             
