@@ -738,4 +738,38 @@ public class Planner extends AbstractUtente {
         return media/mappa.size();
     }
     
+    public HashMap<EwoActivity,Integer> plannedEwo (){
+        Comunicatore com = Comunicatore.getInstance();
+        ArrayList<String> colonne = new ArrayList<>();
+        colonne.add("pid");
+        colonne.add("giorno");
+        ArrayList<Integer> giorni = new ArrayList<>();
+        ArrayList<EwoActivity> archivio;
+        ArrayList<Integer> id = new ArrayList<>();
+        HashMap<EwoActivity, Integer> res = new HashMap<>();
+        try{
+            com.apri();
+            ResultSet set = com.selectionQuery("pianificazione", colonne, null);
+            com.chiudi();
+            
+            while(set.next()){
+                giorni.add(set.getInt("giorno"));
+                id.add(set.getInt("pid"));
+            }
+            
+            archivio=this.viewEwo();
+            for(int i =0; i<giorni.size(); i++){
+               for(int j=0; j<archivio.size(); j++){
+                   if(archivio.get(j).getId()==id.get(i)){
+                       res.put(archivio.get(j), giorni.get(i));
+                   }
+               }
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return res;
+    }
+    
 }
