@@ -266,7 +266,8 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         if(val instanceof Planner){
             u = this.admin.modificaPlanner((Planner)val, username, password, nome, email);
         }else{
-            u = this.admin.modificaMaintainer((Maintainer)val, username, password, nome, email, null, null);
+            Maintainer man = (Maintainer) val;
+            u = this.admin.modificaMaintainer(man, username, password, nome, email,man.getSkill(), man.getProcedure());
         }
         if (u==null){
             errorMsg("Errore modifica", "modifica utente fallita");

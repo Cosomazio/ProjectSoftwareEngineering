@@ -24,6 +24,7 @@ public class ViewActivity extends javax.swing.JFrame {
      * Creates new form ViewAttivity
      */
     Planner planner;
+    AbstractActivity act;
     public ViewActivity() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -32,7 +33,7 @@ public class ViewActivity extends javax.swing.JFrame {
     ViewActivity(JFrame parent, Planner planner, AbstractActivity attivita) {
         this();
         this.planner = planner;
-        //this.insertDati(attivita);
+        this.act=attivita;
         this.insertDati(attivita);
         this.addWindowListener(new WindowListener() {
             @Override
@@ -132,6 +133,11 @@ public class ViewActivity extends javax.swing.JFrame {
         jScrollPane5.setViewportView(listSkill);
 
         btnForward.setText("FORWARD");
+        btnForward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnForwardActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,6 +207,13 @@ public class ViewActivity extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForwardActionPerformed
+        
+        MaintainerAvailInterface f = new MaintainerAvailInterface(this,this.planner,this.act);
+        f.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnForwardActionPerformed
     private void listaSkill(AbstractActivity act){
         List<String> skills = act.getCompetenze();
         DefaultListModel<String> list = new DefaultListModel<>();
@@ -219,8 +232,6 @@ public class ViewActivity extends javax.swing.JFrame {
         String stringa = Integer.toString(act.getId())+" - "+act.getSito().getOffice()+" "+act.getSito().getArea()+" - "+ act.getTipologia()+ " - "+Integer.toString(act.getTempo())+"'";
         this.panelActivity.setText(stringa);
         this.listaSkill(act);
-        
-        
     }
     
     private int currentWeek(){

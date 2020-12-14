@@ -96,14 +96,6 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
         }
     }
     
-    
-    private String stampa(AbstractActivity a){
-        String stamp="|     ID      |"+"    AREA    |"+"    TYPE    |"+"    Estimated intervention time[min]    |"+"\n";
-        stamp+="|    "+Integer.toString(a.getId())+"    |"+"    "+a.getSito().getOffice()+"-"+a.getSito().getArea()+"   |"+
-                    "  "+a.getTipologia()+"    |"+"    "+Integer.toString(a.getTempo())+"   |"+"\n";
-        
-        return stamp;
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -288,6 +280,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
             this.panelID.setText(Integer.toString(act.getId()));
             this.panelWeek.setText(Integer.toString(act.getWeek()));
             this.areaNote.setEditable(true);
+            this.areaNote.setText(act.getWnotes());
         }else{
             this.panelID.setText("");
             this.panelWeek.setText("");

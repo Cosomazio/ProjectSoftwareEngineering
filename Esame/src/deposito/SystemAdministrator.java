@@ -405,18 +405,21 @@ public class SystemAdministrator extends AbstractUtente {
     public ArrayList<Maintainer> viewMaintainer(){
         Comunicatore com = Comunicatore.getInstance();
         ArrayList<Maintainer> archivio= new ArrayList<>();
+        Set<String> skill = new HashSet<>();
         try {
             com.apri();
             ResultSet rs = com.selectionQuery("Maintainer",null, null);
+            com.chiudi();
             while(rs.next()){
                 String nome = rs.getString("nome");
                 String username = rs.getString("username");
                 String password = rs.getString("pass");
                 String email = rs.getString("email");
                 int id = rs.getInt("mid");
+                
                 archivio.add(new Maintainer(username, password, nome, email, id));
             }
-            com.chiudi();
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
@@ -424,6 +427,7 @@ public class SystemAdministrator extends AbstractUtente {
         return archivio;
         
     }
+   
     //restituisce un arrayList di Planner altrimenti ritorna null
     public ArrayList<Planner> viewPlanner(){
         ArrayList<Planner> res=new ArrayList<>();

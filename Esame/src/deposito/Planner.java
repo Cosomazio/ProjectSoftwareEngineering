@@ -709,6 +709,7 @@ public class Planner extends AbstractUtente {
         String pass;
         String email;
         int id;
+        Set<String> s = new HashSet<>();
         try{
             com.apri();
             ResultSet rs=com.selectionQuery("Maintainer", null, null);
@@ -718,7 +719,8 @@ public class Planner extends AbstractUtente {
                 pass=rs.getString("pass");
                 email=rs.getString("email");
                 id=rs.getInt("mid");
-                elenco.add(new Maintainer(username,pass,nome,email,id));
+                s=this.skillManutentore(id);
+                elenco.add(new Maintainer(username,pass,nome,email,id,s,null));
             }
             com.chiudi();
         }catch(SQLException ex){
@@ -770,6 +772,25 @@ public class Planner extends AbstractUtente {
             return null;
         }
         return res;
+    }
+    
+     private Set<String> skillManutentore(int id){
+        Comunicatore com = Comunicatore.getInstance();
+        Set<String> skill = new HashSet<>();
+        HashMap<String,Object> dove = new HashMap<>();
+        dove.put("mid", id);
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("maintainer_competenze", null, dove);
+            com.chiudi();
+            while(rs.next()){
+                skill.add(rs.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SystemAdministrator.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return skill;
     }
     
 }

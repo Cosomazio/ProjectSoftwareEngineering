@@ -222,7 +222,6 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
         ArrayList<AbstractActivity> archivio = this.planner.sortedActivities();
-        System.out.println(archivio.toString());
         int index = this.lista.getSelectedRow();
         if(index == -1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELLA SELEZIONE");

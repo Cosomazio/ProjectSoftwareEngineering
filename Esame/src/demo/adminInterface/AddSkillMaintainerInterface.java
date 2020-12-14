@@ -186,13 +186,16 @@ public class AddSkillMaintainerInterface extends javax.swing.JFrame {
     private void refreshMaintainerSkill(){
         DefaultListModel lm=new DefaultListModel();
         ArrayList<String> skills= admin.viewSkillMan(man);
+        System.out.println(skills.toString());
         if(skills==null){
             errorMsg("errore", "errore accesso al db");
         }
+        Set<String> competenze = new HashSet<String>();
         for (String skill:skills){
+            competenze.add(skill);
             lm.addElement(skill);
         }
-        
+        man.setSkill(competenze);
         this.maintainerSkillList.setModel(lm);
     }
     
