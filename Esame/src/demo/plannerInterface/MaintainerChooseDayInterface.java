@@ -10,6 +10,7 @@ import deposito.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +26,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
     Maintainer man;
     AbstractActivity attivita;
     int giorno;
+    JFrame parent;
     public MaintainerChooseDayInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -32,6 +34,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
 
     MaintainerChooseDayInterface(JFrame parent, Planner planner, AbstractActivity attivita, Maintainer man, int i) {
         this();
+        this.parent=parent;
         this.planner = planner;
         this.man = man;
         this.attivita = attivita;
@@ -50,7 +53,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                parent.setVisible(true);
+                parent.dispatchEvent(new WindowEvent(parent,WindowEvent.WINDOW_CLOSING));
             }
 
             @Override
@@ -76,6 +79,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
     }
     
     private void insertDati(AbstractActivity act){
+        this.tableDay.setSelectionMode(0);
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
         String stringa = Integer.toString(act.getId())+" - "+act.getSito().getOffice()+" "
                 +act.getSito().getArea()+" - "+ act.getTipologia()+ " - "+Integer.toString(act.getTempo())+"'";
@@ -117,12 +121,14 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
     
     private void refreshTable(){
         DefaultTableModel model=(DefaultTableModel)this.tableDay.getModel();
+        
         HashMap mappa = this.planner.maintainerAval(man, giorno);
         String skill = this.skill();
         ArrayList<Integer> array = new ArrayList<>();
         for(Object i : mappa.values()){
             array.add((int)i);
         }
+        
         model.insertRow(model.getRowCount(), new Object[]{man.getNome(),skill,array.get(0),array.get(1),array.get(2),array.get(3),array.get(4),array.get(5),array.get(6)});
         
     }
@@ -192,12 +198,19 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9"
+                "Maintainer", "Skills", "Avail 8-9", "Avail 9-10", "Avail 10-11", "Avail 11-12", "Avail 14-15", "Avail 15-16", "Avail 16-17"
             }
         ));
+        tableDay.setColumnSelectionAllowed(true);
         jScrollPane5.setViewportView(tableDay);
+        tableDay.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         labelAv.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         labelAv.setText("jLabel4");
@@ -231,20 +244,20 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(22, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(156, 156, 156)
-                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(74, 74, 74)
-                                .addComponent(labelAv, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(212, 212, 212))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(labelAv, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(60, 60, 60))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,15 +286,50 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelAv, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)))
                 .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        int index = this.tableDay.getSelectedColumn();
+        System.out.println(index);
+        String ora="";
+        if(index==0 || index==1 || index==-1){
+            JOptionPane.showMessageDialog(new JFrame(),"ERRORE SELEZIONE NON VALIDA");
+        }else if(index==2){
+                ora="o8_9";
+            }else if(index==3){
+                ora="o9_10";
+            }else if(index==4){
+                ora="o10_11";
+            }else if(index==5){
+                ora="o11_12";
+            }else if(index==6){
+                ora="o14_15";
+            }else if(index==7){
+                ora="o15_16";
+            }else{
+            
+            ora="o17_18";
+            }
+            System.out.println(ora);
+            
+            this.planner.assegnaMan(man, attivita, giorno, ora);
+            
+            
+            JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
+            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+        
+        
+        
+    }//GEN-LAST:event_btnSendActionPerformed
 
     /**
      * @param args the command line arguments

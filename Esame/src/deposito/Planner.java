@@ -713,6 +713,7 @@ public class Planner extends AbstractUtente {
         try{
             com.apri();
             ResultSet rs=com.selectionQuery("Maintainer", null, null);
+            com.chiudi();
             while(rs.next()){
                 nome=rs.getString("nome");
                 username=rs.getString("username");
@@ -722,7 +723,7 @@ public class Planner extends AbstractUtente {
                 s=this.skillManutentore(id);
                 elenco.add(new Maintainer(username,pass,nome,email,id,s,null));
             }
-            com.chiudi();
+            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
             return null;

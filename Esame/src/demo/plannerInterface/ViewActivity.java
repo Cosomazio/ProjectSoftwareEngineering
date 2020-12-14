@@ -24,6 +24,7 @@ public class ViewActivity extends javax.swing.JFrame {
      * Creates new form ViewAttivity
      */
     Planner planner;
+    JFrame parent;
     AbstractActivity act;
     public ViewActivity() {
         initComponents();
@@ -32,6 +33,7 @@ public class ViewActivity extends javax.swing.JFrame {
 
     ViewActivity(JFrame parent, Planner planner, AbstractActivity attivita) {
         this();
+        this.parent = parent;
         this.planner = planner;
         this.act=attivita;
         this.insertDati(attivita);

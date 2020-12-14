@@ -45,7 +45,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                parent.setVisible(true);
+                parent.dispatchEvent(new WindowEvent(parent,WindowEvent.WINDOW_CLOSING));
             }
 
             @Override
@@ -80,6 +80,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     private void refreshTable(){
 
         ArrayList<Maintainer> archivio = this.planner.viewMaintainer();
+        
         
         Set<Procedure> a = new HashSet<>();
         a.add(new Procedure("smp","nomefile"));
@@ -215,6 +216,11 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         });
 
         btnCancella.setText("Cancella");
+        btnCancella.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancellaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -292,12 +298,17 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
             
         }else{
         int index = this.tableAvail.getSelectedRow();
+        
         MaintainerChooseDayInterface fr = new MaintainerChooseDayInterface(this,this.planner,this.attivita,man,giorno-1);
         fr.setVisible(true);
         this.setVisible(false);
         }
         }
     }//GEN-LAST:event_btnSelezioneActionPerformed
+
+    private void btnCancellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancellaActionPerformed
+       this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_btnCancellaActionPerformed
 
     /**
      * @param args the command line arguments
