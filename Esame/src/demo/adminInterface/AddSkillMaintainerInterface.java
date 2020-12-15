@@ -189,6 +189,7 @@ public class AddSkillMaintainerInterface extends javax.swing.JFrame {
         System.out.println(skills.toString());
         if(skills==null){
             errorMsg("errore", "errore accesso al db");
+            return;
         }
         Set<String> competenze = new HashSet<String>();
         for (String skill:skills){
@@ -205,6 +206,7 @@ public class AddSkillMaintainerInterface extends javax.swing.JFrame {
         ArrayList<String> skillMan= admin.viewSkillMan(man);
         if(skillDB==null|| skillMan==null){
             errorMsg("errore", "errore accesso al DB");
+            return;
         }
         skillDB.removeAll(skillMan);
         for (String skill:skillDB){
@@ -217,26 +219,33 @@ public class AddSkillMaintainerInterface extends javax.swing.JFrame {
         // TODO add your handling code here:
         String skill=skillDBList.getSelectedValue();
         Set<String> skillSet=new HashSet<>();
+        if(skill==null){
+            errorMsg("errore", "nessun elemento selezionato");
+            return;
+        }
         skillSet.add(skill);
         if(admin.addSkill(man, skillSet)==null){
             errorMsg("errore", "errore aggiunta elemento");
+            return;
         }
         refreshDBSkill();
         refreshMaintainerSkill();
+        
     }//GEN-LAST:event_btAddSkillActionPerformed
 
     private void btDeleteSkillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteSkillActionPerformed
         // TODO add your handling code here:
         String skill=maintainerSkillList.getSelectedValue();
         Set<String> skillSet=new HashSet<>();
-        skillSet.add(skill);
         
-        if(admin==null|| skill==null||man==null){
-            errorMsg("null", "null pointer exception");
-            System.out.println("adgsdvfwber");
+        if(skill==null){
+            errorMsg("errore", "nessun elemento selezionato");
+            return;
         }
+        skillSet.add(skill);
         if(admin.deleteSkill(man, skillSet)==null){
             errorMsg("errore", "errore eliminazione elemento");
+            return;
         }
         refreshDBSkill();
         refreshMaintainerSkill();

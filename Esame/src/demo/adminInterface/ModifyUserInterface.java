@@ -199,6 +199,8 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         AbstractUtente u  = (AbstractUtente)list.getSelectedValue();
         if(u instanceof Maintainer ){
             this.btAddSkill.setEnabled(true);
+        }else{
+            this.btAddSkill.setEnabled(false);
         }
         if (u!=null){
             tfNome.setText(u.getNome());
@@ -213,7 +215,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         DefaultListModel listUsers = new DefaultListModel();
         ArrayList<Maintainer> mans = this.admin.viewMaintainer();
         if(mans==null){
-            errorMsg("errore","errore accesso al db");
+            errorMsg("errore accesso al db","errore");
             return;
         }
         mans.sort(new Comparator<Maintainer>(){
@@ -224,7 +226,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         });
         ArrayList<Planner> plans = this.admin.viewPlanner();
         if(plans==null){
-            errorMsg("errore","errore accesso al db");
+            errorMsg("errore accesso al db","errore");
             return;
         }
         plans.sort(new Comparator<Planner>(){
@@ -254,23 +256,41 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
     
+    private boolean checkEmptyStrings(String s[]){
+        Boolean res=false;
+        for(String str:s){
+            String trimmedSkill=str.trim();
+            if(trimmedSkill.equals("")){
+                res=true;
+            }
+        }
+        return res;
+    }
+    
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
         String nome = tfNome.getText();
         String username = tfUsername.getText();
         String password = tfPassword.getText();
         String email = tfMail.getText();
+        if(checkEmptyStrings(new String[]{nome,username,password,email})){
+            errorMsg( "stringa modifica vuota","errore");
+            return;
+        }
         
         AbstractUtente val =(AbstractUtente) list.getSelectedValue();
         AbstractUtente u=null;
-        if(val instanceof Planner){
+        if(list.getSelectedIndex()==-1){
+            errorMsg( "nessun elemento selezionato","errore");
+            return;
+        }else if(val instanceof Planner){
             u = this.admin.modificaPlanner((Planner)val, username, password, nome, email);
         }else{
             Maintainer man = (Maintainer) val;
             u = this.admin.modificaMaintainer(man, username, password, nome, email,man.getSkill(), man.getProcedure());
         }
         if (u==null){
-            errorMsg("Errore modifica", "modifica utente fallita");
+            errorMsg( "modifica utente fallita","Errore modifica");
         }
         refreshList();
         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);

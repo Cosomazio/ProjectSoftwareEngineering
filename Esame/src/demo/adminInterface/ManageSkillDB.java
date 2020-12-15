@@ -159,7 +159,9 @@ public class ManageSkillDB extends javax.swing.JFrame {
         }else{
             List<String> skillList=new ArrayList<>();
             skillList.add(trimmedSkill);
-            admin.createCompetenze(skillList);
+            if(admin.createCompetenze(skillList)==null){
+                errorMsg("errore","errore aggiunta elementi al db");
+            }
             tfSkill.setText("");
         }
         
@@ -184,9 +186,15 @@ public class ManageSkillDB extends javax.swing.JFrame {
     private void btDeleteSkillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteSkillActionPerformed
         // TODO add your handling code here:
         String skill=skillList.getSelectedValue();
+        if(skill==null){
+            errorMsg("errore", "nessun elemento selezionato");
+            return;
+        }
         ArrayList<String> competenze=new ArrayList<>();
         competenze.add(skill);
-        admin.cancellaCompetenze(competenze);
+        if(admin.cancellaCompetenze(competenze)==null){
+            errorMsg("errore", "errore eliminazione elementi dal db");
+        }
         refreshCompetenze();
     }//GEN-LAST:event_btDeleteSkillActionPerformed
 

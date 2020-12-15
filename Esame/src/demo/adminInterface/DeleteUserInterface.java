@@ -134,7 +134,7 @@ public class DeleteUserInterface extends javax.swing.JFrame {
         ArrayList<Maintainer> mans = this.admin.viewMaintainer();
         ArrayList<Planner> plans = this.admin.viewPlanner();
         if(mans==null|| plans==null){
-            errorMsg("errore", "errore accesso al db");
+            errorMsg( "errore accesso al db","errore");
         }
         for(Planner p: plans)
             listUsers.addElement(p);
@@ -143,7 +143,7 @@ public class DeleteUserInterface extends javax.swing.JFrame {
         
         list.setModel(listUsers);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setSelectedIndex(0);
+        //list.setSelectedIndex(0);
         list.setVisibleRowCount(plans.size()+mans.size());
     }
     
@@ -155,13 +155,16 @@ public class DeleteUserInterface extends javax.swing.JFrame {
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
         AbstractUtente u=null;
-        if(list.getSelectedValue() instanceof deposito.Planner){
+        if(list.getSelectedIndex()==-1){
+            errorMsg( "nessun utente selezionato","Errore");
+            return;
+        }else if(list.getSelectedValue() instanceof deposito.Planner){
             u= this.admin.cancellaPlanner((Planner) list.getSelectedValue()); 
         }else{
             u = this.admin.cancellaMaintainer((Maintainer) list.getSelectedValue()); 
         }
         if (u==null){
-            errorMsg("Errore cancellazione", "cancellazione utente fallita");
+            errorMsg( "cancellazione utente fallita","Errore cancellazione");
         }
         JOptionPane.showMessageDialog(new JFrame(), "Cancellazione avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));

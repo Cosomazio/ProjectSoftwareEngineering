@@ -63,6 +63,7 @@ public class CreateUserInterface extends javax.swing.JFrame {
         bg.add(rbMaintainer);  
         this.setTitle("Creazione utente");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        rbPlanner.setSelected(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -184,12 +185,28 @@ public class CreateUserInterface extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(new JFrame(), title, msg, JOptionPane.ERROR_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
+    private boolean checkEmptyStrings(String s[]){
+        Boolean res=false;
+        for(String str:s){
+            String trimmedSkill=str.trim();
+            if(trimmedSkill.equals("")){
+                res=true;
+            }
+        }
+        return res;
+    }
+    
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
         String nome =tfNome.getText();
         String username = tfUsername.getText();
         String password = tfPassword.getText();
         String email = tfMail.getText();
+        if(checkEmptyStrings(new String[]{nome,username,password,email})){
+            errorMsg( "stringa modifica vuota","errore");
+            return;
+        }
+        
         AbstractUtente u =null;
         if (rbPlanner.isSelected()){
             SystemAdministrator a= this.admin;
@@ -199,7 +216,8 @@ public class CreateUserInterface extends javax.swing.JFrame {
             u= x.createMaintainer(username, password, nome, email);
         }
         if (u==null){
-            errorMsg("Errore cancellazione", "cancellazione planner fallita");
+            errorMsg( "creazione utente fallita","Errore creazione");
+            return;
         }
         JOptionPane.showMessageDialog(new JFrame(), "Creazione avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
