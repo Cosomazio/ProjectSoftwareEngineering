@@ -26,6 +26,7 @@ public class ViewEwoInterface extends javax.swing.JFrame {
      */
     public ViewEwoInterface() {
         initComponents();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     public ViewEwoInterface(JFrame parent, Planner planner){
         this();
@@ -46,7 +47,7 @@ public class ViewEwoInterface extends javax.swing.JFrame {
 
             @Override
             public void windowClosed(WindowEvent we) {
-                parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
+                parent.setVisible(true);
             }
 
             @Override

@@ -609,6 +609,31 @@ public class Planner extends AbstractUtente {
         
     }
     
+    public ArrayList<AbstractActivity> viewToDoActivity(){
+        ArrayList<AbstractActivity> arr=this.sortedActivities();
+        ArrayList<AbstractActivity> appoggio=new ArrayList<>();
+        Comunicatore com=Comunicatore.getInstance();
+        try{
+            com.apri();
+            ResultSet rs= com.selectionQuery("pianificazione", null, null);
+            com.chiudi();
+            if(rs.next()==false){
+                appoggio=arr;
+            }
+            while(rs.next()){
+                for(AbstractActivity ab: arr){
+                    if(rs.getInt("pid")!=ab.getId()){
+                        appoggio.add(ab);
+                    }
+                }
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return appoggio;
+    }
+    
     public HashMap maintainerAval(Maintainer man, int giorno){
         
         Comunicatore com;

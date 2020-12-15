@@ -273,8 +273,15 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
         AbstractActivity act = this.selectedActivities();
         int i= JOptionPane.showConfirmDialog(new JFrame(), "Sei Sicuro di voler eliminare l'attività selezionata?");
         if(i==0){
-            this.planner.deleteActivity(act);
+            if(this.planner.deleteActivity(act) !=null){
+            this.archivio.remove(act);
+            this.areaNote.setText("");
+            this.panelID.setText("");
+            this.panelWeek.setText("");
             this.listActivities();
+            }else{
+                JOptionPane.showMessageDialog(new JFrame(), "NON SI PUO' CANCELLARE L'ATTIVITA' ");
+            }
         }
         
     }//GEN-LAST:event_btnDeleteActivityActionPerformed

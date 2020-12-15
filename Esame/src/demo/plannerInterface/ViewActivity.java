@@ -50,7 +50,7 @@ public class ViewActivity extends javax.swing.JFrame {
 
             @Override
             public void windowClosed(WindowEvent e) {
-                parent.setVisible(true);
+                parent.dispatchEvent(new WindowEvent(parent,WindowEvent.WINDOW_CLOSING));
                 
             }
 

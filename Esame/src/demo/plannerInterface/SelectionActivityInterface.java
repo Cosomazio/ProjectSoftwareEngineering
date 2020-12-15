@@ -32,7 +32,8 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         this();
         this.planner=planner;
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
-        this.archivio=this.planner.sortedActivities();
+        
+        this.archivio=this.planner.viewToDoActivity();
         
         this.aggiornaTabella();
         this.addWindowListener(new WindowListener() {
@@ -233,6 +234,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         ViewActivity va= new ViewActivity(this, this.planner, abc); 
         va.setVisible(true);
         this.setVisible(false);
+       
     }//GEN-LAST:event_btnSelectActionPerformed
 
     /**
