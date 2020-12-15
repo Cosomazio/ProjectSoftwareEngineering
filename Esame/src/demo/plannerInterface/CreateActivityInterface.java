@@ -77,17 +77,27 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         
         this.setTitle("Creazione Attività");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-       
+        this.getContentPane().setBackground(Color.orange);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(rbPlanned);
+        bg.add(rbUnplanned);  
+        bg.add(rbExtra);
+        bg.add(rbEWO);
+        rbPlanned.setSelected(true);
         
-       
-        
-        
+    }
+    
+    private void errorMsg(String title,String msg){
+        JOptionPane.showMessageDialog(this, msg,title, JOptionPane.ERROR_MESSAGE);
     }
 /*-------------------------------------------------------------
                     INSERIMENTO NEL BOX DELLA LISTA DELLE TIPOLOGIE   */
     private void listaTipologie(){
         List<String> tipologia= this.planner.listaTipologia();
-        
+        if(tipologia==null){
+            errorMsg("errore", "errore accesso al db");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
         for(int i = 0; i<tipologia.size(); i++){
             this.boxTipologia.addItem(tipologia.get(i));
         }
@@ -97,7 +107,10 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private void listaMateriali(){
         
         List<String> materiali =this.planner.listaMateriali();
-        
+        if(materiali==null){
+            errorMsg("errore", "errore accesso al db");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
         DefaultListModel<String> list = new DefaultListModel<>();
         for(int i = 0; i< materiali.size();i++){
             list.addElement(materiali.get(i));
@@ -111,7 +124,10 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private void listaCompetenze(){
         
         List<String> competenze = this.planner.listaCompetenze();
-        
+        if(competenze==null){
+            errorMsg("errore", "errore accesso al db");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
         DefaultListModel<String> list = new DefaultListModel<>();
         for(int i = 0; i< competenze.size();i++){
             list.addElement(competenze.get(i));
@@ -125,15 +141,17 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                     INSERIMENTO NEL BOX DELLA LISTA DEI SITI   */
     private void listaSito(){
         List<String> sito = this.planner.listaSito();
+        if(sito==null){
+            errorMsg("errore", "errore accesso al db");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
         for(int i = 0; i< sito.size();i++){
             this.boxSito.addItem(sito.get(i));
         }
         
     }
     
-    private void boxTipoAttivita(){
-       
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,10 +175,6 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         boxTipologia = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         boxInterrompibile = new javax.swing.JCheckBox();
-        boxPlanned = new javax.swing.JCheckBox();
-        boxUnplanned = new javax.swing.JCheckBox();
-        boxEwo = new javax.swing.JCheckBox();
-        boxExtra = new javax.swing.JCheckBox();
         jScrollPane3 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jLabel8 = new javax.swing.JLabel();
@@ -173,6 +187,10 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         listSkill = new javax.swing.JList<>();
+        rbPlanned = new javax.swing.JRadioButton();
+        rbUnplanned = new javax.swing.JRadioButton();
+        rbExtra = new javax.swing.JRadioButton();
+        rbEWO = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -217,34 +235,6 @@ public class CreateActivityInterface extends javax.swing.JFrame {
             }
         });
 
-        boxPlanned.setText("Planned");
-        boxPlanned.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boxPlannedActionPerformed(evt);
-            }
-        });
-
-        boxUnplanned.setText("Unplanned");
-        boxUnplanned.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boxUnplannedActionPerformed(evt);
-            }
-        });
-
-        boxEwo.setText("EWO");
-        boxEwo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boxEwoActionPerformed(evt);
-            }
-        });
-
-        boxExtra.setText("Extra");
-        boxExtra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boxExtraActionPerformed(evt);
-            }
-        });
-
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -284,6 +274,14 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(listSkill);
 
+        rbPlanned.setText("Planned");
+
+        rbUnplanned.setText("Unplanned");
+
+        rbExtra.setText("Extra");
+
+        rbEWO.setText("EWO");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -292,26 +290,6 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                 .addGap(320, 320, 320)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(boxPlanned)
-                        .addGap(64, 64, 64)
-                        .addComponent(boxUnplanned))
-                    .addComponent(btnOkCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(boxExtra)
-                        .addGap(40, 40, 40)
-                        .addComponent(boxEwo))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -361,11 +339,31 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addGap(90, 90, 90))
+                        .addContainerGap(29, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnOkCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnCancelCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rbPlanned)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(276, 276, 276)
+                        .addComponent(rbExtra)
+                        .addGap(40, 40, 40)
+                        .addComponent(rbEWO))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(rbUnplanned)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(90, 90, 90))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,13 +406,13 @@ public class CreateActivityInterface extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(textDescrizione, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(boxExtra)
-                            .addComponent(boxPlanned)
-                            .addComponent(boxUnplanned)
-                            .addComponent(boxEwo))
                         .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbPlanned)
+                            .addComponent(rbUnplanned)
+                            .addComponent(rbExtra)
+                            .addComponent(rbEWO))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnOkCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCancelCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -444,21 +442,74 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private void boxInterrompibileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxInterrompibileActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_boxInterrompibileActionPerformed
-
+    
+    /*
+    * Dà true se almeno una stringa nell'array è true
+    */
+    private boolean checkEmptyStrings(String s[]){
+        Boolean res=false;
+        for(String str:s){
+            String trimmedSkill=str.trim();
+            if(trimmedSkill.equals("")){
+                res=true;
+            }
+        }
+        return res;
+    }
+    
+    /*
+    * Dà un messaggio di errore quando a==b con un messaggio
+    * con titolo title e messaggio msg
+    */
+    private boolean assertEqualValue(int a,int b,String title,String msg){
+        if(a==b){
+            errorMsg(title, msg);
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean inputChecks(){
+        Boolean tipo= assertEqualValue(this.boxTipologia.getSelectedIndex(), -1, "error", "nessuna tipologia selezionata");
+        Boolean sito= assertEqualValue(this.boxSito.getSelectedIndex(), -1, "error", "nessun sito selezionato");
+        if(checkEmptyStrings(new String[]{this.textDescrizione.getText()})){
+            errorMsg("errore", "stringa descrizione vuota");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            return true;
+        }
+        Boolean matKo = assertEqualValue(this.listMateriali.getSelectedValuesList().size(), 0, "errore", "nessun materiale selezionato");
+        Boolean compKo = assertEqualValue(this.listSkill.getSelectedValuesList().size(), 0, "errore", "nessuna competenza selezionata");
+        if(tipo==true || sito==true || matKo==true|| compKo==true){
+            return true;
+        }
+        return false;
+    }
+    
     private void btnOkCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkCreateActionPerformed
+        if(inputChecks()==true){
+            return;
+        }
+        int tempo=0;
+        try{
+            tempo = Integer.parseInt(this.textTempo.getText());
+        }catch(NumberFormatException nex){
+            errorMsg("errore", "string tempo non valida");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            return;
+        }
+        
+        String descrizione = this.textDescrizione.getText();
+        
+        List<String> materiali = this.listMateriali.getSelectedValuesList();
+        List<String> competenze = this.listSkill.getSelectedValuesList();
         
         String tipologia = (String) this.boxTipologia.getSelectedItem();
         String a = (String)this.boxSito.getSelectedItem();
         String [] b = a.split("-");
         Sito sito = new Sito(b[0],b[1]);
         String wNotes=this.areaWnotes.getText();
-       
-        String descrizione = this.textDescrizione.getText();
-       
-        int tempo = Integer.parseInt(this.textTempo.getText());
         
-        List<String> materiali = this.listMateriali.getSelectedValuesList();
-        List<String> competenze = this.listSkill.getSelectedValuesList();
         int week = Integer.parseInt((String) this.boxWeek.getSelectedItem());
         
         Boolean interrompibile = false;
@@ -471,19 +522,21 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
         if(act != null){
             JOptionPane.showMessageDialog(new JFrame(), "Inserimento avvenuto con successo");
+        }else{
+            errorMsg("errore", "errore creazione attività nel db");
         }
         
     }//GEN-LAST:event_btnOkCreateActionPerformed
     private String tipoActivity(){
         
         String tipoAttivita=""; 
-        if(this.boxEwo.isSelected()){
+        if(this.rbEWO.isSelected()){
             tipoAttivita = "Ewo";
-        }else if(this.boxExtra.isSelected()){
+        }else if(this.rbExtra.isSelected()){
             tipoAttivita = "Extra";
-        }else if(this.boxPlanned.isSelected()){
+        }else if(this.rbPlanned.isSelected()){
             tipoAttivita = "Planned";
-        }else if(this.boxUnplanned.isSelected()){
+        }else if(this.rbUnplanned.isSelected()){
             tipoAttivita = "Unplanned";
         }
         return tipoAttivita;
@@ -491,55 +544,6 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private void btnCancelCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelCreateActionPerformed
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_btnCancelCreateActionPerformed
-
-    private void boxPlannedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPlannedActionPerformed
-         if(this.boxPlanned.isSelected()){
-            this.boxEwo.setEnabled(false);
-            this.boxExtra.setEnabled(false);
-            this.boxUnplanned.setEnabled(false);
-         }else{
-            this.boxEwo.setEnabled(true);
-            this.boxExtra.setEnabled(true);
-            this.boxUnplanned.setEnabled(true);
-         }
-         
-    }//GEN-LAST:event_boxPlannedActionPerformed
-
-    private void boxUnplannedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxUnplannedActionPerformed
-        if(this.boxUnplanned.isSelected()){
-            this.boxEwo.setEnabled(false);
-            this.boxExtra.setEnabled(false);
-            this.boxPlanned.setEnabled(false);
-         }else{
-            this.boxEwo.setEnabled(true);
-            this.boxExtra.setEnabled(true);
-            this.boxPlanned.setEnabled(true);
-         }
-    }//GEN-LAST:event_boxUnplannedActionPerformed
-
-    private void boxExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxExtraActionPerformed
-        if(this.boxExtra.isSelected()){
-            this.boxEwo.setEnabled(false);
-            this.boxPlanned.setEnabled(false);
-            this.boxUnplanned.setEnabled(false);
-         }else{
-            this.boxEwo.setEnabled(true);
-            this.boxPlanned.setEnabled(true);
-            this.boxUnplanned.setEnabled(true);
-         }
-    }//GEN-LAST:event_boxExtraActionPerformed
-
-    private void boxEwoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxEwoActionPerformed
-        if(this.boxEwo.isSelected()){
-            this.boxPlanned.setEnabled(false);
-            this.boxExtra.setEnabled(false);
-            this.boxUnplanned.setEnabled(false);
-         }else{
-            this.boxPlanned.setEnabled(true);
-            this.boxExtra.setEnabled(true);
-            this.boxUnplanned.setEnabled(true);
-         }
-    }//GEN-LAST:event_boxEwoActionPerformed
     
     /**
      * @param args the command line arguments
@@ -580,13 +584,9 @@ public class CreateActivityInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaWnotes;
-    private javax.swing.JCheckBox boxEwo;
-    private javax.swing.JCheckBox boxExtra;
     private javax.swing.JCheckBox boxInterrompibile;
-    private javax.swing.JCheckBox boxPlanned;
     private javax.swing.JComboBox<String> boxSito;
     private javax.swing.JComboBox<String> boxTipologia;
-    private javax.swing.JCheckBox boxUnplanned;
     private javax.swing.JComboBox<String> boxWeek;
     private javax.swing.JButton btnCancelCreate;
     private javax.swing.JButton btnOkCreate;
@@ -607,6 +607,10 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JList<String> listMateriali;
     private javax.swing.JList<String> listSkill;
+    private javax.swing.JRadioButton rbEWO;
+    private javax.swing.JRadioButton rbExtra;
+    private javax.swing.JRadioButton rbPlanned;
+    private javax.swing.JRadioButton rbUnplanned;
     private javax.swing.JTextField textDescrizione;
     private javax.swing.JTextField textTempo;
     // End of variables declaration//GEN-END:variables

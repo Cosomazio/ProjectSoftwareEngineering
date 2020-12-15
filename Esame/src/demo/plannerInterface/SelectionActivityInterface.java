@@ -6,6 +6,7 @@
 package demo.plannerInterface;
 
 import deposito.*;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
     public SelectionActivityInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
     }
     Planner planner;
     ArrayList<AbstractActivity> archivio;
@@ -74,13 +76,20 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         });
     }
     
+    private void errorMsg(String title,String msg){
+        JOptionPane.showMessageDialog(this, title, msg, JOptionPane.ERROR_MESSAGE);
+    }
+    
     private void aggiornaTabella(){
         
         
         DefaultTableModel model = (DefaultTableModel) this.lista.getModel();
         
         ArrayList<AbstractActivity> act = this.archivio;
-        if(act.isEmpty()){
+        if(act==null){
+            errorMsg("errore", "errore accesso al db");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }else if(act.isEmpty()){
             JOptionPane.showMessageDialog(new JFrame(), "NON CI SONO ATTIVITA' PREVISTE PER LA SETTIMANA CORRENTE");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
             this.setVisible(false);
@@ -228,13 +237,13 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         if(index == -1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELLA SELEZIONE");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }else{
+            AbstractActivity abc = archivio.get(index);
+            this.lista.removeRowSelectionInterval(index, index);
+            ViewActivity va= new ViewActivity(this, this.planner, abc); 
+            va.setVisible(true);
+            this.setVisible(false);
         }
-        AbstractActivity abc = archivio.get(index);
-        this.lista.removeRowSelectionInterval(index, index);
-        ViewActivity va= new ViewActivity(this, this.planner, abc); 
-        va.setVisible(true);
-        this.setVisible(false);
-       
     }//GEN-LAST:event_btnSelectActionPerformed
 
     /**
