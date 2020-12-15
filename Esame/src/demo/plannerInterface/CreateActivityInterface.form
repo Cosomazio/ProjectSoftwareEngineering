@@ -28,32 +28,6 @@
               <Component id="jLabel1" min="-2" pref="160" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="boxPlanned" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
-                      <Component id="boxUnplanned" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="btnOkCreate" min="-2" pref="213" max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="boxExtra" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Component id="boxEwo" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="btnCancelCreate" min="-2" pref="228" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace pref="69" max="32767" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="263" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -119,14 +93,41 @@
                           <Component id="jScrollPane4" min="-2" pref="193" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="173" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="btnOkCreate" min="-2" pref="213" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="btnCancelCreate" min="-2" pref="228" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="rbPlanned" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="276" max="-2" attributes="0"/>
+                      <Component id="rbExtra" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="rbEWO" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
+                      <Component id="rbUnplanned" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="263" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -182,14 +183,14 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="textDescrizione" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="30" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="boxExtra" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="boxPlanned" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="boxUnplanned" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="boxEwo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="rbPlanned" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbUnplanned" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbExtra" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbEWO" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnOkCreate" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
                           <Component id="btnCancelCreate" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
@@ -359,38 +360,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxInterrompibileActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="boxPlanned">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Planned"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxPlannedActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="boxUnplanned">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Unplanned"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxUnplannedActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="boxEwo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="EWO"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxEwoActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="boxExtra">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Extra"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxExtraActionPerformed"/>
-      </Events>
-    </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane3">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -498,5 +467,25 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JRadioButton" name="rbPlanned">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Planned"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="rbUnplanned">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Unplanned"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="rbExtra">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Extra"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="rbEWO">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="EWO"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

@@ -525,6 +525,8 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         }else{
             errorMsg("errore", "errore creazione attività nel db");
         }
+            
+        
         
     }//GEN-LAST:event_btnOkCreateActionPerformed
     private String tipoActivity(){

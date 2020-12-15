@@ -67,6 +67,7 @@ public class Maintainer extends AbstractUtente{
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            com.chiudi();
             return -1;
         }
         
@@ -127,6 +128,7 @@ public class Maintainer extends AbstractUtente{
             
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            com.chiudi();
             return null;
         }
         return archivio;

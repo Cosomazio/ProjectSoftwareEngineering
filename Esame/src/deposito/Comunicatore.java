@@ -236,8 +236,11 @@ public class Comunicatore {
     }
     
     //chiude la connesione con il DB, lancia un'eccezione in caso di errori
-    public void chiudi() throws SQLException {
+    public void chiudi(){
+        try{
         this.c.close();
+    }catch(SQLException ex){
+        System.out.println(ex.getMessage());
     }
-
+    }
 }

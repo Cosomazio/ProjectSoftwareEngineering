@@ -6,6 +6,7 @@
 package demo.plannerInterface;
 
 import deposito.*;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.*;
@@ -21,12 +22,14 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     /**
      * Creates new form MaintainerAvailInterface
      */
+    
     Planner planner;
     AbstractActivity attivita;
     ArrayList<Maintainer> archivioMaintainer;
     public MaintainerAvailInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
         
     }
 
@@ -80,13 +83,10 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     }
     private void refreshTable(){
 
-        ArrayList<Maintainer> archivio = this.archivioMaintainer;
-        
-        
         Set<Procedure> a = new HashSet<>();
         a.add(new Procedure("smp","nomefile"));
         
-        if(archivio.isEmpty()){
+        if(this.archivioMaintainer.isEmpty()){
             JOptionPane.showMessageDialog(new JFrame(), "Non sono presenti manutentori");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             this.setVisible(false);
@@ -94,37 +94,38 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel)this.tableAvail.getModel();
         ArrayList<Integer> perc = new ArrayList<>();
-        for(Maintainer man : archivio){
+        for(Maintainer man : this.archivioMaintainer){
            
             man.setProcedure(a);
             ArrayList<Integer> percentuali=this.planner.maintainerAvalPerc(man);
+            
+            if(percentuali == null){
+                JOptionPane.showMessageDialog(new JFrame(), "Errore nella disponibilità percentuale");
+                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+            }
 
             String skill = this.skill(man, attivita);
             perc.clear();
             for(int i =0;i<percentuali.size();i++){
                 
-                perc.add(percentuali.get(i));
-                   
-                
-                
+                perc.add(percentuali.get(i));     
             }
             model.insertRow(model.getRowCount(),new Object[]{man.getNome(),skill,perc.get(0),perc.get(1),perc.get(2),perc.get(3),perc.get(4)});
         }
-        this.tableAvail.setModel(model);
-        
+        this.tableAvail.setModel(model);   
     }
     }
     
     private String skill(Maintainer man,AbstractActivity act){
         System.out.println(man.toString());
         Set<String> set = man.getSkill();
-        
-       int j=0;
-       
-       List<String> list =act.getCompetenze();
-       
-      
-           for(String s : list){
+        int j = 0;
+        List<String> list = this.attivita.getCompetenze();
+        if(set == null || list == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Errore Set o Skill sono null");
+            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+        }              
+          for(String s : list){
               
                if(set.remove(s)){
                    j++;
@@ -273,12 +274,12 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
 
     private void btnSelezioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelezioneActionPerformed
         
-        ArrayList<Maintainer> archivio = this.archivioMaintainer;
+        
         if(this.tableAvail.getSelectedRow()==-1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONA QUALCOSA");
             
         }else{
-        Maintainer man = archivio.get(this.tableAvail.getSelectedRow());
+        Maintainer man = this.archivioMaintainer.get(this.tableAvail.getSelectedRow());
         int giorno = this.tableAvail.getSelectedColumn();
         if(giorno == -1 || giorno ==0|| giorno == 1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONA UN GIORNO CORRETTO");
