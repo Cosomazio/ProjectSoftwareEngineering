@@ -209,8 +209,15 @@ public class Planner extends AbstractUtente {
                     week=rs.getInt("week");
                     interrompibile=rs.getBoolean("interrompibile");
                     wNotes=rs.getString("wnotes");
-                    
+                    String depstate = rs.getString("depstate");
+                    String manstate = rs.getString("manstate");
+                    String genstate = rs.getString("genstate");
                     EwoActivity res=new EwoActivity(ewoid, aid, site, tipologia, descrizione, tempo, this.getMateriali(aid), week, interrompibile, procedura,wNotes);
+                        if(depstate!=null){
+                        res.setAreaStatus(EwoActivity.AreaState.valueOf(depstate));
+                        res.setManStatus(EwoActivity.MaintainerState.valueOf(manstate));
+                        res.setGeneralStatus(EwoActivity.GeneralState.valueOf(genstate));
+                    }
                     archivio.add(res);
                 }
         }

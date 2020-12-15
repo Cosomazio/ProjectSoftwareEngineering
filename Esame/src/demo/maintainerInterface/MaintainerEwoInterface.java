@@ -24,14 +24,12 @@ public class MaintainerEwoInterface extends javax.swing.JFrame {
      */
     public MaintainerEwoInterface() {
         initComponents();
-        this.actList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        DefaultListModel lm = new DefaultListModel();
-        this.actList.setModel(lm);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     public MaintainerEwoInterface(Maintainer man,JFrame parent){
         this();
         this.man = man;
+        this.aggiornaTabella();
         this.addWindowListener( new WindowListener () {
             @Override
             public void windowOpened(WindowEvent we) {
@@ -141,13 +139,23 @@ public class MaintainerEwoInterface extends javax.swing.JFrame {
 
     private void buttonReceivedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReceivedActionPerformed
         EwoActivity act = (EwoActivity)this.actList.getSelectedValue();
-        man.doneActivity(act);
+       this. man.doneActivity(act);
+        JOptionPane.showMessageDialog(new JFrame(), "RICEZIONE AVVENUTA CON SUCCESSO");
+        this.setVisible(false);
     }//GEN-LAST:event_buttonReceivedActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_buttonCancelActionPerformed
-
+    
+    private void aggiornaTabella(){
+        DefaultListModel dm = new DefaultListModel();
+        System.out.println(this.man.ewoAssegnate());
+        for(EwoActivity ewo : this.man.ewoAssegnate()){
+            dm.addElement(ewo);
+        }
+        this.actList.setModel(dm);
+    }
     /**
      * @param args the command line arguments
      */

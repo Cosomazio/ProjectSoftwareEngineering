@@ -73,5 +73,64 @@ public class Maintainer extends AbstractUtente{
         return res;
     }
     
+    public List<EwoActivity> ewoAssegnate(){
+        Comunicatore com = Comunicatore.getInstance();
+        ArrayList<EwoActivity> archivio = new ArrayList<>();
+        ArrayList<String> colonne = new ArrayList<>();
+        colonne.add("pid");
+        colonne.add("giorno");
+        HashMap<String, Object> dove = new HashMap<>();
+        dove.put("maintainer", this.getId());
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("pianificazione", colonne, dove);
+            com.chiudi();
+            
+            while(rs.next()){
+                int id = rs.getInt("pid");
+                dove.clear();
+                dove.put("aid", id);
+                com.apri();
+                ResultSet set = com.selectionQuery("attivita", null, dove);
+                com.chiudi();
+                
+                while(set.next()){
+                    int ewoid=set.getInt("ewoid");
+                    int aid=id;
+                    Sito sito = new Sito(set.getString("office"), set.getString("area"));
+                    String tipo = set.getString("tipologia");
+                    String descrizione = set.getString("descrizione");
+                    Integer tempo = set.getInt("tempo");
+                    List<String> materiali = new ArrayList<>();
+                    
+                    colonne.clear();
+                    colonne.add("materiale");
+                    dove.clear();
+                    dove.put("maid", aid);
+                    
+                    com.apri();
+                    ResultSet mats = com.selectionQuery("attivita_materiale", colonne, dove);
+                    com.chiudi();
+                    
+                    while(mats.next()){
+                        materiali.add(mats.getString("materiale"));
+                    }
+                    
+                    Integer week = set.getInt("week");
+                    Boolean interrompibile = set.getBoolean("interrompibile");
+                    Procedure p = new Procedure(set.getString("nomefile"), "nomefile");
+                    String wnotes = set.getString("wnotes");
+                    archivio.add(new EwoActivity(ewoid, aid, sito, tipo, descrizione, tempo, materiali, week, interrompibile, p, wnotes));
+                    //non setta gli stati dell'EWO siccome, non sono necessari per la mera visualizzazione dell'attività nell'interfaccia
+                }
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return archivio;
+    }
+    
     
 }

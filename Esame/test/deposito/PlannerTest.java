@@ -23,7 +23,15 @@ import static org.junit.Assert.*;
  */
 public class PlannerTest {
     
+    private Calendar calendario = Calendar.getInstance();
+    private java.util.Date data = new java.util.Date();
+    private int week;
+    
+   
+    
     public PlannerTest() {
+        calendario.setTime(data);
+        week=calendario.get(Calendar.WEEK_OF_YEAR);
     }
     
     @BeforeClass
@@ -48,8 +56,10 @@ public class PlannerTest {
     /*
     */
    Planner instance = new Planner("ProvaUser","xxxx","UtenteProva","prova@prova.it",1);
-    
-    @Test
+   
+   
+   
+   @Test
     public void testAssegnaMan() {
         
         SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);

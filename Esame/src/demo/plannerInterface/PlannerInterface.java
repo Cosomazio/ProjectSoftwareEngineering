@@ -157,6 +157,7 @@ public class PlannerInterface extends javax.swing.JFrame {
     private void btnVEWOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVEWOActionPerformed
         ViewEwoInterface vei = new ViewEwoInterface(this, this.planner);
         this.setVisible(false);
+        vei.setVisible(true);
     }//GEN-LAST:event_btnVEWOActionPerformed
 
     /**
