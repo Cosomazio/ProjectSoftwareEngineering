@@ -320,8 +320,11 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             ora="o17_18";
             }
             System.out.println(ora);
-            
+            if(attivita instanceof EwoActivity){
+                this.planner.assegnaManEWO(man, (EwoActivity) attivita, giorno, ora);
+            }else{
             this.planner.assegnaMan(man, attivita, giorno, ora);
+            }
             
             
             JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
