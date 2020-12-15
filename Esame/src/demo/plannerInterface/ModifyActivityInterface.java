@@ -6,6 +6,7 @@
 package demo.plannerInterface;
 
 import deposito.*;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
@@ -32,6 +33,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
         this.planner = planner;
         this.archivio=this.planner.viewActivities();
         this.listActivities();
+      
       
         
         this.addWindowListener(new WindowListener() {
@@ -75,6 +77,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Modificy Activity");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
         
     }
    
@@ -254,15 +257,19 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkModifyActionPerformed
-        AbstractActivity act = this.selectedActivities();
+        AbstractActivity act = (AbstractActivity) this.listAttivitaModify.getSelectedValue();
         if(act == null){
-            JOptionPane.showMessageDialog(new JFrame(), "ERRORE");
+            JOptionPane.showMessageDialog(new JFrame(), "Errore non è stato selezionato nulla");
+            
+        }else{
+        if(this.planner.modifyActivity(act, this.areaNote.getText())==null){
+            JOptionPane.showMessageDialog(new JFrame(), "Errore!\n Modifica non effettuata");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
         }
-        this.planner.modifyActivity(act, this.areaNote.getText());
         this.listActivities();
         
         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo");
+        }
     }//GEN-LAST:event_btnOkModifyActionPerformed
 
     private void btnCancelModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelModifyActionPerformed
@@ -270,8 +277,11 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelModifyActionPerformed
 
     private void btnDeleteActivityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActivityActionPerformed
-        AbstractActivity act = this.selectedActivities();
-        int i= JOptionPane.showConfirmDialog(new JFrame(), "Sei Sicuro di voler eliminare l'attività selezionata?");
+        AbstractActivity act = (AbstractActivity) this.listAttivitaModify.getSelectedValue();
+        if(act == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Non hai selezionato nulla");
+        }else{
+        int i = JOptionPane.showConfirmDialog(new JFrame(), "Sei Sicuro di voler eliminare l'attività selezionata?");
         if(i==0){
             if(this.planner.deleteActivity(act) !=null){
             this.archivio.remove(act);
@@ -283,11 +293,11 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(new JFrame(), "NON SI PUO' CANCELLARE L'ATTIVITA' ");
             }
         }
-        
+        }
     }//GEN-LAST:event_btnDeleteActivityActionPerformed
 
     private void listAttivitaModifyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listAttivitaModifyMouseClicked
-        AbstractActivity act = this.selectedActivities();
+        AbstractActivity act = (AbstractActivity) this.listAttivitaModify.getSelectedValue();
         if(act != null){
             this.panelID.setText(Integer.toString(act.getId()));
             this.panelWeek.setText(Integer.toString(act.getWeek()));
@@ -303,15 +313,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private AbstractActivity selectedActivities(){
-        /*int index = listAttivitaModify.getSelectedIndex();
-        if(index >=0){
-            AbstractActivity act = this.archivio.get(index);
-            return act;
-        }
-        return null;*/
-        return (AbstractActivity)this.listAttivitaModify.getSelectedValue();
-    }
+   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

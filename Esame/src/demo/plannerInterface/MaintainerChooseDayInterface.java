@@ -7,6 +7,7 @@ package demo.plannerInterface;
 
 import java.util.*;
 import deposito.*;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
     public MaintainerChooseDayInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
     }
 
     MaintainerChooseDayInterface(JFrame parent, Planner planner, AbstractActivity attivita, Maintainer man, int i) {
@@ -88,26 +90,22 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
         this.labelAv.setText("AVAILABILITY "+this.man.getNome());
         
         this.refreshTable();
-        String day;
-        Calendar c = Calendar.getInstance();
-        Date date = new Date();
-        c.setTime(date);
-        //BISOGNA CAPIRE COME FARE GUARDANDO SU INTERNET
+        GregorianCalendar gc = new GregorianCalendar();
         if(giorno == 1){
             this.labelGiorno.setText("Monday");
-            this.panelDay.setText(Integer.toString(14));
+            this.panelDay.setText(Integer.toString(giorno));
         }else if(giorno == 2){
             this.labelGiorno.setText("Tuesday");
-            this.panelDay.setText(Integer.toString(Calendar.TUESDAY));
+            this.panelDay.setText(Integer.toString(giorno));
         }else if(giorno == 3){
             this.labelGiorno.setText("Wednesday");
-            this.panelDay.setText(Integer.toString(Calendar.WEDNESDAY));
+            this.panelDay.setText(Integer.toString(giorno));
         }else if(giorno == 4){
             this.labelGiorno.setText("Thursday");
-            this.panelDay.setText(Integer.toString(Calendar.THURSDAY));
+            this.panelDay.setText(Integer.toString(giorno));
         }else {
             this.labelGiorno.setText("Friday");
-            this.panelDay.setText(Integer.toString(Calendar.FRIDAY));
+            this.panelDay.setText(Integer.toString(giorno));
         }
         
     }
@@ -123,6 +121,9 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
         DefaultTableModel model=(DefaultTableModel)this.tableDay.getModel();
         
         HashMap mappa = this.planner.maintainerAval(man, giorno);
+        if(mappa == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Errore nella ricezione dei dati di disponibilità");
+        }
         String skill = this.skill();
         ArrayList<Integer> array = new ArrayList<>();
         for(Object i : mappa.values()){
@@ -136,6 +137,10 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
         Set<String> set = man.getSkill();
         int j = 0;
         List<String> list = this.attivita.getCompetenze();
+        if(set == null || list == null){
+            JOptionPane.showMessageDialog(new JFrame(), "Errore Set o Skill sono null");
+            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+        }
         for(String s : list){
             if(set.remove(s)){
                 j++;
@@ -300,10 +305,38 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         int index = this.tableDay.getSelectedColumn();
         System.out.println(index);
-        String ora="";
+        String ora="Errore";
         if(index==0 || index==1 || index==-1){
             JOptionPane.showMessageDialog(new JFrame(),"ERRORE SELEZIONE NON VALIDA");
-        }else if(index==2){
+        }else {
+            ora = this.ora(index);
+            if(ora.equals("Errore") || ora.equals("")){
+                JOptionPane.showMessageDialog(new JFrame(), "Errore nella selezione dell'orario ");
+                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+            }
+            System.out.println(ora);
+            if(attivita instanceof EwoActivity){
+                if(this.planner.assegnaManEWO(man, (EwoActivity) attivita, giorno, ora)== -1){
+                    JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
+                    this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+                }
+            }else{
+            if(this.planner.assegnaMan(man, attivita, giorno, ora)==-1){
+                JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
+                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+            
+            }else{
+
+            JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
+            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+            }
+        
+        }
+        }
+    }//GEN-LAST:event_btnSendActionPerformed
+    private String ora(int index){
+            String ora="Errore";
+            if(index==2){
                 ora="o8_9";
             }else if(index==3){
                 ora="o9_10";
@@ -316,24 +349,10 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             }else if(index==7){
                 ora="o15_16";
             }else{
-            
             ora="o17_18";
             }
-            System.out.println(ora);
-            if(attivita instanceof EwoActivity){
-                this.planner.assegnaManEWO(man, (EwoActivity) attivita, giorno, ora);
-            }else{
-            this.planner.assegnaMan(man, attivita, giorno, ora);
-            }
-            
-            
-            JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
-            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-        
-        
-        
-    }//GEN-LAST:event_btnSendActionPerformed
-
+            return ora;
+    }
     /**
      * @param args the command line arguments
      */

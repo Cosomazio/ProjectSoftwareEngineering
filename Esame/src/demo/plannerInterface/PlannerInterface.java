@@ -7,6 +7,7 @@ package demo.plannerInterface;
 
 import deposito.Planner;
 import factories.PlannerBuilder;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -23,6 +24,7 @@ public class PlannerInterface extends javax.swing.JFrame {
     public PlannerInterface() {
         initComponents();
         
+        this.getContentPane().setBackground(Color.orange);
         this.planner = new Planner("planner","plan","planner","planner@gmail.it",0);
         
         this.setTitle("Benvenuto "+ planner.getUsername());

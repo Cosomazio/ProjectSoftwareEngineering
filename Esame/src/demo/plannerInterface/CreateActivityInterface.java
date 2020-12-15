@@ -77,7 +77,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         
         this.setTitle("Creazione Attività");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-       
+        this.getContentPane().setBackground(Color.orange);
         
        
         
@@ -131,9 +131,6 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         
     }
     
-    private void boxTipoAttivita(){
-       
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -472,6 +469,8 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         if(act != null){
             JOptionPane.showMessageDialog(new JFrame(), "Inserimento avvenuto con successo");
         }
+            
+        
         
     }//GEN-LAST:event_btnOkCreateActionPerformed
     private String tipoActivity(){

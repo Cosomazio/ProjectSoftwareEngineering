@@ -6,6 +6,7 @@
 package demo.plannerInterface;
 
 import deposito.*;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
     public SelectionActivityInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
     }
     Planner planner;
     ArrayList<AbstractActivity> archivio;
@@ -223,7 +225,6 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
         ArrayList<AbstractActivity> archivio = this.archivio;
-        
         int index = this.lista.getSelectedRow();
         if(index == -1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELLA SELEZIONE");
