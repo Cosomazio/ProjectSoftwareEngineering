@@ -23,7 +23,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
      */
     Planner planner;
     AbstractActivity attivita;
-    
+    ArrayList<Maintainer> archivioMaintainer;
     public MaintainerAvailInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -70,6 +70,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         });
         this.planner=planner;
         this.attivita=attivita;
+        this.archivioMaintainer=this.planner.viewMaintainer();
         this.tableAvail.setSelectionMode(0);
         this.insertData(this.attivita);
         this.refreshTable();
@@ -79,7 +80,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     }
     private void refreshTable(){
 
-        ArrayList<Maintainer> archivio = this.planner.viewMaintainer();
+        ArrayList<Maintainer> archivio = this.archivioMaintainer;
         
         
         Set<Procedure> a = new HashSet<>();
@@ -132,20 +133,6 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
        
        return ""+j+"/"+list.size()+"";
     }
-    /*
-    private Object[] aggiornaOggetto(ArrayList<Integer> percentuali,String skill,Maintainer man){
-        Object[] obj=null;
-     
-        for(int i = 0; i<percentuali.size();i++){
-            obj[i]=man.getNome();
-            obj[i]=skill;
-            for(int k = 0;k<5;k++){
-                obj[i]=percentuali.get(k);
-            }
-            
-        }
-        return obj;
-    }*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -286,7 +273,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
 
     private void btnSelezioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelezioneActionPerformed
         
-        ArrayList<Maintainer> archivio = this.planner.viewMaintainer();
+        ArrayList<Maintainer> archivio = this.archivioMaintainer;
         if(this.tableAvail.getSelectedRow()==-1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONA QUALCOSA");
             

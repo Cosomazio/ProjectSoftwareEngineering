@@ -809,5 +809,74 @@ public class Planner extends AbstractUtente {
         }
         return skill;
     }
+      
+    public List<String> listaTipologia(){
+        List<String> tipologie = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("tipologia",null, null);
+            com.chiudi();
+            
+            while(rs.next()){
+                tipologie.add(rs.getString("tipologia"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+       return tipologie; 
+    } 
+    
+    public List<String> listaMateriali(){
+        List<String> materiali = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("materiali", null, null);
+            com.chiudi();
+            while(rs.next()){
+                materiali.add(rs.getString("materiale"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
+            return  null;
+        }
+        return materiali;
+    }
+    
+    public List<String> listaCompetenze(){
+        List<String> competenze = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("competenze", null, null);
+            com.chiudi();
+            while(rs.next()){
+                competenze.add(rs.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return competenze;
+    }
+    
+    public List<String> listaSito(){
+        List<String> sito = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("Sito", null, null);
+            com.chiudi();
+            while(rs.next()){
+                sito.add(rs.getString("office")+"-"+rs.getString("area"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return sito;
+    }
     
 }

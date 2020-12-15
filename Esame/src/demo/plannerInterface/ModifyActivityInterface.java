@@ -25,10 +25,12 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
     /**
      * Creates new form ModifyActivityInterface
      */
+    ArrayList<AbstractActivity> archivio;
     private Planner planner;
     public ModifyActivityInterface(JFrame parent, Planner planner){
         this();
         this.planner = planner;
+        this.archivio=this.planner.viewActivities();
         this.listActivities();
       
         
@@ -85,13 +87,15 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             
         }else{
-        ArrayList<AbstractActivity> attivita = planner.viewActivities();
+        ArrayList<AbstractActivity> attivita = this.archivio;
+        
         for(AbstractActivity act : attivita){
             listAttivita.addElement(act); 
             
         }
 
         this.listAttivitaModify.setModel(listAttivita);
+        
         this.listAttivitaModify.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         }
     }
@@ -292,7 +296,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     private AbstractActivity selectedActivities(){
-        ArrayList<AbstractActivity> attivita = planner.viewActivities();
+        ArrayList<AbstractActivity> attivita = this.archivio;
         int index = listAttivitaModify.getSelectedIndex();
         if(index >=0){
             AbstractActivity act = attivita.get(index);

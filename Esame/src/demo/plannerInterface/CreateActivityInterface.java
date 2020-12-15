@@ -30,7 +30,10 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     public CreateActivityInterface(JFrame parent, Planner planner) {
         this();
         this.planner=planner;
-        
+        this.listaMateriali();
+        this.listaSito();
+        this.listaTipologie();
+        this.listaCompetenze();
         this.addWindowListener(new WindowListener () {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -74,10 +77,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         
         this.setTitle("Creazione Attività");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.listaMateriali();
-        this.listaSito();
-        this.listaTipologie();
-        this.listaCompetenze();
+       
         
        
         
@@ -86,19 +86,8 @@ public class CreateActivityInterface extends javax.swing.JFrame {
 /*-------------------------------------------------------------
                     INSERIMENTO NEL BOX DELLA LISTA DELLE TIPOLOGIE   */
     private void listaTipologie(){
-        List<String> tipologia= new ArrayList<>();
-        Comunicatore com = Comunicatore.getInstance();
-        try {
-            com.apri();
-            ResultSet rs = com.selectionQuery("tipologia", null, null);
-            com.chiudi();
-            while(rs.next()){
-                tipologia.add(rs.getString("tipologia"));
-            }
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(new JFrame(), ex.getMessage());
-        }
+        List<String> tipologia= this.planner.listaTipologia();
+        
         for(int i = 0; i<tipologia.size(); i++){
             this.boxTipologia.addItem(tipologia.get(i));
         }
@@ -106,19 +95,9 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     /*-------------------------------------------------------------
                     INSERIMENTO NEL BOX DELLA LISTA DEI MATERIALI   */
     private void listaMateriali(){
-        Comunicatore com = Comunicatore.getInstance();
-        List<String> materiali = new ArrayList<>();
-        try {
-            com.apri();
-            ResultSet rsMaterial = com.selectionQuery("materiali", null, null);
-            com.chiudi();
-            while(rsMaterial.next()){
-                materiali.add(rsMaterial.getString("materiale"));
-            }
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(new JFrame(), ex.getMessage());
-        }
+        
+        List<String> materiali =this.planner.listaMateriali();
+        
         DefaultListModel<String> list = new DefaultListModel<>();
         for(int i = 0; i< materiali.size();i++){
             list.addElement(materiali.get(i));
@@ -130,18 +109,9 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     /*------------------------------------------------------------
                 INSERIMENTO NELLA LISTA DI SKILL */
     private void listaCompetenze(){
-        Comunicatore com = Comunicatore.getInstance();
-        List<String> competenze = new ArrayList<>();
-        try{
-            com.apri();
-            ResultSet set = com.selectionQuery("competenze", null, null);
-            com.chiudi();
-            while(set.next()){
-                competenze.add(set.getString("competenza"));
-            }
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(new JFrame(), ex.getMessage());
-        }
+        
+        List<String> competenze = this.planner.listaCompetenze();
+        
         DefaultListModel<String> list = new DefaultListModel<>();
         for(int i = 0; i< competenze.size();i++){
             list.addElement(competenze.get(i));
@@ -154,18 +124,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
     /*-------------------------------------------------------------
                     INSERIMENTO NEL BOX DELLA LISTA DEI SITI   */
     private void listaSito(){
-        List<String> sito = new ArrayList<>();
-        Comunicatore com = Comunicatore.getInstance();
-        try {
-            com.apri();
-            ResultSet rs2= com.selectionQuery("Sito", null, null);
-            com.chiudi();
-            while(rs2.next()){
-                sito.add(rs2.getString("office")+"-"+rs2.getString("area"));
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(new JFrame(), ex.getMessage());
-        }
+        List<String> sito = this.planner.listaSito();
         for(int i = 0; i< sito.size();i++){
             this.boxSito.addItem(sito.get(i));
         }
@@ -506,8 +465,18 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         if(this.boxInterrompibile.isSelected()){
             interrompibile = true;
         }
+        String tipoAttivita = this.tipoActivity();
+        Procedure procedura = new Procedure("smp","nomefile");
+
+        AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
+        if(act != null){
+            JOptionPane.showMessageDialog(new JFrame(), "Inserimento avvenuto con successo");
+        }
         
-        String tipoAttivita="Planned"; //DEVE ESSERE CAMBIATO PERCHÈ AL MOMENTO NON GESTISCIAMO IL FATTO CHE NON L'UTENTE NON SELEZIONI NULLA
+    }//GEN-LAST:event_btnOkCreateActionPerformed
+    private String tipoActivity(){
+        
+        String tipoAttivita=""; 
         if(this.boxEwo.isSelected()){
             tipoAttivita = "Ewo";
         }else if(this.boxExtra.isSelected()){
@@ -517,18 +486,8 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         }else if(this.boxUnplanned.isSelected()){
             tipoAttivita = "Unplanned";
         }
-       
-        Procedure procedura = new Procedure("smp","nomefile");
-        
-        
-       
-        AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
-        if(act != null){
-            JOptionPane.showMessageDialog(new JFrame(), "Inserimento avvenuto con successo");
-        }
-        
-    }//GEN-LAST:event_btnOkCreateActionPerformed
-
+        return tipoAttivita;
+    }
     private void btnCancelCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelCreateActionPerformed
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_btnCancelCreateActionPerformed

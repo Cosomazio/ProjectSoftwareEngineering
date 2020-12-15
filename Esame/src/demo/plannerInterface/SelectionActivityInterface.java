@@ -27,10 +27,12 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     Planner planner;
+    ArrayList<AbstractActivity> archivio;
     public SelectionActivityInterface(JFrame parent,Planner planner){
         this();
         this.planner=planner;
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
+        this.archivio=this.planner.sortedActivities();
         //this.activitySorted();
         //this.listActivitiesSorted();
         this.aggiornaTabella();
@@ -77,7 +79,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel) this.lista.getModel();
         
-        ArrayList<AbstractActivity> act = this.planner.sortedActivities();
+        ArrayList<AbstractActivity> act = this.archivio;
         if(act.isEmpty()){
             JOptionPane.showMessageDialog(new JFrame(), "NON CI SONO ATTIVITA' PREVISTE PER LA SETTIMANA CORRENTE");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -221,13 +223,15 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
-        ArrayList<AbstractActivity> archivio = this.planner.sortedActivities();
+        ArrayList<AbstractActivity> archivio = this.archivio;
+        
         int index = this.lista.getSelectedRow();
         if(index == -1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELLA SELEZIONE");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
         AbstractActivity abc = archivio.get(index);
+        this.lista.removeRowSelectionInterval(index, index);
         ViewActivity va= new ViewActivity(this, this.planner, abc); 
         va.setVisible(true);
         this.setVisible(false);
