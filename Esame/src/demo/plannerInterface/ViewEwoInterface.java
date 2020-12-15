@@ -215,30 +215,35 @@ public class ViewEwoInterface extends javax.swing.JFrame {
         DefaultTableModel dm1 = (DefaultTableModel) this.tblState.getModel();
         ArrayList<EwoActivity> attuale = new ArrayList<>();
         HashMap<EwoActivity, Integer> mappa = this.planner.plannedEwo();
-        Set<EwoActivity> chiavi = mappa.keySet();
-        Calendar c = Calendar.getInstance();
-        java.util.Date d= new java.util.Date();
-        c.setTime(d);
-        
-        for(EwoActivity e: chiavi){
-             if(mappa.get(e)==c.get(Calendar.DAY_OF_WEEK)-1){ // perché Calendar considera domenica come 1 e noi invece consideriamo lunedì come 1; domenica non funziona
-                 attuale.add(e);                               // ma va bene pke la domenica non si lavora altrimenti viene il sindacato sotto casa
-             }
+        if(mappa == null){
+            JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELL'AGGIORNAMENTO DELLA TABELLA");
         }
-        this.txtDayW.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH))); //giorno nel mese
-        this.txtDay.setText(c.getDisplayName(Calendar.DAY_OF_WEEK ,Calendar.LONG, Locale.ENGLISH));
-        this.txtWeek.setText(String.valueOf(c.get(Calendar.WEEK_OF_YEAR)));
+        else{
+            Set<EwoActivity> chiavi = mappa.keySet();
+            Calendar c = Calendar.getInstance();
+            java.util.Date d= new java.util.Date();
+            c.setTime(d);
         
-        for(EwoActivity ew: attuale){
-            dm.insertRow(dm.getRowCount(), new Object[]{
-                ew.getEwoID(), ew.getSito().getOffice() +" - "+ ew.getSito().getArea(), ew.getTipologia(), ew.getTempo()
-            });
-            dm1.insertRow(dm1.getRowCount(), new Object[]{
-                ew.getAreaStatus(), ew.getManStatus(), ew.getGeneralStatus()
-            });
+            for(EwoActivity e: chiavi){
+                if(mappa.get(e)==c.get(Calendar.DAY_OF_WEEK)-1){ // perché Calendar considera domenica come 1 e noi invece consideriamo lunedì come 1; domenica non funziona
+                    attuale.add(e);                               // ma va bene pke la domenica non si lavora altrimenti viene il sindacato sotto casa
+                }
+            }
+            this.txtDayW.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH))); //giorno nel mese
+            this.txtDay.setText(c.getDisplayName(Calendar.DAY_OF_WEEK ,Calendar.LONG, Locale.ENGLISH));
+            this.txtWeek.setText(String.valueOf(c.get(Calendar.WEEK_OF_YEAR)));
+        
+            for(EwoActivity ew: attuale){
+                dm.insertRow(dm.getRowCount(), new Object[]{
+                    ew.getEwoID(), ew.getSito().getOffice() +" - "+ ew.getSito().getArea(), ew.getTipologia(), ew.getTempo()
+                });
+                dm1.insertRow(dm1.getRowCount(), new Object[]{
+                    ew.getAreaStatus(), ew.getManStatus(), ew.getGeneralStatus()
+                });
+            }
+            this.tblEwo.setModel(dm);
+            this.tblState.setModel(dm1);
         }
-        this.tblEwo.setModel(dm);
-        this.tblState.setModel(dm1);
         
     }
     /**
