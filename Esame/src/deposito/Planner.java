@@ -60,6 +60,15 @@ public class Planner extends AbstractUtente {
         return 1;
     }
     
+    
+    /**
+     * Assegna un manutentore ad una attività EWO, con i dovuti status associati
+     * @param man Il manutentore che deve fare l'ewo
+     * @param act L'attività da assegnare, ne modifico gli stati
+     * @param giorno tra 1 e 5 indica la giornata (da lun a ven)
+     * @param orario String che indica l'orario in formato "oxx_xx"
+     * @return
+     */
     public int assegnaManEWO(Maintainer man, EwoActivity act,int giorno,String orario){
         act.setManStatus(EwoActivity.MaintainerState.sent);
         act.setAreaStatus(EwoActivity.AreaState.sent);

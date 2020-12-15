@@ -611,4 +611,44 @@ public class PlannerTest {
         sy.cancellaMaintainer(man);
         instance.deleteActivity(act);
     }
+    
+    @Test
+    public void testPlannedEwo(){
+        System.out.println("plannedEwo");
+        ArrayList <String>materiali=new ArrayList<>();
+        materiali.add("martello");
+        ArrayList <String>competenze =new ArrayList<>();
+        
+        SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
+        List<String> competenzeDb= sy.viewCompetenze();
+        if(competenzeDb.size()>0)
+            competenze.add(competenzeDb.get(0));
+        else{
+            competenze.add("comp");
+            sy.createCompetenze(competenze);
+        }
+        Procedure procedura = new Procedure();
+        
+        EwoActivity act= (EwoActivity) instance.createActivity(new Sito("ufficio", "area"), "elettrico", "descrizione", 30, materiali, 51, competenze, Boolean.TRUE, procedura, "s", "Ewo");
+        
+        Maintainer man = sy.createMaintainer("spi", "der", "man", "nnn");
+        instance.assegnaManEWO(man, act, 1, "o9_10");
+        
+        HashMap<EwoActivity,Integer>  mappa=instance.plannedEwo();
+        Boolean trovato=false;
+        
+        for(EwoActivity activity : mappa.keySet()){
+            if(act.compareTo(activity)==0){
+                trovato=true;
+                assertEquals(act.getAreaStatus(), activity.getAreaStatus());
+                assertEquals(act.getGeneralStatus(), activity.getGeneralStatus());
+                assertEquals(act.getManStatus(), activity.getManStatus());
+            }
+        }
+        sy.cancellaMaintainer(man);
+        instance.deleteActivity(act);
+        assertTrue(trovato);
+    }
+    
+    
 }
