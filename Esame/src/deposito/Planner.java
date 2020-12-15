@@ -55,6 +55,7 @@ public class Planner extends AbstractUtente {
             this.aggiornaDisponibilita(arr, mappaWhere);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            com.chiudi();
             return -1;
         }
         return 1;
@@ -87,6 +88,7 @@ public class Planner extends AbstractUtente {
             com.updateQuery(tabAttivita, paramsAtt, chiaviAtt);
             com.chiudi();
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return -1;
         }
@@ -146,14 +148,15 @@ public class Planner extends AbstractUtente {
             com.chiudi();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
+                com.chiudi();
                 return null;
     }
         return array;
     }
     
     private void aggiornaDisponibilita(ArrayList<Integer> array,HashMap<String,Object> mappa){
+        Comunicatore com = Comunicatore.getInstance();
         try {
-            Comunicatore com = Comunicatore.getInstance();
             com.apri();
             HashMap<String,Object> mappaModifica = new HashMap<>();
             mappaModifica.put("o8_9", array.get(0));
@@ -169,6 +172,7 @@ public class Planner extends AbstractUtente {
             com.chiudi();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            com.chiudi();
         }
     }
     
@@ -231,6 +235,7 @@ public class Planner extends AbstractUtente {
                 }
         }
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -246,9 +251,8 @@ public class Planner extends AbstractUtente {
         
         AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoattivita);
         //BISOGNA GESTIRE IL FATTO DEI MATERIALI
-        Comunicatore com;    
-        try {    
-            com= Comunicatore.getInstance();
+        Comunicatore com= Comunicatore.getInstance();  
+        try {
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("aid",attivita.getId());
             mappa.put("office",attivita.getSito().getOffice());
@@ -287,6 +291,7 @@ public class Planner extends AbstractUtente {
             
             
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -378,10 +383,9 @@ public class Planner extends AbstractUtente {
     public AbstractActivity modifyActivity(AbstractActivity act, String wnotes){
         
         int res;
-        Comunicatore com;
+        Comunicatore com= Comunicatore.getInstance();
         
-        try {    
-            com= Comunicatore.getInstance();
+        try {
             
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("wnotes", wnotes);
@@ -394,6 +398,7 @@ public class Planner extends AbstractUtente {
             com.chiudi();
             act.setWnotes(wnotes);
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -403,10 +408,9 @@ public class Planner extends AbstractUtente {
     
     /*Ritorna l'attività eliminata oppure null*/
     public AbstractActivity deleteActivity(AbstractActivity act){
-        Comunicatore com;
+        Comunicatore com=Comunicatore.getInstance();
         int id = act.getId();
         try{
-            com=Comunicatore.getInstance();
             com.apri();
             HashMap<String,Object> mappa= new HashMap<>();
             mappa.put("maid",id);
@@ -419,6 +423,7 @@ public class Planner extends AbstractUtente {
             com.deleteQuery("Attivita", mappa);
             com.chiudi();
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -436,10 +441,10 @@ public class Planner extends AbstractUtente {
         colonneProc.add("nomefile");
         colonneProc.add("smp");
         doveProc.put("nomefile",nome);
-        Comunicatore com=null;
+        Comunicatore com=Comunicatore.getInstance();
         Procedure proc=null;
         try {
-            com=Comunicatore.getInstance();
+            
             com.apri();
             ResultSet set= com.selectionQuery(tableProc, colonneProc, doveProc);
             com.chiudi();
@@ -450,6 +455,7 @@ public class Planner extends AbstractUtente {
             }
             
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -468,10 +474,9 @@ public class Planner extends AbstractUtente {
         colonneAttMat.add("materiale");
         doveAttMat.put("maid", id);
         
-        Comunicatore com=null;
+        Comunicatore com=Comunicatore.getInstance();
         
         try {
-            com=Comunicatore.getInstance();
             com.apri();
             ResultSet set= com.selectionQuery(tableAttMat, colonneAttMat, doveAttMat);
             com.chiudi();
@@ -483,6 +488,7 @@ public class Planner extends AbstractUtente {
             
             
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -511,6 +517,7 @@ public class Planner extends AbstractUtente {
                 res.add(skill);
             }
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -536,9 +543,9 @@ public class Planner extends AbstractUtente {
         colonneAtt.add("pianificazione");
         colonneAtt.add("wnotes");
         
-        Comunicatore com;
+        Comunicatore com=Comunicatore.getInstance();
         try {
-            com=Comunicatore.getInstance();
+            
             com.apri();
             ResultSet set=com.selectionQuery(tableAtt, colonneAtt, doveAtt);
             com.chiudi();
@@ -578,6 +585,7 @@ public class Planner extends AbstractUtente {
             }
             //com.chiudi();
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -611,39 +619,37 @@ public class Planner extends AbstractUtente {
     
     public ArrayList<AbstractActivity> viewToDoActivity(){
         ArrayList<AbstractActivity> arr=this.sortedActivities();
-        ArrayList<AbstractActivity> appoggio=new ArrayList<>();
+        int index=0;
         Comunicatore com=Comunicatore.getInstance();
         try{
             com.apri();
             ResultSet rs= com.selectionQuery("pianificazione", null, null);
             com.chiudi();
-            if(rs.next()==false){
-                appoggio=arr;
-            }
             while(rs.next()){
-                for(AbstractActivity ab: arr){
-                    if(rs.getInt("pid")!=ab.getId()){
-                        appoggio.add(ab);
+                for(int i =0; i<arr.size(); i++){
+                    if(rs.getInt("pid")==arr.get(i).getId()){
+                        index=i;
                     }
                 }
+                arr.remove(index);
             }
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
-        return appoggio;
+        return arr;
     }
     
     public HashMap maintainerAval(Maintainer man, int giorno){
         
-        Comunicatore com;
+        Comunicatore com= Comunicatore.getInstance();
         HashMap<Integer,Integer> map =new HashMap<>();
         HashMap<String,Object> mappadove =new HashMap<>();
         mappadove.put("maintainer",man.getId());
         mappadove.put("giorno", giorno);
         ArrayList<String> array =new ArrayList<>();
-        try {    
-            com= Comunicatore.getInstance();
+        try {
             int index;
             com.apri();
             ResultSet rs= com.selectionQuery("orari", null, mappadove);
@@ -661,6 +667,7 @@ public class Planner extends AbstractUtente {
 
             
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -712,6 +719,7 @@ public class Planner extends AbstractUtente {
                 array.add(this.dayPerc(map));
                 com.chiudi();
             }catch(SQLException ex){
+                com.chiudi();
                 System.out.println(ex.getMessage());
                 return null;
             }
@@ -767,6 +775,7 @@ public class Planner extends AbstractUtente {
             }
             
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -812,6 +821,7 @@ public class Planner extends AbstractUtente {
                }
             }
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -831,6 +841,7 @@ public class Planner extends AbstractUtente {
                 skill.add(rs.getString("competenza"));
             }
         } catch (SQLException ex) {
+            com.chiudi();
             Logger.getLogger(SystemAdministrator.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
@@ -850,6 +861,7 @@ public class Planner extends AbstractUtente {
                 tipologie.add(rs.getString("tipologia"));
             }
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -868,6 +880,7 @@ public class Planner extends AbstractUtente {
                 materiali.add(rs.getString("materiale"));
             }
         } catch (SQLException ex) {
+            com.chiudi();
             Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
             return  null;
         }
@@ -886,6 +899,7 @@ public class Planner extends AbstractUtente {
                 competenze.add(rs.getString("competenza"));
             }
         } catch (SQLException ex) {
+            com.chiudi();
             Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
@@ -904,6 +918,7 @@ public class Planner extends AbstractUtente {
                 sito.add(rs.getString("office")+"-"+rs.getString("area"));
             }
         } catch (SQLException ex) {
+            com.chiudi();
             Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }

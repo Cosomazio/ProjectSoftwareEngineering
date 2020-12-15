@@ -134,21 +134,18 @@ public class SystemAdministrator extends AbstractUtente {
         try{
         com.apri();
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return -1;
         }
         try{
           com.updateQuery("maintainer", value, chiavi);  
         }catch(SQLException ex2){
+            com.chiudi();
             System.out.println(ex2.getMessage());  
             return -1;
         }
-        try{
-           com.chiudi(); 
-        }catch(SQLException ex3){
-            System.out.println(ex3.getMessage());
-            return -1;
-        }
+        com.chiudi();
         return 1;
     }
     
@@ -173,21 +170,18 @@ public class SystemAdministrator extends AbstractUtente {
             try{
             com.apri();
             }catch(SQLException ex){
+                com.chiudi();
                 System.out.println(ex.getMessage());
                 return null;
             }
             try{
+                com.chiudi();
                 com.insertQuery("maintainer_competenze", skills);
             }catch(SQLException ex2){
                 System.out.println(ex2.getMessage());  
                 return null;
             }
-            try{
-                com.chiudi();
-            }catch(SQLException ex3){
-                System.out.println(ex3.getMessage());
-                return null;
-            }
+            com.chiudi();
             skills.clear();
         }
         return man;
@@ -219,6 +213,7 @@ public class SystemAdministrator extends AbstractUtente {
                 com.deleteQuery("maintainer_competenze", map);
                 com.chiudi();
             }catch(SQLException ex){
+                com.chiudi();
                 System.out.println(ex.getMessage());
                 return null;
             }
@@ -240,6 +235,7 @@ public class SystemAdministrator extends AbstractUtente {
                 arr.add(rs.getString("competenza"));
             }
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -261,21 +257,18 @@ public class SystemAdministrator extends AbstractUtente {
             try{
                 com.apri();
             }catch(SQLException ex){
+                com.chiudi();
                 System.out.println(ex.getMessage());
                 return -1;
             }
             try{
                 com.insertQuery("maintainer_procedura", procedures);
             }catch(SQLException ex1){
+                com.chiudi();
                 System.out.println(ex1.getMessage());  
                 return -1;
             }   
-            try{
-                com.chiudi();
-            }catch(SQLException ex2){
-                System.out.println(ex2.getMessage());
-                return -1;
-            }
+            com.chiudi();
             procedures.clear();
         }
         return 1;
@@ -305,6 +298,7 @@ public class SystemAdministrator extends AbstractUtente {
         com.deleteQuery("maintainer", chiavi);
         com.chiudi();
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -326,21 +320,18 @@ public class SystemAdministrator extends AbstractUtente {
         try{
           com.apri();  
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage()); 
             return null;
         }
         try{
             com.insertQuery("planner" , map);
         }catch(SQLException ex2){
+            com.chiudi();
             System.out.println(ex2.getMessage());  
             return null;
         }
-        try{
-            com.chiudi();   
-        }catch(SQLException ex3){
-            System.out.println(ex3.getMessage());
-            return null;
-        }
+        com.chiudi();
         return p;
        
     }
@@ -362,21 +353,18 @@ public class SystemAdministrator extends AbstractUtente {
         try{
             com.apri();   
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
         try{
           com.updateQuery("planner", value, chiavi);     
         }catch(SQLException ex2){
+            com.chiudi();
             System.out.println(ex2.getMessage());
             return null;
         }
-        try{
-            com.chiudi();   
-        }catch(SQLException ex3){
-            System.out.println(ex3.getMessage());
-            return null;
-        }
+        com.chiudi();
         return pln;
         
     }
@@ -390,6 +378,7 @@ public class SystemAdministrator extends AbstractUtente {
             com.deleteQuery("planner", map);
             com.chiudi();     
         }catch(SQLException ex){
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -421,6 +410,7 @@ public class SystemAdministrator extends AbstractUtente {
             }
             
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -444,6 +434,8 @@ public class SystemAdministrator extends AbstractUtente {
         try {
             com.apri();
             ResultSet set= com.selectionQuery(tablePlan, colonnePlan, dovePlan);
+            com.chiudi();
+            
             while(set.next()){
                 int pid=set.getInt("pid");
                 String username=set.getString("username");
@@ -453,9 +445,8 @@ public class SystemAdministrator extends AbstractUtente {
                 Planner newPlan= new Planner(username, password, nome, email, pid);
                 res.add(newPlan);
             }
-            
-            com.chiudi();
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -481,6 +472,7 @@ public class SystemAdministrator extends AbstractUtente {
                 ret = com.insertQuery(tableComp,mapComp);
                 com.chiudi();
             } catch (SQLException ex) {
+                com.chiudi();
                 System.out.println(ex.getMessage());
                 return null;
             }
@@ -509,6 +501,7 @@ public class SystemAdministrator extends AbstractUtente {
             ret=com.deleteQuery(tableComp, mapComp);
             com.chiudi();
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
@@ -536,6 +529,7 @@ public class SystemAdministrator extends AbstractUtente {
                 competenze.add(res.getString("competenza"));
             }
         } catch (SQLException ex) {
+            com.chiudi();
             System.out.println(ex.getMessage());
             return null;
         }
