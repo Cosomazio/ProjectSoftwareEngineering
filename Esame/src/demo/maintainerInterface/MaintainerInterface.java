@@ -6,7 +6,7 @@
 package demo.maintainerInterface;
 
 import deposito.Maintainer;
-import deposito.SystemAdministrator;
+import deposito.Planner;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class MaintainerInterface extends javax.swing.JFrame {
     public MaintainerInterface() {
         initComponents();
         this.manList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        SystemAdministrator sa = new SystemAdministrator("fittizio", "fittizio", "fittizio", "fittizio", 0);
+        Planner sa = new Planner("fittizio", "fittizio", "fittizio", "fittizio", 0);
         ArrayList<Maintainer> archivio = sa.viewMaintainer();
         DefaultListModel dl = new DefaultListModel();
         

@@ -33,8 +33,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         this.planner=planner;
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
         this.archivio=this.planner.sortedActivities();
-        //this.activitySorted();
-        //this.listActivitiesSorted();
+        
         this.aggiornaTabella();
         this.addWindowListener(new WindowListener() {
             @Override
@@ -89,7 +88,6 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
             this.setVisible(true);
             for(AbstractActivity a : act){
                 model.insertRow(model.getRowCount(),new Object[]{a.getId(),a.getSito().getOffice()+" - "+a.getSito().getArea(),a.getTipologia(),a.getTempo()});
-            //model.insertRow(model.getRowCount(),new Integer[] {3,3,3});
             }
         
             this.lista.setModel(model); 

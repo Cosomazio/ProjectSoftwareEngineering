@@ -82,6 +82,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
         
         DefaultListModel listAttivita = new DefaultListModel();
         
+        
         if(this.planner.viewActivities()==null){
             JOptionPane.showMessageDialog(new JFrame(), "Errore non sono presenti attività");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
@@ -93,7 +94,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
             listAttivita.addElement(act); 
             
         }
-
+        
         this.listAttivitaModify.setModel(listAttivita);
         
         this.listAttivitaModify.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -296,13 +297,13 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     private AbstractActivity selectedActivities(){
-        ArrayList<AbstractActivity> attivita = this.archivio;
-        int index = listAttivitaModify.getSelectedIndex();
+        /*int index = listAttivitaModify.getSelectedIndex();
         if(index >=0){
-            AbstractActivity act = attivita.get(index);
+            AbstractActivity act = this.archivio.get(index);
             return act;
         }
-        return null;
+        return null;*/
+        return (AbstractActivity)this.listAttivitaModify.getSelectedValue();
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

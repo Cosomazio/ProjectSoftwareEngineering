@@ -457,6 +457,7 @@ public class Planner extends AbstractUtente {
         return proc;
     }
     
+    //restituisce i materiali di una certa attività
     private List<String> getMateriali(int id){
         List<String> res=new ArrayList<>();
         String tableAttMat="attivita_materiale";
@@ -488,7 +489,7 @@ public class Planner extends AbstractUtente {
         
         return res;
     }
-    
+    //restituisce le competenze di una certa attività
     private List<String> getCompetenze(int id){
         List<String> res = new ArrayList<>();
         String table = "attivita_competenze";
@@ -757,6 +758,7 @@ public class Planner extends AbstractUtente {
         return media/mappa.size();
     }
     
+    //restituisce una mappa che contiene gli Ewo contenuti in pianificazione, con il corrispondente giorno
     public HashMap<EwoActivity,Integer> plannedEwo (){
         Comunicatore com = Comunicatore.getInstance();
         ArrayList<String> colonne = new ArrayList<>();
@@ -809,7 +811,8 @@ public class Planner extends AbstractUtente {
         }
         return skill;
     }
-      
+     
+    //restituisce una lista contenente tutte le tipologie del database 
     public List<String> listaTipologia(){
         List<String> tipologie = new ArrayList<>();
         Comunicatore com = Comunicatore.getInstance();
@@ -828,6 +831,7 @@ public class Planner extends AbstractUtente {
        return tipologie; 
     } 
     
+    //restituisce una lista di tutti i materiali presenti nel database
     public List<String> listaMateriali(){
         List<String> materiali = new ArrayList<>();
         Comunicatore com = Comunicatore.getInstance();
@@ -845,6 +849,7 @@ public class Planner extends AbstractUtente {
         return materiali;
     }
     
+    //restituisce una lista di tutte le competenze presenti nella base di dati
     public List<String> listaCompetenze(){
         List<String> competenze = new ArrayList<>();
         Comunicatore com = Comunicatore.getInstance();
@@ -862,6 +867,7 @@ public class Planner extends AbstractUtente {
         return competenze;
     }
     
+    //Restituisce tutti i siti contenuti nel database
     public List<String> listaSito(){
         List<String> sito = new ArrayList<>();
         Comunicatore com = Comunicatore.getInstance();
