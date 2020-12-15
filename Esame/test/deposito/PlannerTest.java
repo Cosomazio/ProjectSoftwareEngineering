@@ -85,8 +85,6 @@ public class PlannerTest {
         }
         sy.cancellaMaintainer(man);
         instance.deleteActivity(act);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
     
 
@@ -350,15 +348,66 @@ public class PlannerTest {
     @Test
     public void testMaintainerAval() {
         System.out.println("Verifica disponibilità");
+        
+        /* DECOMMENTARE TUTTO IL COMMENTATO PER CONTROLLARE QUANDO VIENE ASSEGNATA L'ATTIVITA
+        Sito sito = new Sito("ufficio","area");
+        String tipologia = "elettrico";
+        String descrizione = "prova di descizione";
+        int tempo = 70;
+        List<String> materiali = new ArrayList();
+        int week = 2;
+        Boolean interrompibile = true;
+        Procedure procedura=new Procedure("smp", "nomefile");
+        List<String> competenze = new ArrayList();
+        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
+
+        */
+        int giorno = 2;
+        int assegnato = 0;
         SystemAdministrator sy=new SystemAdministrator("admin","admin","ADMIN","admin@admin.it",100);
         Maintainer man = sy.createMaintainer("man", "pass", "Paolo", "paoloman@email.it");
         HashMap mappa = new HashMap();
-        mappa = instance.maintainerAval(man, 2);
+        HashMap map = new HashMap();
+        HashMap result = new HashMap();
+        map.put("maintainer", man.getId());
+        mappa.put("giorno", giorno);
+        mappa = instance.maintainerAval(man, giorno);
         if(mappa == null){
-            fail("ERRORE NELLA MAPPA DI MAINTAINERAVAL");
+            fail("ERRORE NELLA MAPPA DI MAINTAINER_AVAL");
         }
-        System.out.println(mappa.toString());
+        //int i = instance.assegnaMan(man, plact, giorno, "o8_9");
+        //assegnato=1;
+        /*
+        if(i== -1){
+            fail("Assegnamento non effettuato");
+        }
+        */
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("orari", null, map);
+            com.chiudi();
+            while(rs.next()){
+                int index;
+                result.put(index=rs.findColumn("o8_9"), rs.getInt(index));
+                result.put(index=rs.findColumn("o9_10"), rs.getInt(index));
+                result.put(index=rs.findColumn("o10_11"), rs.getInt(index));
+                result.put(index=rs.findColumn("o11_12"), rs.getInt(index));
+                result.put(index=rs.findColumn("o14_15"), rs.getInt(index));
+                result.put(index=rs.findColumn("o15_16"), rs.getInt(index));
+                result.put(index=rs.findColumn("o16_17"), rs.getInt(index));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        System.out.println(mappa.toString()+"\n"+result.toString());
+        if(assegnato == 1){
+        assertNotEquals(mappa,result);
+        }else{
+            assertEquals(mappa,result);
+        }
         sy.cancellaMaintainer(man);
+        //instance.deleteActivity(plact);
         
     }
 
@@ -491,7 +540,7 @@ public class PlannerTest {
         }
     }
     
-    
+   
     
     @Test
     public void testViewMaintainer(){
@@ -649,6 +698,5 @@ public class PlannerTest {
         instance.deleteActivity(act);
         assertTrue(trovato);
     }
-    
     
 }
