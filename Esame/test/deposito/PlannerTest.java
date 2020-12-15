@@ -540,7 +540,57 @@ public class PlannerTest {
         }
     }
     
-   
+   @Test
+   public void testViewToDoActivity(){
+       System.out.println("sortedActivities");
+       Planner instance= new Planner ("pippo", "xxxx", "cosimo", "coccocorb1@hot.com", 23);
+       SystemAdministrator admin=new SystemAdministrator("admin","admin","admin","email",1);
+       Maintainer man=admin.createMaintainer("man","man","manutentore", "hey@fragolina.com");
+       Boolean flag=false;
+      Sito sito1 = new Sito("ufficio","area");
+        List<String> materiali = new ArrayList();
+        materiali.add("Mattoni");
+        Procedure procedura = new Procedure();
+        Sito sito = new Sito("ufficio2","area");
+        String tipologia = "Meccanico";
+        String descrizione = "descrizione cambiata";
+        List<String> competenze = new ArrayList();
+        int tempo = 40;
+        materiali.add("Chiodi di garofano");
+        int week = 51;
+        String tipoAttivita="Planned";
+        Boolean interrompibile = false;
+        AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
+        AbstractActivity act1 =instance.createActivity(sito1, tipologia, "sono quello che deve stare", 20, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
+        instance.assegnaMan(man, act, 2, "o8_9");
+        ArrayList<AbstractActivity> arr1=instance.viewToDoActivity();
+        ArrayList<AbstractActivity> appoggio=instance.sortedActivities();
+        int index=0;
+        Comunicatore com =Comunicatore.getInstance();
+        try{
+        com.apri();
+        ResultSet rs= com.selectionQuery("pianificazione", null, null);
+        com.chiudi();
+         while(rs.next()){
+                for(int i =0; i<appoggio.size(); i++){
+                    if(rs.getInt("pid")==appoggio.get(i).getId()){
+                        index=i;
+                    }
+                }
+                appoggio.remove(index);
+            }
+            
+        if(appoggio.toString().equals(arr1.toString())){
+            flag=true;
+        }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        admin.cancellaMaintainer(man);
+        instance.deleteActivity(act);
+        instance.deleteActivity(act1);
+        assertTrue(flag);
+   }
     
     @Test
     public void testViewMaintainer(){
