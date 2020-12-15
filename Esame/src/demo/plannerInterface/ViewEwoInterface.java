@@ -7,6 +7,8 @@ package demo.plannerInterface;
 
 import deposito.EwoActivity;
 import deposito.Planner;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,6 +32,40 @@ public class ViewEwoInterface extends javax.swing.JFrame {
         this.planner=planner;
         this.parent=parent;
         this.aggiornaTabella();
+        
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent we) {
+                
+            }
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                
+            }
+
+            @Override
+            public void windowClosed(WindowEvent we) {
+                parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
+            }
+
+            @Override
+            public void windowIconified(WindowEvent we) {
+                
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent we) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent we) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent we) {
+            }
+        });
     }
     
     /**
