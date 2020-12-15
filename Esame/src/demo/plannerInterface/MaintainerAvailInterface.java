@@ -193,6 +193,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
             }
         });
         tableAvail.setCellSelectionEnabled(true);
+        tableAvail.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(tableAvail);
         tableAvail.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 

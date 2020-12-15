@@ -207,6 +207,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             }
         ));
         tableDay.setColumnSelectionAllowed(true);
+        tableDay.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(tableDay);
         tableDay.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -320,6 +321,8 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
                     this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
                 }
+                JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
+                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             }else{
             if(this.planner.assegnaMan(man, attivita, giorno, ora)==-1){
                 JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
@@ -330,8 +333,8 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             }
+            }
         
-        }
         }
     }//GEN-LAST:event_btnSendActionPerformed
     private String ora(int index){
