@@ -175,13 +175,15 @@ public class SystemAdministrator extends AbstractUtente {
                 return null;
             }
             try{
-                com.chiudi();
                 com.insertQuery("maintainer_competenze", skills);
+                com.chiudi();
+                
             }catch(SQLException ex2){
+                com.chiudi();
                 System.out.println(ex2.getMessage());  
                 return null;
             }
-            com.chiudi();
+            
             skills.clear();
         }
         return man;
@@ -405,8 +407,10 @@ public class SystemAdministrator extends AbstractUtente {
                 String password = rs.getString("pass");
                 String email = rs.getString("email");
                 int id = rs.getInt("mid");
-                
-                archivio.add(new Maintainer(username, password, nome, email, id));
+                Maintainer man=new Maintainer(username, password, nome, email, id);
+                ArrayList<String> ar=this.viewSkillMan(man);
+                skill.addAll(ar);
+                archivio.add(new Maintainer(username, password, nome, email, id,skill,null));
             }
             
         } catch (SQLException ex) {

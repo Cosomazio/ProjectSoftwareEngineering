@@ -329,12 +329,16 @@ public class SystemAdministratorTest {
         System.out.println("viewMaintainer");
         SystemAdministrator instance = new SystemAdministrator("test", "xxxx", "tentativo", "prova.test@gmail.com", 0);
         Maintainer man;
+        Set<String> skill=new HashSet<>();
+        skill.add("Compressor knowledge");
+        skill.add("Pav certification");
         ArrayList<Maintainer> archivio1 = instance.viewMaintainer();
         if(archivio1.isEmpty()){
             flag=true;
             //System.out.println("è andata bene");
         }
         man = instance.createMaintainer("tentativo", "12345", "di prova", "tenta.Prova@gmail.com");
+        man.setSkill(skill);
         if(man == null){
             fail("ERRORE NELLA CREAZIONE");
         }
