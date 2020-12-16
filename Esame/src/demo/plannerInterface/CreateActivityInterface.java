@@ -469,7 +469,14 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         }
         return false;
     }
-    
+    private boolean assertOutRange(int value,int min,int max,String title,String msg){
+        if(value<min||value>max){
+            errorMsg(title, msg);
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            return true;
+        }
+        return false;
+    }
     private boolean inputChecks(){
         Boolean tipo= assertEqualValue(this.boxTipologia.getSelectedIndex(), -1, "error", "nessuna tipologia selezionata");
         Boolean sito= assertEqualValue(this.boxSito.getSelectedIndex(), -1, "error", "nessun sito selezionato");
@@ -493,6 +500,9 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         int tempo=0;
         try{
             tempo = Integer.parseInt(this.textTempo.getText());
+            if(assertOutRange(tempo,0,120,"errore","tempo non valido")){
+                return;
+            }
         }catch(NumberFormatException nex){
             errorMsg("errore", "string tempo non valida");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
