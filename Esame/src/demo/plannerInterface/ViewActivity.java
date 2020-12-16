@@ -7,6 +7,7 @@ package demo.plannerInterface;
 
 
 import deposito.*;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
@@ -29,6 +30,7 @@ public class ViewActivity extends javax.swing.JFrame {
     public ViewActivity() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
     }
 
     ViewActivity(JFrame parent, Planner planner, AbstractActivity attivita) {
@@ -213,7 +215,6 @@ public class ViewActivity extends javax.swing.JFrame {
     private void btnForwardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForwardActionPerformed
         
         MaintainerAvailInterface f = new MaintainerAvailInterface(this,this.planner,this.act);
-        f.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnForwardActionPerformed
     private void listaSkill(AbstractActivity act){

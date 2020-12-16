@@ -105,10 +105,6 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         }
     }
    
-        
-            
-        
-   
     private int currentWeek(){
         Calendar c = Calendar.getInstance();
         Date d =new Date();

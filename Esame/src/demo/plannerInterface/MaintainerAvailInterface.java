@@ -31,6 +31,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.getContentPane().setBackground(Color.orange);
         
+        
     }
 
     MaintainerAvailInterface(JFrame parent, Planner planner, AbstractActivity attivita) {
@@ -91,7 +92,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             this.setVisible(false);
         }else{
-
+        this.setVisible(true);
         DefaultTableModel model = (DefaultTableModel)this.tableAvail.getModel();
         ArrayList<Integer> perc = new ArrayList<>();
         for(Maintainer man : this.archivioMaintainer){

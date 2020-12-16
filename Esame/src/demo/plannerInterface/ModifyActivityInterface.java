@@ -86,14 +86,13 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
         DefaultListModel listAttivita = new DefaultListModel();
         
         
-        if(this.planner.viewActivities()==null){
+        if(this.archivio==null){
             JOptionPane.showMessageDialog(new JFrame(), "Errore non sono presenti attività");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             
         }else{
-        ArrayList<AbstractActivity> attivita = this.archivio;
         
-        for(AbstractActivity act : attivita){
+        for(AbstractActivity act : this.archivio){
             listAttivita.addElement(act); 
             
         }
@@ -262,12 +261,19 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(new JFrame(), "Errore non è stato selezionato nulla");
             
         }else{
-        if(this.planner.modifyActivity(act, this.areaNote.getText())==null){
+            AbstractActivity p = this.planner.modifyActivity(act, this.areaNote.getText());
+        if(p==null){
             JOptionPane.showMessageDialog(new JFrame(), "Errore!\n Modifica non effettuata");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
         }
+        int indice = this.archivio.indexOf(p);
+        this.archivio.remove(indice);
+        this.archivio.add(indice, p);
         this.listActivities();
         
+        this.panelID.setText("");
+        this.panelWeek.setText("");
+        this.areaNote.setText("");
         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo");
         }
     }//GEN-LAST:event_btnOkModifyActionPerformed
