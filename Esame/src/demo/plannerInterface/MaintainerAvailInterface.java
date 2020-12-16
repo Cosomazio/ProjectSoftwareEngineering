@@ -118,7 +118,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     }
     
     private String skill(Maintainer man,AbstractActivity act){
-        System.out.println(man.toString());
+        //System.out.println(man.toString());
         Set<String> set = man.getSkill();
         int j = 0;
         List<String> list = this.attivita.getCompetenze();
@@ -313,7 +313,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         String stringa = Integer.toString(act.getId())+" - "+act.getSito().getOffice()+" "+act.getSito().getArea()+" - "+ act.getTipologia()+ " - "+Integer.toString(act.getTempo())+"'";
         this.panelActivity.setText(stringa);
         List<String> a = act.getCompetenze();
-        System.out.println(a.toString());
+        //System.out.println(a.toString());
         for(String s : a){
             this.areaSkill.setText(s);
         }

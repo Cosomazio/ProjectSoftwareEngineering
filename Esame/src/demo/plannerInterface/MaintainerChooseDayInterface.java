@@ -305,7 +305,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         int index = this.tableDay.getSelectedColumn();
-        System.out.println(index);
+        //System.out.println(index);
         String ora="Errore";
         if(index==0 || index==1 || index==-1){
             JOptionPane.showMessageDialog(new JFrame(),"ERRORE SELEZIONE NON VALIDA");
@@ -315,7 +315,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(new JFrame(), "Errore nella selezione dell'orario ");
                 this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
             }
-            System.out.println(ora);
+            //System.out.println(ora);
             if(attivita instanceof EwoActivity){
                 if(this.planner.assegnaManEWO(man, (EwoActivity) attivita, giorno, ora)== -1){
                     JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
@@ -338,23 +338,15 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSendActionPerformed
     private String ora(int index){
-            String ora="Errore";
-            if(index==2){
-                ora="o8_9";
-            }else if(index==3){
-                ora="o9_10";
-            }else if(index==4){
-                ora="o10_11";
-            }else if(index==5){
-                ora="o11_12";
-            }else if(index==6){
-                ora="o14_15";
-            }else if(index==7){
-                ora="o15_16";
-            }else{
-            ora="o16_17";
+            HashMap<Integer, String> mappa = new HashMap();
+            for(int i=2; i<=5; i++){
+                mappa.put(i, "o"+String.valueOf(i+6)+"_"+String.valueOf(i+7));
             }
-            return ora;
+            for(int i=6; i<=8; i++){
+                mappa.put(i, "o"+String.valueOf(i+8)+"_"+String.valueOf(i+9));
+            }
+            return mappa.get(index);
+            
     }
     /**
      * @param args the command line arguments
