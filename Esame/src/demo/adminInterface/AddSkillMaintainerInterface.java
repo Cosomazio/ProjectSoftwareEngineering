@@ -185,13 +185,16 @@ public class AddSkillMaintainerInterface extends javax.swing.JFrame {
     
     private void refreshMaintainerSkill(){
         DefaultListModel lm=new DefaultListModel();
-        ArrayList<String> skills= admin.viewSkillMan(man);
-        System.out.println(skills.toString());
-        if(skills==null){
+        ArrayList<String> skills;
+        try{
+            skills = admin.viewSkillMan(man);
+        }catch(NullPointerException ex){
             errorMsg("errore", "errore accesso al db");
             return;
         }
-        Set<String> competenze = new HashSet<String>();
+        System.out.println(skills.toString());
+        
+        Set<String> competenze = new HashSet<>();
         for (String skill:skills){
             competenze.add(skill);
             lm.addElement(skill);
@@ -200,7 +203,7 @@ public class AddSkillMaintainerInterface extends javax.swing.JFrame {
         this.maintainerSkillList.setModel(lm);
     }
     
-    public void refreshDBSkill(){
+    private void refreshDBSkill(){
         DefaultListModel lm=new DefaultListModel();
         List<String> skillDB= admin.viewCompetenze();
         ArrayList<String> skillMan= admin.viewSkillMan(man);

@@ -135,6 +135,7 @@ public class DeleteUserInterface extends javax.swing.JFrame {
         ArrayList<Planner> plans = this.admin.viewPlanner();
         if(mans==null|| plans==null){
             errorMsg( "errore accesso al db","errore");
+            return;
         }
         for(Planner p: plans)
             listUsers.addElement(p);
@@ -154,7 +155,7 @@ public class DeleteUserInterface extends javax.swing.JFrame {
     
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         // TODO add your handling code here:
-        AbstractUtente u=null;
+        AbstractUtente u;
         if(list.getSelectedIndex()==-1){
             errorMsg( "nessun utente selezionato","Errore");
             return;

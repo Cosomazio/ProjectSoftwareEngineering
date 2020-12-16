@@ -291,6 +291,7 @@ public class ModifyUserInterface extends javax.swing.JFrame {
         }
         if (u==null){
             errorMsg( "modifica utente fallita","Errore modifica");
+            return;
         }
         refreshList();
         JOptionPane.showMessageDialog(new JFrame(), "Modifica avvenuta con successo", "", JOptionPane.INFORMATION_MESSAGE);
