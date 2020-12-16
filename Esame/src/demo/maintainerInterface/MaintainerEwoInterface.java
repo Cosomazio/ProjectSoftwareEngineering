@@ -136,12 +136,27 @@ public class MaintainerEwoInterface extends javax.swing.JFrame {
     private void actListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_actListValueChanged
         //todo something
     }//GEN-LAST:event_actListValueChanged
-
+    
+     private void errorMsg(String title,String msg){
+        JOptionPane.showMessageDialog(new JFrame(), title, msg, JOptionPane.ERROR_MESSAGE);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+    
     private void buttonReceivedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReceivedActionPerformed
-        EwoActivity act = (EwoActivity)this.actList.getSelectedValue();
-       this. man.doneActivity(act);
-        JOptionPane.showMessageDialog(new JFrame(), "RICEZIONE AVVENUTA CON SUCCESSO");
-        this.setVisible(false);
+        EwoActivity act;
+        try{
+            act = (EwoActivity)this.actList.getSelectedValue();
+            if(this.man.doneActivity(act)==-1){
+                errorMsg("errore accesso al db","errore");
+            }else{
+                JOptionPane.showMessageDialog(new JFrame(), "RICEZIONE AVVENUTA CON SUCCESSO");
+                aggiornaTabella();
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            }
+        }catch(NullPointerException ex){
+            errorMsg("errore nessun elemento selezionato","errore");
+        }
+        
     }//GEN-LAST:event_buttonReceivedActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
