@@ -328,19 +328,7 @@ public class PlannerTest {
         assertEquals(res.get(0).compareTo(plact), 0);
     }
     
-    /**
-     * Test of viewEWO method, of class Planner.
-     */
-    /*
-    @Test
-    public void testViewEWO() {
-        System.out.println("viewEWO");
-        Planner instance = null;
-        instance.viewEWO();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-*/
+   
     /**
      * Test of maintainerAval method, of class Planner.
      */
