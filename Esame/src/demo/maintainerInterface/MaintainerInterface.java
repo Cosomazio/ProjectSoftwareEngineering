@@ -25,6 +25,12 @@ public class MaintainerInterface extends javax.swing.JFrame {
         this.manList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         Planner sa = new Planner("fittizio", "fittizio", "fittizio", "fittizio", 0);
         ArrayList<Maintainer> archivio = sa.viewMaintainer();
+        if(archivio==null){
+            JOptionPane.showMessageDialog(new JFrame(), "Errore nella visualizzazone dei Maintaner");
+            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+        }
+           
+        
         DefaultListModel dl = new DefaultListModel();
         
         for(Maintainer m : archivio){
@@ -102,8 +108,12 @@ public class MaintainerInterface extends javax.swing.JFrame {
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         Maintainer man = (Maintainer) this.manList.getSelectedValue();
+        if(man==null){
+            JOptionPane.showMessageDialog(new JFrame(), "Seleziona qualcosa");  
+        }else{
         MaintainerEwoInterface mei = new MaintainerEwoInterface(man,this);
         mei.setVisible(true);
+        }
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
