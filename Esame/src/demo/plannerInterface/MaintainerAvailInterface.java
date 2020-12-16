@@ -24,7 +24,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
      */
     
     Planner planner;
-    AbstractActivity attivita;
+    InterfaceActivity attivita;
     ArrayList<Maintainer> archivioMaintainer;
     public MaintainerAvailInterface() {
         initComponents();
@@ -34,7 +34,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         
     }
 
-    MaintainerAvailInterface(JFrame parent, Planner planner, AbstractActivity attivita) {
+    MaintainerAvailInterface(JFrame parent, Planner planner, InterfaceActivity attivita) {
         this();
         this.addWindowListener(new WindowListener() {
             @Override
@@ -117,7 +117,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     }
     }
     
-    private String skill(Maintainer man,AbstractActivity act){
+    private String skill(Maintainer man,InterfaceActivity act){
         //System.out.println(man.toString());
         Set<String> set = man.getSkill();
         int j = 0;
@@ -279,26 +279,28 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         
         if(this.tableAvail.getSelectedRow()==-1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONA QUALCOSA");
-            
-        }else{
+            return;
+        }
+        
         Maintainer man = this.archivioMaintainer.get(this.tableAvail.getSelectedRow());
         int giorno = this.tableAvail.getSelectedColumn();
-        if(giorno == -1 || giorno ==0|| giorno == 1){
+        if(giorno<2){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONA UN GIORNO CORRETTO");
+            return;
             
-        }else{
+        }
         if(this.attivita instanceof EwoActivity && giorno!=this.currentDay()){
             JOptionPane.showMessageDialog(new JFrame(), "EWO ASSEGNABILE SOLO OGGI!!!");
+            return;
         }
-        else{
         int index = this.tableAvail.getSelectedRow();
         
         MaintainerChooseDayInterface fr = new MaintainerChooseDayInterface(this,this.planner,this.attivita,man,giorno-1);
         fr.setVisible(true);
         this.setVisible(false);
-        }
-        }
-        }
+        
+        
+        
     }//GEN-LAST:event_btnSelezioneActionPerformed
 
     private void btnCancellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancellaActionPerformed
@@ -308,7 +310,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private void insertData(AbstractActivity act){
+    private void insertData(InterfaceActivity act){
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
         String stringa = Integer.toString(act.getId())+" - "+act.getSito().getOffice()+" "+act.getSito().getArea()+" - "+ act.getTipologia()+ " - "+Integer.toString(act.getTempo())+"'";
         this.panelActivity.setText(stringa);

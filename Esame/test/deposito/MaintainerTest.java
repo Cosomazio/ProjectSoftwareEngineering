@@ -120,7 +120,7 @@ public class MaintainerTest {
         String wNotes="";
         String tipoattivita = "Ewo";
         
-        AbstractActivity act = plan.createActivity(s, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes, tipoattivita);
+        InterfaceActivity act = plan.createActivity(s, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes, tipoattivita);
         EwoActivity a = (EwoActivity) act;
         String orario = "o8_9";
         plan.assegnaManEWO(m, a, c.get(Calendar.DAY_OF_WEEK)-1, orario);

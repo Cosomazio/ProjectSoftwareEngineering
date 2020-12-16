@@ -26,14 +26,14 @@ public class ViewActivity extends javax.swing.JFrame {
      */
     Planner planner;
     JFrame parent;
-    AbstractActivity act;
+    InterfaceActivity act;
     public ViewActivity() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.getContentPane().setBackground(Color.orange);
     }
 
-    ViewActivity(JFrame parent, Planner planner, AbstractActivity attivita) {
+    ViewActivity(JFrame parent, Planner planner, InterfaceActivity attivita) {
         this();
         this.parent = parent;
         this.planner = planner;
@@ -217,7 +217,7 @@ public class ViewActivity extends javax.swing.JFrame {
         MaintainerAvailInterface f = new MaintainerAvailInterface(this,this.planner,this.act);
         this.setVisible(false);
     }//GEN-LAST:event_btnForwardActionPerformed
-    private void listaSkill(AbstractActivity act){
+    private void listaSkill(InterfaceActivity act){
         List<String> skills = act.getCompetenze();
         DefaultListModel<String> list = new DefaultListModel<>();
         for(int i =0; i<skills.size(); i++){
@@ -228,7 +228,7 @@ public class ViewActivity extends javax.swing.JFrame {
         
     
     
-    private void insertDati(AbstractActivity act){
+    private void insertDati(InterfaceActivity act){
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
         this.panelDescr.setText(act.getDescrizione());
         this.panelWN.setText(act.getWnotes());

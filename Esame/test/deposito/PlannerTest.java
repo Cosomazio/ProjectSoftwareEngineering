@@ -73,7 +73,7 @@ public class PlannerTest {
         materiali.add("Mattoni");
         List<String> competenze = new ArrayList();
         Procedure procedura = new Procedure();
-        AbstractActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50,competenze, Boolean.TRUE, procedura, "s","Planned");
+        InterfaceActivity act = instance.createActivity(sito1, "elettrico", "provaDescrizione", 50, materiali, 50,competenze, Boolean.TRUE, procedura, "s","Planned");
         if(act==null){
             fail("Errore nella creazione dell'Attività");
         }
@@ -169,7 +169,7 @@ public class PlannerTest {
         try {
             
 
-                AbstractActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura, "",tipoAttivita);
+                InterfaceActivity act =instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura, "",tipoAttivita);
                 array.add("aid");
                 mappa.put("aid", act.getId());
                 com.apri();
@@ -213,7 +213,7 @@ public class PlannerTest {
         Comunicatore com = Comunicatore.getInstance();
         ResultSet rs;
         
-        AbstractActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week,competenze, interrompibile, procedura, "",tipoAttivita);
+        InterfaceActivity act = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week,competenze, interrompibile, procedura, "",tipoAttivita);
         if(act == null)
             fail("ERRORE ATTIVITA NON CREATA");
         
@@ -270,7 +270,7 @@ public class PlannerTest {
         Comunicatore com = Comunicatore.getInstance();
         try {
             
-            AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week,competenze ,interrompibile, procedura,"", tipoAttivita);
+            InterfaceActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week,competenze ,interrompibile, procedura,"", tipoAttivita);
             if(act == null){
                 
             }
@@ -285,7 +285,7 @@ public class PlannerTest {
                 throw new SQLException("Attività non presente quindi non è stato possibile cancellare");
             }
             else{
-                AbstractActivity act2 = instance.deleteActivity(act);
+                InterfaceActivity act2 = instance.deleteActivity(act);
                 assertTrue("Cancellazione Avvenuta con successo", act.equals(act2));
             }
             
@@ -300,7 +300,7 @@ public class PlannerTest {
 
     @Test
     public void testViewActivities() {
-        List<AbstractActivity> res1=instance.viewActivities();
+        List<InterfaceActivity> res1=instance.viewActivities();
         res1.forEach((act) -> {
             instance.deleteActivity(act);
         });
@@ -315,10 +315,10 @@ public class PlannerTest {
         Boolean interrompibile = true;
         Procedure procedura=new Procedure("smp", "nomefile");
         List<String> competenze = new ArrayList();
-        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
+        InterfaceActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
         
-        List<AbstractActivity> res=instance.viewActivities();
-        AbstractActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
+        List<InterfaceActivity> res=instance.viewActivities();
+        InterfaceActivity plact2=instance.createActivity(sito,tipologia,descrizione+"new",tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
         instance.deleteActivity(plact);
         instance.deleteActivity(plact2);
         assertEquals(plact2.getId(), plact.getId()+1);
@@ -347,7 +347,7 @@ public class PlannerTest {
         Boolean interrompibile = true;
         Procedure procedura=new Procedure("smp", "nomefile");
         List<String> competenze = new ArrayList();
-        AbstractActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
+        InterfaceActivity plact=instance.createActivity(sito,tipologia,descrizione,tempo,materiali,week,competenze,interrompibile,procedura,"","Planned");
 
         */
         int giorno = 2;
@@ -422,7 +422,7 @@ public class PlannerTest {
         Boolean interrompibile = false;
        SystemAdministrator admin=new SystemAdministrator("username","pass","admin","email",4);
        Maintainer man=admin.createMaintainer("man", "pass", "man", "ciccio@ciccio.com");
-       AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
+       InterfaceActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
             
        HashMap<String,String> map=new HashMap<>();
        
@@ -511,10 +511,10 @@ public class PlannerTest {
         
         int cont=0;
         
-        ArrayList<AbstractActivity> att=instance.sortedActivities();
-        ArrayList<AbstractActivity> verify=instance.viewActivities();
+        ArrayList<InterfaceActivity> att=instance.sortedActivities();
+        ArrayList<InterfaceActivity> verify=instance.viewActivities();
         
-        for(AbstractActivity a: verify){
+        for(InterfaceActivity a: verify){
             if(a.getWeek() == cal.get(Calendar.WEEK_OF_YEAR))
                 cont++;
         }
@@ -522,7 +522,7 @@ public class PlannerTest {
             if(!att.isEmpty())
                 fail("NON PRENDO LA SETTIMANA CORRETTAMENTE");
         }
-        for(AbstractActivity ac: att){
+        for(InterfaceActivity ac: att){
             if(ac.getWeek()!=cal.get(Calendar.WEEK_OF_YEAR))
                 fail("LA SETTIMANA NON è CORRETTA");
         }
@@ -548,11 +548,11 @@ public class PlannerTest {
         int week = 51;
         String tipoAttivita="Planned";
         Boolean interrompibile = false;
-        AbstractActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
-        AbstractActivity act1 =instance.createActivity(sito1, tipologia, "sono quello che deve stare", 20, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
+        InterfaceActivity act =instance.createActivity(sito1, tipologia, descrizione, tempo, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
+        InterfaceActivity act1 =instance.createActivity(sito1, tipologia, "sono quello che deve stare", 20, materiali, week, competenze,interrompibile, procedura,"" ,tipoAttivita);
         instance.assegnaMan(man, act, 2, "o8_9");
-        ArrayList<AbstractActivity> arr1=instance.viewToDoActivity();
-        ArrayList<AbstractActivity> appoggio=instance.sortedActivities();
+        ArrayList<InterfaceActivity> arr1=instance.viewToDoActivity();
+        ArrayList<InterfaceActivity> appoggio=instance.sortedActivities();
         int index=0;
         Comunicatore com =Comunicatore.getInstance();
         try{
@@ -628,7 +628,7 @@ public class PlannerTest {
         if(!archivio.isEmpty())
             fail("CREAZIONI SPURIE");
         
-        AbstractActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze,Boolean.TRUE, procedura,"d" ,tipoAttivita);
+        InterfaceActivity ewo = instance.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze,Boolean.TRUE, procedura,"d" ,tipoAttivita);
         
         archivio = instance.viewEwo();
         

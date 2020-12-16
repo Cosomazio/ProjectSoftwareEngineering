@@ -25,18 +25,19 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
      */
     Planner planner;
     Maintainer man;
-    AbstractActivity attivita;
+    InterfaceActivity attivita;
     int giorno;
     JFrame parent;
+
     public MaintainerChooseDayInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.getContentPane().setBackground(Color.orange);
     }
 
-    MaintainerChooseDayInterface(JFrame parent, Planner planner, AbstractActivity attivita, Maintainer man, int i) {
+    MaintainerChooseDayInterface(JFrame parent, Planner planner, InterfaceActivity attivita, Maintainer man, int i) {
         this();
-        this.parent=parent;
+        this.parent = parent;
         this.planner = planner;
         this.man = man;
         this.attivita = attivita;
@@ -45,109 +46,111 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                
+
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
-                
+
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
-                parent.dispatchEvent(new WindowEvent(parent,WindowEvent.WINDOW_CLOSING));
+                parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
             }
 
             @Override
             public void windowIconified(WindowEvent e) {
-                
+
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-                
+
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-                
+
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-                
+
             }
         });
     }
-    
-    private void insertDati(AbstractActivity act){
+
+    private void insertDati(InterfaceActivity act) {
         this.tableDay.setSelectionMode(0);
         this.panelWeek.setText(Integer.toString(this.currentWeek()));
-        String stringa = Integer.toString(act.getId())+" - "+act.getSito().getOffice()+" "
-                +act.getSito().getArea()+" - "+ act.getTipologia()+ " - "+Integer.toString(act.getTempo())+"'";
+        String stringa = Integer.toString(act.getId()) + " - " + act.getSito().getOffice() + " "
+                + act.getSito().getArea() + " - " + act.getTipologia() + " - " + Integer.toString(act.getTempo()) + "'";
         this.paneActivity.setText(stringa);
         this.areaWNotes.setText(act.getWnotes());
-        this.labelAv.setText("AVAILABILITY "+this.man.getNome());
-        
+        this.labelAv.setText("AVAILABILITY " + this.man.getNome());
+
         this.refreshTable();
         GregorianCalendar gc = new GregorianCalendar();
-        if(giorno == 1){
+        if (giorno == 1) {
             this.labelGiorno.setText("Monday");
             this.panelDay.setText(Integer.toString(giorno));
-        }else if(giorno == 2){
+        } else if (giorno == 2) {
             this.labelGiorno.setText("Tuesday");
             this.panelDay.setText(Integer.toString(giorno));
-        }else if(giorno == 3){
+        } else if (giorno == 3) {
             this.labelGiorno.setText("Wednesday");
             this.panelDay.setText(Integer.toString(giorno));
-        }else if(giorno == 4){
+        } else if (giorno == 4) {
             this.labelGiorno.setText("Thursday");
             this.panelDay.setText(Integer.toString(giorno));
-        }else {
+        } else {
             this.labelGiorno.setText("Friday");
             this.panelDay.setText(Integer.toString(giorno));
         }
-        
+
     }
-    
-    private int currentWeek(){
+
+    private int currentWeek() {
         Calendar c = Calendar.getInstance();
         Date date = new Date();
         c.setTime(date);
         return c.get(Calendar.WEEK_OF_YEAR);
     }
-    
-    private void refreshTable(){
-        DefaultTableModel model=(DefaultTableModel)this.tableDay.getModel();
-        
+
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) this.tableDay.getModel();
+
         HashMap mappa = this.planner.maintainerAval(man, giorno);
-        if(mappa == null){
+        if (mappa == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Errore nella ricezione dei dati di disponibilità");
         }
         String skill = this.skill();
         ArrayList<Integer> array = new ArrayList<>();
-        for(Object i : mappa.values()){
-            array.add((int)i);
+        for (Object i : mappa.values()) {
+            array.add((int) i);
         }
-        
-        model.insertRow(model.getRowCount(), new Object[]{man.getNome(),skill,array.get(0),array.get(1),array.get(2),array.get(3),array.get(4),array.get(5),array.get(6)});
-        
+
+        model.insertRow(model.getRowCount(), new Object[]{man.getNome(), skill, array.get(0), array.get(1), array.get(2), array.get(3), array.get(4), array.get(5), array.get(6)});
+
     }
-    private String skill(){
+
+    private String skill() {
         Set<String> set = man.getSkill();
         int j = 0;
         List<String> list = this.attivita.getCompetenze();
-        if(set == null || list == null){
+        if (set == null || list == null) {
             JOptionPane.showMessageDialog(new JFrame(), "Errore Set o Skill sono null");
-            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
-        for(String s : list){
-            if(set.remove(s)){
+        for (String s : list) {
+            if (set.remove(s)) {
                 j++;
             }
         }
-        return ""+j+"/"+list.size();
+        return "" + j + "/" + list.size();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -306,48 +309,46 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         int index = this.tableDay.getSelectedColumn();
         //System.out.println(index);
-        String ora="Errore";
-        if(index==0 || index==1 || index==-1){
-            JOptionPane.showMessageDialog(new JFrame(),"ERRORE SELEZIONE NON VALIDA");
-        }else {
+        String ora = "Errore";
+        if (index < 2) {
+            JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONE NON VALIDA");
+        } else {
             ora = this.ora(index);
-            if(ora.equals("Errore") || ora.equals("")){
-                JOptionPane.showMessageDialog(new JFrame(), "Errore nella selezione dell'orario ");
-                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-            }
-            //System.out.println(ora);
-            if(attivita instanceof EwoActivity){
-                if(this.planner.assegnaManEWO(man, (EwoActivity) attivita, giorno, ora)== -1){
-                    JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
-                    this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-                }
-                JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
-                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-            }else{
-            if(this.planner.assegnaMan(man, attivita, giorno, ora)==-1){
-                JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
-                this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
-            
-            }else{
 
-            JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
-            this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+            if (attivita instanceof EwoActivity) {
+                if (this.planner.assegnaManEWO(man, (EwoActivity) attivita, giorno, ora) == -1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
+                    this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                }
+                else{
+                JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                }
+            } else {
+                if (this.planner.assegnaMan(man, attivita, giorno, ora) == -1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Errore!\nAssegnazione non avvenuta");
+                    this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(), "Assegnazione avvenuta con successo");
+                    this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                }
             }
-            }
-        
+
         }
     }//GEN-LAST:event_btnSendActionPerformed
-    private String ora(int index){
-            HashMap<Integer, String> mappa = new HashMap();
-            for(int i=2; i<=5; i++){
-                mappa.put(i, "o"+String.valueOf(i+6)+"_"+String.valueOf(i+7));
-            }
-            for(int i=6; i<=8; i++){
-                mappa.put(i, "o"+String.valueOf(i+8)+"_"+String.valueOf(i+9));
-            }
-            return mappa.get(index);
-            
+    private String ora(int index) {
+        HashMap<Integer, String> mappa = new HashMap();
+        for (int i = 2; i <= 5; i++) {
+            mappa.put(i, "o" + String.valueOf(i + 6) + "_" + String.valueOf(i + 7));
+        }
+        for (int i = 6; i <= 8; i++) {
+            mappa.put(i, "o" + String.valueOf(i + 8) + "_" + String.valueOf(i + 9));
+        }
+        return mappa.get(index);
+
     }
+
     /**
      * @param args the command line arguments
      */

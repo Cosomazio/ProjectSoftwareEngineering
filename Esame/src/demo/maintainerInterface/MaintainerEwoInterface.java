@@ -165,7 +165,7 @@ public class MaintainerEwoInterface extends javax.swing.JFrame {
     
     private void aggiornaTabella(){
         DefaultListModel dm = new DefaultListModel();
-        System.out.println(this.man.ewoAssegnate());
+        //System.out.println(this.man.ewoAssegnate());
         for(EwoActivity ewo : this.man.ewoAssegnate()){
             dm.addElement(ewo);
         }

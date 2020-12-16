@@ -519,7 +519,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         String tipoAttivita = this.tipoActivity();
         Procedure procedura = new Procedure("smp","nomefile");
 
-        AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
+        InterfaceActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
         if(act != null){
             this.areaWnotes.setText("");
             this.boxWeek.setSelectedIndex(0);

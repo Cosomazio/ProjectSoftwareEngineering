@@ -23,7 +23,7 @@ public class Planner extends AbstractUtente {
     }
     
     //il metodo è int solo per farmi restituire qualcosa per il test
-    public int assegnaMan(Maintainer man, AbstractActivity act,int giorno,String orario){
+    public int assegnaMan(Maintainer man, InterfaceActivity act,int giorno,String orario){
        //Se non c'è abbastanza tempo nell'orario scelto allora si va a prendere automaticamente il tempo restante nella casella dopo(si fa solo per due caselle vicine)
        Comunicatore com = Comunicatore.getInstance();
        HashMap<String,Object> mappaWhere = new HashMap<>();
@@ -243,13 +243,13 @@ public class Planner extends AbstractUtente {
     }
     
     /*Crea un attività e restituisce l'attività creata altrimenti ritorna null*/
-    public AbstractActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
+    public InterfaceActivity createActivity(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, List<String> competenze,Boolean interrompibile, 
             Procedure procedura,String wNotes,String tipoattivita){ //tipoAttivita puo essere scelto solo da valori preimpostati quindi sull'interfaccia grafica da checkbox per esempio 
         
         int res;
         
-        AbstractActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoattivita);
+        InterfaceActivity attivita=this.tipoAttivita(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura, wNotes,tipoattivita);
         //BISOGNA GESTIRE IL FATTO DEI MATERIALI
         Comunicatore com= Comunicatore.getInstance();  
         try {
@@ -298,10 +298,10 @@ public class Planner extends AbstractUtente {
         attivita.setCompetenze(competenze);
         return attivita;
     }
-    private AbstractActivity vistaAttivita(int id,int ewoid,Sito sito,String tipologia,String descrizione,int tempo,
+    private InterfaceActivity vistaAttivita(int id,int ewoid,Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String tipoAttivita,String wNotes){
-        AbstractActivity attivita = null;
+        InterfaceActivity attivita = null;
         if(tipoAttivita.equals("Planned")){
             attivita=new PlannedActivity(id, sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
         }else if(tipoAttivita.equals("Unplanned")){
@@ -317,10 +317,10 @@ public class Planner extends AbstractUtente {
     
     /*--------------------------------------------*/
     /*Crea l'attività in base al suo tipo se non riesce a fare almeno una delle condizioni ritorna null*/
-    private AbstractActivity tipoAttivita(Sito sito,String tipologia,String descrizione,int tempo,
+    private InterfaceActivity tipoAttivita(Sito sito,String tipologia,String descrizione,int tempo,
             List<String> materiali, int week, Boolean interrompibile, 
             Procedure procedura,String wNotes,String tipoAttivita){
-            AbstractActivity attivita = null;
+            InterfaceActivity attivita = null;
             
         if(tipoAttivita.equals("Planned")){
             attivita = this.createPlanned(sito, tipologia, descrizione, tempo, materiali, week, interrompibile, procedura,wNotes);
@@ -380,7 +380,7 @@ public class Planner extends AbstractUtente {
     /*--------------------------------------------*/
     
     /*Ritorna l'attività modificata oppure ritorna il valore null*/
-    public AbstractActivity modifyActivity(AbstractActivity act, String wnotes){
+    public InterfaceActivity modifyActivity(InterfaceActivity act, String wnotes){
         
         int res;
         Comunicatore com= Comunicatore.getInstance();
@@ -407,7 +407,7 @@ public class Planner extends AbstractUtente {
     }    
     
     /*Ritorna l'attività eliminata oppure null*/
-    public AbstractActivity deleteActivity(AbstractActivity act){
+    public InterfaceActivity deleteActivity(InterfaceActivity act){
         Comunicatore com=Comunicatore.getInstance();
         int id = act.getId();
         try{
@@ -524,8 +524,8 @@ public class Planner extends AbstractUtente {
         return res;
     }
     
-    public ArrayList<AbstractActivity> viewActivities(){
-        ArrayList<AbstractActivity> res=new ArrayList<>();
+    public ArrayList<InterfaceActivity> viewActivities(){
+        ArrayList<InterfaceActivity> res=new ArrayList<>();
         String tableAtt="Attivita";
         ArrayList<String> colonneAtt= new ArrayList<>();
         HashMap<String,Object> doveAtt= null;
@@ -573,7 +573,7 @@ public class Planner extends AbstractUtente {
                 if(materiali==null ){
                     return null;
                 }*/
-                AbstractActivity act=vistaAttivita(id, ewoid, s, tipologia, 
+                InterfaceActivity act=vistaAttivita(id, ewoid, s, tipologia, 
                         descrizione, tempo, materiali, week, interrompibile, 
                         procedura, pianificazione,wNotes);
                 act.setCompetenze(competenze);
@@ -595,20 +595,20 @@ public class Planner extends AbstractUtente {
     }
     
     // restituisce un null nel caso in cui non ci sia niente nella tabella attività.
-    public ArrayList<AbstractActivity> sortedActivities(){
+    public ArrayList<InterfaceActivity> sortedActivities(){
         Calendar c=Calendar.getInstance();
         java.util.Date d= new java.util.Date();
         c.setTime(d);
-        ArrayList<AbstractActivity> activities = this.viewActivities();
+        ArrayList<InterfaceActivity> activities = this.viewActivities();
         if(activities == null){
             return null;
         }
-        ArrayList<AbstractActivity> result=new ArrayList<>();
+        ArrayList<InterfaceActivity> result=new ArrayList<>();
         
         Stream a=activities.stream()
                 .filter(b->b.getWeek() == c.get(Calendar.WEEK_OF_YEAR))
                 .sorted();
-        Iterator<AbstractActivity> i=a.iterator();
+        Iterator<InterfaceActivity> i=a.iterator();
         while (i.hasNext()){
             result.add(i.next());
         }
@@ -617,8 +617,8 @@ public class Planner extends AbstractUtente {
         
     }
     
-    public ArrayList<AbstractActivity> viewToDoActivity(){
-        ArrayList<AbstractActivity> arr=this.sortedActivities();
+    public ArrayList<InterfaceActivity> viewToDoActivity(){
+        ArrayList<InterfaceActivity> arr=this.sortedActivities();
         int index=0;
         Comunicatore com=Comunicatore.getInstance();
         try{

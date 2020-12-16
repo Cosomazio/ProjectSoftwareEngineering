@@ -26,7 +26,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
     /**
      * Creates new form ModifyActivityInterface
      */
-    ArrayList<AbstractActivity> archivio;
+    ArrayList<InterfaceActivity> archivio;
     private Planner planner;
     public ModifyActivityInterface(JFrame parent, Planner planner){
         this();
@@ -92,7 +92,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
             
         }else{
         
-        for(AbstractActivity act : this.archivio){
+        for(InterfaceActivity act : this.archivio){
             listAttivita.addElement(act); 
             
         }
@@ -261,7 +261,7 @@ public class ModifyActivityInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(new JFrame(), "Errore non è stato selezionato nulla");
             
         }else{
-            AbstractActivity p = this.planner.modifyActivity(act, this.areaNote.getText());
+            InterfaceActivity p = this.planner.modifyActivity(act, this.areaNote.getText());
         if(p==null){
             JOptionPane.showMessageDialog(new JFrame(), "Errore!\n Modifica non effettuata");
             this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));

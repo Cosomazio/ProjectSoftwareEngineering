@@ -29,7 +29,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.orange);
     }
     Planner planner;
-    ArrayList<AbstractActivity> archivio;
+    ArrayList<InterfaceActivity> archivio;
     public SelectionActivityInterface(JFrame parent,Planner planner){
         this();
         this.planner=planner;
@@ -85,7 +85,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel) this.lista.getModel();
         
-        ArrayList<AbstractActivity> act = this.archivio;
+        ArrayList<InterfaceActivity> act = this.archivio;
         if(act==null){
             errorMsg("errore", "errore accesso al db");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -96,7 +96,7 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
         }
         else{
             this.setVisible(true);
-            for(AbstractActivity a : act){
+            for(InterfaceActivity a : act){
                 model.insertRow(model.getRowCount(),new Object[]{a.getId(),a.getSito().getOffice()+" - "+a.getSito().getArea(),a.getTipologia(),a.getTempo()});
             }
         
@@ -227,13 +227,13 @@ public class SelectionActivityInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
-        ArrayList<AbstractActivity> archivio = this.archivio;
+        ArrayList<InterfaceActivity> archivio = this.archivio;
         int index = this.lista.getSelectedRow();
         if(index == -1){
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE NELLA SELEZIONE");
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }else{
-            AbstractActivity abc = archivio.get(index);
+            InterfaceActivity abc = archivio.get(index);
             this.lista.removeRowSelectionInterval(index, index);
             ViewActivity va= new ViewActivity(this, this.planner, abc); 
             va.setVisible(true);
