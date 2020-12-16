@@ -87,4 +87,55 @@ public class MaintainerTest {
         instance.deleteActivity(act);
     }
     
+    @Test
+    public void testEwoAssegnate(){
+        Boolean flag = false;
+        Calendar c = Calendar.getInstance();
+        java.util.Date d = new java.util.Date();
+        c.setTime(d);
+        
+        System.out.println("ewoAssegnate");
+        
+        Planner plan = new Planner("fittizio", "fittizio", "nome", "email", 0);
+        SystemAdministrator sa = new SystemAdministrator("fittizio", "fittizio", "nome", "email", 0);
+        Maintainer m = sa.createMaintainer("username", "password", "nome", "email");
+        if (m == null)
+            fail("EERORE NELLA CREAZIONE DEL MANUTENTORE");
+        List<EwoActivity> archivio = m.ewoAssegnate();
+        if(archivio ==null){
+            fail("ERRORI DURANTE LA CHIAMATA AL DB");
+        }
+        if (!archivio.isEmpty()){
+            fail("EWO SPURI IN PIANIFICAZIONE");
+        }
+        Sito s = new Sito("ufficio", "area");
+        String tipologia = "elettrico";
+        String descrizione = "prova di Descrizione";
+        int tempo = 10;
+        List<String> materiali = plan.listaMateriali();
+        int week = 52;
+        List<String> competenze = plan.listaCompetenze();
+        Boolean interrompibile = true;
+        Procedure procedura = new Procedure("smp", "nomefile");
+        String wNotes="";
+        String tipoattivita = "Ewo";
+        
+        AbstractActivity act = plan.createActivity(s, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes, tipoattivita);
+        EwoActivity a = (EwoActivity) act;
+        String orario = "o8_9";
+        plan.assegnaManEWO(m, a, c.get(Calendar.DAY_OF_WEEK)-1, orario);
+        
+        archivio=m.ewoAssegnate();
+        
+        for(EwoActivity ewo : archivio){
+            if(ewo.toString().equals(a.toString()));
+                flag=true;
+        }
+        sa.cancellaMaintainer(m);
+        plan.deleteActivity(act);
+        
+        assertTrue(flag);
+        
+        
+    }
 }

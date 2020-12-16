@@ -74,6 +74,7 @@ public class Maintainer extends AbstractUtente{
         return res;
     }
     
+    //restituisce una lista di EWO che sono le Ewo pianificate al particolare manutentore null altrimenti
     public List<EwoActivity> ewoAssegnate(){
         Comunicatore com = Comunicatore.getInstance();
         ArrayList<EwoActivity> archivio = new ArrayList<>();
