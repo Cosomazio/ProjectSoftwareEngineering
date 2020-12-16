@@ -352,7 +352,7 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             }else if(index==7){
                 ora="o15_16";
             }else{
-            ora="o17_18";
+            ora="o16_17";
             }
             return ora;
     }

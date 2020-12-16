@@ -7,6 +7,7 @@ package demo.plannerInterface;
 
 import deposito.EwoActivity;
 import deposito.Planner;
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.*;
@@ -27,6 +28,7 @@ public class ViewEwoInterface extends javax.swing.JFrame {
     public ViewEwoInterface() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(Color.orange);
     }
     public ViewEwoInterface(JFrame parent, Planner planner){
         this();

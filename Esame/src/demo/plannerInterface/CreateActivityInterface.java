@@ -521,6 +521,12 @@ public class CreateActivityInterface extends javax.swing.JFrame {
 
         AbstractActivity act = planner.createActivity(sito, tipologia, descrizione, tempo, materiali, week, competenze, interrompibile, procedura, wNotes,tipoAttivita);
         if(act != null){
+            this.areaWnotes.setText("");
+            this.boxWeek.setSelectedIndex(0);
+            this.boxTipologia.setSelectedIndex(0);
+            this.boxSito.setSelectedIndex(0);
+            this.textTempo.setText("");
+            this.textDescrizione.setText("");
             JOptionPane.showMessageDialog(new JFrame(), "Inserimento avvenuto con successo");
         }else{
             errorMsg("errore", "errore creazione attività nel db");

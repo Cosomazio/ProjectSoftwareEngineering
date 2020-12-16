@@ -287,11 +287,16 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(new JFrame(), "ERRORE SELEZIONA UN GIORNO CORRETTO");
             
         }else{
+        if(this.attivita instanceof EwoActivity && giorno!=this.currentDay()){
+            JOptionPane.showMessageDialog(new JFrame(), "EWO ASSEGNABILE SOLO OGGI!!!");
+        }
+        else{
         int index = this.tableAvail.getSelectedRow();
         
         MaintainerChooseDayInterface fr = new MaintainerChooseDayInterface(this,this.planner,this.attivita,man,giorno-1);
         fr.setVisible(true);
         this.setVisible(false);
+        }
         }
         }
     }//GEN-LAST:event_btnSelezioneActionPerformed
@@ -318,6 +323,12 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
         Date date = new Date();
         c.setTime(date);
         return c.get(Calendar.WEEK_OF_YEAR);
+    }
+    private int currentDay(){
+        Calendar c = Calendar.getInstance();
+        Date d = new Date();
+        c.setTime(d);
+        return c.get(Calendar.DAY_OF_WEEK);
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
