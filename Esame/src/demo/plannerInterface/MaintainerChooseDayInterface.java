@@ -208,7 +208,15 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             new String [] {
                 "Maintainer", "Skills", "Avail 8-9", "Avail 9-10", "Avail 10-11", "Avail 11-12", "Avail 14-15", "Avail 15-16", "Avail 16-17"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableDay.setColumnSelectionAllowed(true);
         tableDay.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(tableDay);
