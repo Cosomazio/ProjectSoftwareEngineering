@@ -881,7 +881,7 @@ public class Planner extends AbstractUtente {
             }
         } catch (SQLException ex) {
             com.chiudi();
-            Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
             return  null;
         }
         return materiali;
@@ -900,7 +900,7 @@ public class Planner extends AbstractUtente {
             }
         } catch (SQLException ex) {
             com.chiudi();
-            Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
             return null;
         }
         return competenze;
@@ -919,7 +919,7 @@ public class Planner extends AbstractUtente {
             }
         } catch (SQLException ex) {
             com.chiudi();
-            Logger.getLogger(Planner.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
             return null;
         }
         return sito;

@@ -692,7 +692,7 @@ public class PlannerTest {
                 
             }
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            fail(ex.getMessage());
         }
         
         sy.cancellaMaintainer(man);
@@ -735,6 +735,88 @@ public class PlannerTest {
         sy.cancellaMaintainer(man);
         instance.deleteActivity(act);
         assertTrue(trovato);
+    }
+    
+    
+    @Test
+    public void testListaTipologie(){
+        System.out.println("listaTipologie");
+        List<String> tipologie =this.instance.listaTipologia();
+        List<String> result = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("tipologia", null, null);
+            com.chiudi();
+            while(rs.next()){
+                result.add(rs.getString("tipologia"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        
+        assertEquals(tipologie,result);
+        
+    }
+    
+    @Test
+    public void testListaMateriali(){
+        System.out.println("listaMateriali");
+        List<String> materiali =this.instance.listaMateriali();
+        List<String> result = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("materiali", null, null);
+            com.chiudi();
+            while(rs.next()){
+                result.add(rs.getString("materiale"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        
+        assertEquals(materiali,result);
+    }
+    
+    @Test
+    public void testListaCompetenze(){
+        System.out.println("listaCompetenze");
+        List<String> competenze =this.instance.listaCompetenze();
+        List<String> result = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("competenze", null, null);
+            com.chiudi();
+            while(rs.next()){
+                result.add(rs.getString("competenza"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        
+        assertEquals(competenze,result);
+    }
+    
+    @Test
+    public void testListaSito(){
+        System.out.println("listaSito");
+        List<String> siti =this.instance.listaSito();
+        List<String> result = new ArrayList<>();
+        Comunicatore com = Comunicatore.getInstance();
+        try {
+            com.apri();
+            ResultSet rs = com.selectionQuery("sito", null, null);
+            com.chiudi();
+            while(rs.next()){
+                result.add(rs.getString("office")+"-"+rs.getString("area"));
+            }
+        } catch (SQLException ex) {
+            fail(ex.getMessage());
+        }
+        
+        assertEquals(siti,result);
     }
     
 }
