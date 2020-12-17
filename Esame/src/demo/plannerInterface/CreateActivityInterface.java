@@ -218,7 +218,7 @@ public class CreateActivityInterface extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(listMateriali);
 
-        jLabel6.setText("Tempo Intervento(in Minuti)");
+        jLabel6.setText("Tempo Intervento(max 120 Min)");
 
         textTempo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

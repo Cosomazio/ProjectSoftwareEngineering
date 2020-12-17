@@ -329,7 +329,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tempo Intervento(in Minuti)"/>
+        <Property name="text" type="java.lang.String" value="Tempo Intervento(max 120 Min)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textTempo">
