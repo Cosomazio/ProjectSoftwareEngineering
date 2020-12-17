@@ -111,7 +111,7 @@ public class MaintainerAvailInterface extends javax.swing.JFrame {
                 
                 perc.add(percentuali.get(i));     
             }
-            model.insertRow(model.getRowCount(),new Object[]{man.getNome(),skill,perc.get(0),perc.get(1),perc.get(2),perc.get(3),perc.get(4)});
+            model.insertRow(model.getRowCount(),new Object[]{man.getNome(),skill,perc.get(0)+"%",perc.get(1)+"%",perc.get(2)+"%",perc.get(3)+"%",perc.get(4)+"%"});
         }
         this.tableAvail.setModel(model);   
     }

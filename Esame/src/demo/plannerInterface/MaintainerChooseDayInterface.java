@@ -131,7 +131,8 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             array.add((int) i);
         }
 
-        model.insertRow(model.getRowCount(), new Object[]{man.getNome(), skill, array.get(0), array.get(1), array.get(2), array.get(3), array.get(4), array.get(5), array.get(6)});
+        model.insertRow(model.getRowCount(), new Object[]{man.getNome(), skill, array.get(0)+" min", array.get(1)+" min", array.get(2)+" min", array.get(3)+" min"
+                , array.get(4)+" min", array.get(5)+" min", array.get(6)+" min"});
 
     }
 
