@@ -10,6 +10,7 @@ import deposito.*;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.time.LocalDate;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -80,6 +81,14 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
             }
         });
     }
+    
+    private LocalDate getLocalDate(int week,int giornoWeek,int year){
+        LocalDate d=LocalDate.ofYearDay(year, 1);
+        int primoGiorno=d.getDayOfWeek().getValue();
+        int dayOfYear=(week-1)*7-(primoGiorno-1)+giornoWeek;
+        LocalDate dn=LocalDate.ofYearDay(year, dayOfYear);
+        return dn;
+    }
 
     private void insertDati(InterfaceActivity act) {
         this.tableDay.setSelectionMode(0);
@@ -91,23 +100,13 @@ public class MaintainerChooseDayInterface extends javax.swing.JFrame {
         this.labelAv.setText("AVAILABILITY " + this.man.getNome());
 
         this.refreshTable();
-        GregorianCalendar gc = new GregorianCalendar();
-        if (giorno == 1) {
-            this.labelGiorno.setText("Monday");
-            this.panelDay.setText(Integer.toString(giorno));
-        } else if (giorno == 2) {
-            this.labelGiorno.setText("Tuesday");
-            this.panelDay.setText(Integer.toString(giorno));
-        } else if (giorno == 3) {
-            this.labelGiorno.setText("Wednesday");
-            this.panelDay.setText(Integer.toString(giorno));
-        } else if (giorno == 4) {
-            this.labelGiorno.setText("Thursday");
-            this.panelDay.setText(Integer.toString(giorno));
-        } else {
-            this.labelGiorno.setText("Friday");
-            this.panelDay.setText(Integer.toString(giorno));
-        }
+        
+        LocalDate d= this.getLocalDate(this.currentWeek(), giorno, LocalDate.now().getYear());
+        int dayMonth=d.getDayOfMonth();
+        String dayWeek=d.getDayOfWeek().name();
+        this.labelGiorno.setText(dayWeek);
+        this.panelDay.setText(Integer.toString(dayMonth) );
+
 
     }
 
