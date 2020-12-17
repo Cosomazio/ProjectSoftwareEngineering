@@ -5,6 +5,7 @@
  */
 package deposito;
 
+import dbcomunicazione.Comunicatore;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;

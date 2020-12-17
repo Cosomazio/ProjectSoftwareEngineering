@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package deposito;
+import dbcomunicazione.Comunicatore;
 import factories.*;
 import java.lang.reflect.*;
 import java.sql.*;

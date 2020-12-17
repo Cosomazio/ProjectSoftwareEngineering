@@ -5,6 +5,7 @@
  */
 package deposito;
 
+import dbcomunicazione.Comunicatore;
 import java.sql.*;
 import java.util.*;
 
